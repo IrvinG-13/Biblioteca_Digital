@@ -5,6 +5,9 @@ if (!isset($_SESSION["usuario_id"])) {
     header("Location: login.php");
     exit;
 }
+
+require_once __DIR__ . '/../app/Core/NoCache.php';
+NoCache::aplicar();
 ?>
 
 <!DOCTYPE html>
@@ -17,10 +20,10 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <h2>Panel Administrativo</h2>
 
+    <?php include __DIR__ . '/menu.php'; ?>
+
     <p>Bienvenido, <?php echo htmlspecialchars($_SESSION["usuario"]); ?></p>
     <p>Rol: <?php echo htmlspecialchars($_SESSION["rol"]); ?></p>
-
-    <a href="logout.php">Cerrar sesión</a>
 
 </body>
 </html>

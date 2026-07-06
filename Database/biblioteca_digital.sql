@@ -25,10 +25,7 @@ CREATE TABLE usuarios (
 
 -- Usuario admin por defecto: admin / root2514
 INSERT INTO usuarios (usuario, password_hash, rol)
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
--- IMPORTANTE: ese hash es solo de ejemplo.
--- En PHP genera el hash real con: password_hash('root2514', PASSWORD_BCRYPT)
--- y reemplaza este INSERT antes de entregar el proyecto.
+VALUES ('admin', '$2y$10$Q86PD71XEIfelJ3Hql.KX.QB3wWKzkz46YxE3SLN0SNG4Ux65pT.G', 'admin');
 
 -- ------------------------------------------------------------
 -- 2. LOGS DE ACCESO (Irvin)
