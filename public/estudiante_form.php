@@ -1,10 +1,13 @@
-x<?php
+<?php
 session_start();
 
 if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== "admin") {
     header("Location: login.php");
     exit;
 }
+
+require_once __DIR__ . '/../app/Core/NoCache.php';
+NoCache::aplicar();
 
 require_once __DIR__ . '/../app/Controllers/EstudianteController.php';
 require_once __DIR__ . '/../app/Core/Csrf.php';
@@ -30,81 +33,120 @@ $esEdicion = $estudianteActual !== null;
 <head>
     <meta charset="UTF-8">
     <title><?php echo $esEdicion ? "Editar" : "Nuevo"; ?> Estudiante - Biblioteca Digital</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-    <h2><?php echo $esEdicion ? "Editar Estudiante" : "Nuevo Estudiante"; ?></h2>
+<div class="app-layout">
 
-    <?php if ($error === "cip"): ?>
-        <p style="color:red;">CIP inválido. Debe tener entre 5 y 20 caracteres (letras, números y guiones).</p>
-    <?php elseif ($error === "cipduplicado"): ?>
-        <p style="color:red;">Ese CIP ya está registrado para otro estudiante.</p>
-    <?php elseif ($error === "nombres"): ?>
-        <p style="color:red;">Primer nombre y primer apellido son obligatorios.</p>
-    <?php elseif ($error === "fecha"): ?>
-        <p style="color:red;">Fecha de nacimiento inválida (formato AAAA-MM-DD, edad mínima 15 años).</p>
-    <?php elseif ($error === "carrera"): ?>
-        <p style="color:red;">Selecciona una carrera válida.</p>
-    <?php endif; ?>
+    <?php include __DIR__ . '/menu.php'; ?>
 
-    <form action="estudiante_procesar.php" method="POST">
-        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
+    <main class="main-content">
+        <div class="content-card">
 
-        <?php if ($esEdicion): ?>
-            <input type="hidden" name="id" value="<?php echo $estudianteActual["id"]; ?>">
-        <?php endif; ?>
+            <form class="form-card" action="estudiante_procesar.php" method="POST">
 
-        <label>CIP:</label><br>
-        <input type="text" name="cip" required
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["cip"]) : ""; ?>"><br><br>
+                <div class="page-header">
+                    <h2><?php echo $esEdicion ? "Editar Estudiante" : "Nuevo Estudiante"; ?></h2>
+                </div>
 
-        <label>Primer Nombre:</label><br>
-        <input type="text" name="primer_nombre" required
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["primer_nombre"]) : ""; ?>"><br><br>
+                <?php if ($error === "cip"): ?>
+                    <div class="alert alert-error">CIP inválido. Debe tener entre 5 y 20 caracteres.</div>
+                <?php elseif ($error === "cipduplicado"): ?>
+                    <div class="alert alert-error">Ese CIP ya está registrado para otro estudiante.</div>
+                <?php elseif ($error === "nombres"): ?>
+                    <div class="alert alert-error">Primer nombre y primer apellido son obligatorios.</div>
+                <?php elseif ($error === "fecha"): ?>
+                    <div class="alert alert-error">Fecha de nacimiento inválida. Edad mínima: 15 años.</div>
+                <?php elseif ($error === "carrera"): ?>
+                    <div class="alert alert-error">Selecciona una carrera válida.</div>
+                <?php endif; ?>
 
-        <label>Segundo Nombre (opcional):</label><br>
-        <input type="text" name="segundo_nombre"
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["segundo_nombre"] ?? "") : ""; ?>"><br><br>
+                <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
 
-        <label>Primer Apellido:</label><br>
-        <input type="text" name="primer_apellido" required
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["primer_apellido"]) : ""; ?>"><br><br>
+                <?php if ($esEdicion): ?>
+                    <input type="hidden" name="id" value="<?php echo $estudianteActual["id"]; ?>">
+                <?php endif; ?>
 
-        <label>Segundo Apellido (opcional):</label><br>
-        <input type="text" name="segundo_apellido"
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["segundo_apellido"] ?? "") : ""; ?>"><br><br>
+                <div class="form-group">
+                    <label>CIP</label>
+                    <input type="text" name="cip" required
+                           value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["cip"]) : ""; ?>">
+                </div>
 
-        <label>Fecha de Nacimiento:</label><br>
-        <input type="date" name="fecha_nacimiento" required
-               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["fecha_nacimiento"]) : ""; ?>"><br><br>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Primer Nombre</label>
+                        <input type="text" name="primer_nombre" required
+                               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["primer_nombre"]) : ""; ?>">
+                    </div>
 
-        <label>Carrera:</label><br>
-        <select name="carrera_id" required>
-            <option value="">-- Selecciona una carrera --</option>
-            <?php foreach ($datos["carreras"] as $c): ?>
-                <option value="<?php echo $c["id"]; ?>"
-                    <?php echo ($esEdicion && (int)$estudianteActual["carrera_id"] === (int)$c["id"]) ? "selected" : ""; ?>>
-                    <?php echo htmlspecialchars($c["nombre"]); ?>
-                </option>
-            <?php endforeach; ?>
-        </select><br><br>
+                    <div class="form-group">
+                        <label>Segundo Nombre</label>
+                        <input type="text" name="segundo_nombre"
+                               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["segundo_nombre"] ?? "") : ""; ?>">
+                    </div>
+                </div>
 
-        <label>Cuenta de acceso vinculada (opcional):</label><br>
-        <select name="usuario_id">
-            <option value="">-- Sin cuenta vinculada --</option>
-            <?php foreach ($datos["usuariosDisponibles"] as $u): ?>
-                <option value="<?php echo $u["id"]; ?>"
-                    <?php echo ($esEdicion && (int)($estudianteActual["usuario_id"] ?? 0) === (int)$u["id"]) ? "selected" : ""; ?>>
-                    <?php echo htmlspecialchars($u["usuario"]); ?>
-                </option>
-            <?php endforeach; ?>
-        </select><br><br>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Primer Apellido</label>
+                        <input type="text" name="primer_apellido" required
+                               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["primer_apellido"]) : ""; ?>">
+                    </div>
 
-        <button type="submit"><?php echo $esEdicion ? "Guardar cambios" : "Crear estudiante"; ?></button>
-    </form>
+                    <div class="form-group">
+                        <label>Segundo Apellido</label>
+                        <input type="text" name="segundo_apellido"
+                               value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["segundo_apellido"] ?? "") : ""; ?>">
+                    </div>
+                </div>
 
-    <br>
-    <a href="estudiantes.php">Cancelar / Volver</a>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" required
+                           value="<?php echo $esEdicion ? htmlspecialchars($estudianteActual["fecha_nacimiento"]) : ""; ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Carrera</label>
+                    <select name="carrera_id" required>
+                        <option value="">Selecciona una carrera</option>
+                        <?php foreach ($datos["carreras"] as $c): ?>
+                            <option value="<?php echo $c["id"]; ?>"
+                                <?php echo ($esEdicion && (int)$estudianteActual["carrera_id"] === (int)$c["id"]) ? "selected" : ""; ?>>
+                                <?php echo htmlspecialchars($c["nombre"]); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Cuenta de acceso vinculada</label>
+                    <select name="usuario_id">
+                        <option value="">Sin cuenta vinculada</option>
+                        <?php foreach ($datos["usuariosDisponibles"] as $u): ?>
+                            <option value="<?php echo $u["id"]; ?>"
+                                <?php echo ($esEdicion && (int)($estudianteActual["usuario_id"] ?? 0) === (int)$u["id"]) ? "selected" : ""; ?>>
+                                <?php echo htmlspecialchars($u["usuario"]); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <a class="btn btn-secondary" href="estudiantes.php">Cancelar</a>
+                    <button class="btn btn-primary" type="submit">
+                        <?php echo $esEdicion ? "Guardar cambios" : "Crear estudiante"; ?>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+
+</div>
 
 </body>
 </html>
