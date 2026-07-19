@@ -7,7 +7,7 @@ if (!isset($_SESSION["usuario_id"])) {
     exit;
 }
 
-if ($_SESSION["rol"] !== "estudiante") {
+if (!in_array($_SESSION["rol"], ["estudiante", "profesor"], true)) {
     header("Location: dashboard.php");
     exit;
 }

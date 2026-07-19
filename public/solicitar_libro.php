@@ -12,8 +12,8 @@ NoCache::aplicar();
 
 $controller = new SolicitudController();
 $datos = $controller->datosFormulario();
-
-$estudiante = $datos['estudiante'];
+$tipoSolicitante = $datos['tipo'];
+$solicitante = $datos['solicitante'];
 $categorias = $datos['categorias'];
 
 $token = Csrf::generarToken();
@@ -40,20 +40,35 @@ $mensajesError = [
         'No fue posible registrar la solicitud. Inténtalo nuevamente.'
 ];
 
-$partesNombre = [
-    $estudiante['primer_nombre'] ?? '',
-    $estudiante['segundo_nombre'] ?? '',
-    $estudiante['primer_apellido'] ?? '',
-    $estudiante['segundo_apellido'] ?? ''
-];
-
-$partesNombre = array_filter(
-    $partesNombre,
-    static fn ($parte) =>
-        trim((string)$parte) !== ''
-);
-
-$nombreCompleto = implode(' ', $partesNombre);
+if ($tipoSolicitante === 'profesor') {
+    $partesNombreProfesor = [
+        $solicitante['primer_nombre'] ?? '',
+        $solicitante['segundo_nombre'] ?? '',
+        $solicitante['primer_apellido'] ?? '',
+        $solicitante['segundo_apellido'] ?? ''
+    ];
+    $partesNombreProfesor = array_filter(
+        $partesNombreProfesor,
+        static fn ($parte) => trim((string)$parte) !== ''
+    );
+    $nombreCompleto = implode(' ', $partesNombreProfesor);
+    $identificacion = $solicitante['cedula'] ?? '';
+    $carreraOMateria = $solicitante['materia_nombre'] ?? 'No especificada';
+} else {
+    $partesNombre = [
+        $solicitante['primer_nombre'] ?? '',
+        $solicitante['segundo_nombre'] ?? '',
+        $solicitante['primer_apellido'] ?? '',
+        $solicitante['segundo_apellido'] ?? ''
+    ];
+    $partesNombre = array_filter(
+        $partesNombre,
+        static fn ($parte) => trim((string)$parte) !== ''
+    );
+    $nombreCompleto = implode(' ', $partesNombre);
+    $identificacion = $solicitante['cip'] ?? '';
+    $carreraOMateria = $solicitante['carrera_nombre'] ?? 'No especificada';
+}
 
 $esc = static function ($valor): string {
     return htmlspecialchars(
@@ -128,42 +143,24 @@ $esc = static function ($valor): string {
         </section>
 
         <section class="student-request-profile">
-
             <div>
-
-                <span>Estudiante</span>
-
+                <span><?php echo $tipoSolicitante === 'profesor' ? 'Profesor' : 'Estudiante'; ?></span>
                 <strong>
                     <?php echo $esc($nombreCompleto); ?>
                 </strong>
-
             </div>
-
             <div>
-
-                <span>CIP</span>
-
+                <span>Cédula / CIP</span>
                 <strong>
-                    <?php echo $esc(
-                        $estudiante['cip'] ?? ''
-                    ); ?>
+                    <?php echo $esc($identificacion); ?>
                 </strong>
-
             </div>
-
             <div>
-
-                <span>Carrera</span>
-
+                <span><?php echo $tipoSolicitante === 'profesor' ? 'Materia' : 'Carrera'; ?></span>
                 <strong>
-                    <?php echo $esc(
-                        $estudiante['carrera_nombre']
-                        ?? 'No especificada'
-                    ); ?>
+                    <?php echo $esc($carreraOMateria); ?>
                 </strong>
-
             </div>
-
         </section>
 
         <?php if (isset($mensajesError[$error])): ?>
