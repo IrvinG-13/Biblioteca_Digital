@@ -54,24 +54,10 @@ $esc = static function ($valor): string {
 $nombreCompleto = static function (
     array $solicitud
 ): string {
-    $partes = [
-        $solicitud['primer_nombre'] ?? '',
-        $solicitud['segundo_nombre'] ?? '',
-        $solicitud['primer_apellido'] ?? '',
-        $solicitud['segundo_apellido'] ?? ''
-    ];
-
-    $partes = array_filter(
-        $partes,
-        static fn ($parte) =>
-            trim((string)$parte) !== ''
-    );
-
-    $nombre = implode(' ', $partes);
-
+    $nombre = trim((string)($solicitud['nombre_solicitante'] ?? ''));
     return $nombre !== ''
         ? $nombre
-        : 'Estudiante no identificado';
+        : 'Solicitante no identificado';
 };
 
 $formatearFecha = static function (
@@ -445,46 +431,35 @@ $mensajeVacio = match ($estadoActual) {
 
                                 <section class="admin-request-information">
 
+                                    <?php
+                                    $esProfesorSolicitud =
+                                        ($solicitud['tipo_solicitante'] ?? 'estudiante') === 'profesor';
+                                    ?>
                                     <div class="admin-request-student">
-
-                                        <h4>Estudiante</h4>
-
+                                        <h4><?php echo $esProfesorSolicitud ? 'Profesor' : 'Estudiante'; ?></h4>
                                         <strong>
-
                                             <?php echo $esc(
                                                 $nombreCompleto(
                                                     $solicitud
                                                 )
                                             ); ?>
-
                                         </strong>
-
                                         <p>
-
-                                            <span>CIP:</span>
-
+                                            <span>Cédula / CIP:</span>
                                             <?php echo $esc(
-                                                $solicitud['cip']
+                                                $solicitud['identificacion_solicitante']
                                                 ?? 'No registrado'
                                             ); ?>
-
                                         </p>
-
                                         <p>
-
-                                            <span>Carrera:</span>
-
+                                            <span><?php echo $esProfesorSolicitud ? 'Materia:' : 'Carrera:'; ?></span>
                                             <?php echo $esc(
-                                                $solicitud[
-                                                    'carrera_nombre'
-                                                ]
+                                                $solicitud['carrera_o_materia']
                                                 ?? 'No especificada'
                                             ); ?>
-
                                         </p>
-
                                     </div>
-
+                                    
                                     <div class="admin-request-comment">
 
                                         <h4>

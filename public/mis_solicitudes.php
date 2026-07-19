@@ -14,8 +14,8 @@ $controller = new SolicitudController();
  * sea estudiante y esté vinculado a la tabla estudiantes.
  */
 $datos = $controller->listarMisSolicitudes();
-
-$estudiante = $datos['estudiante'];
+$tipoSolicitante = $datos['tipo'];
+$solicitante = $datos['solicitante'];
 $solicitudes = $datos['solicitudes'];
 
 $exito = $_GET['exito'] ?? '';
@@ -32,19 +32,25 @@ $esc = static function ($valor): string {
 /*
  * Construye el nombre completo del estudiante.
  */
-$partesNombre = [
-    $estudiante['primer_nombre'] ?? '',
-    $estudiante['segundo_nombre'] ?? '',
-    $estudiante['primer_apellido'] ?? '',
-    $estudiante['segundo_apellido'] ?? ''
-];
-
-$partesNombre = array_filter(
-    $partesNombre,
-    static fn ($parte) => trim((string)$parte) !== ''
-);
-
-$nombreCompleto = implode(' ', $partesNombre);
+if ($tipoSolicitante === 'profesor') {
+    $nombreCompleto = $solicitante['nombre'] ?? '';
+    $identificacion = $solicitante['cedula'] ?? '';
+    $carreraOMateria = $solicitante['materia'] ?? 'No especificada';
+} else {
+    $partesNombre = [
+        $solicitante['primer_nombre'] ?? '',
+        $solicitante['segundo_nombre'] ?? '',
+        $solicitante['primer_apellido'] ?? '',
+        $solicitante['segundo_apellido'] ?? ''
+    ];
+    $partesNombre = array_filter(
+        $partesNombre,
+        static fn ($parte) => trim((string)$parte) !== ''
+    );
+    $nombreCompleto = implode(' ', $partesNombre);
+    $identificacion = $solicitante['cip'] ?? '';
+    $carreraOMateria = $solicitante['carrera_nombre'] ?? 'No especificada';
+}
 
 /*
  * Formatea las fechas para mostrarlas de manera más clara.
@@ -156,27 +162,22 @@ $formatearFecha = static function (
 
             <div class="alert alert-success">
 
-                <strong>Estudiante:</strong>
-
+                <strong><?php echo $tipoSolicitante === 'profesor' ? 'Profesor' : 'Estudiante'; ?>:</strong>
+                
                 <?php echo $esc($nombreCompleto); ?>
-
+                
                 <br>
-
-                <strong>CIP:</strong>
-
-                <?php echo $esc(
-                    $estudiante['cip'] ?? ''
-                ); ?>
-
+                
+                <strong>Cédula / CIP:</strong>
+                
+                <?php echo $esc($identificacion); ?>
+                
                 <br>
-
-                <strong>Carrera:</strong>
-
-                <?php echo $esc(
-                    $estudiante['carrera_nombre']
-                    ?? 'No especificada'
-                ); ?>
-
+                
+                <strong><?php echo $tipoSolicitante === 'profesor' ? 'Materia' : 'Carrera'; ?>:</strong>
+                
+                <?php echo $esc($carreraOMateria); ?>
+            
             </div>
 
             <!-- Mensajes -->

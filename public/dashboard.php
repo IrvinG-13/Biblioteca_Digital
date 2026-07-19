@@ -11,7 +11,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 $rolActual = $_SESSION["rol"] ?? "";
 
-if ($rolActual === "estudiante") {
+if ($rolActual === "estudiante" || $rolActual === "profesor") {
     header("Location: catalogo.php");
     exit;
 }

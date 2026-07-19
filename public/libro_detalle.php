@@ -24,7 +24,7 @@ if (!isset($_SESSION["usuario_id"])) {
 | Solo estudiantes
 |--------------------------------------------------------------------------
 */
-if (($_SESSION["rol"] ?? "") !== "estudiante") {
+if (!in_array($_SESSION["rol"] ?? "", ["estudiante", "profesor"], true)) {
     header("Location: dashboard.php");
     exit;
 }

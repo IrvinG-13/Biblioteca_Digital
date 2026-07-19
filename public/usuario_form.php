@@ -103,6 +103,9 @@ $esEdicion = $usuarioActual !== null;
                         <option value="estudiante" <?php echo ($esEdicion && $usuarioActual["rol"] === "estudiante") ? "selected" : ""; ?>>
                             Estudiante
                         </option>
+                        <option value="profesor" <?php echo ($esEdicion && $usuarioActual["rol"] === "profesor") ? "selected" : ""; ?>>
+                            Profesor
+                        </option>
                     </select>
                 </div>
 

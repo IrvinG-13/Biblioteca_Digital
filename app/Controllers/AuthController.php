@@ -134,7 +134,7 @@ class AuthController
              * El estudiante entra directamente al catálogo.
              * El catálogo será su página principal.
              */
-            if ($rol === "estudiante") {
+            if ($rol === "estudiante" || $rol === "profesor") {
                 header("Location: catalogo.php");
                 exit;
             }

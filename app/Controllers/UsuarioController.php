@@ -83,7 +83,7 @@ class UsuarioController
             exit;
         }
 
-        if (!in_array($rol, ["admin", "estudiante"], true)) {
+        if (!in_array($rol, ["admin", "estudiante", "profesor"], true)) {
             header("Location: usuario_form.php?error=rol&id=" . $id);
             exit;
         }

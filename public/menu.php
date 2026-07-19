@@ -6,7 +6,7 @@ $paginaActual = basename(
     $_SERVER["PHP_SELF"]
 );
 
-$paginaInicio = $rolActual === "estudiante"
+$paginaInicio = $rolActual === "estudiante" || $rolActual === "profesor"
     ? "catalogo.php"
     : "dashboard.php";
 
@@ -45,6 +45,23 @@ $paginaInicio = $rolActual === "estudiante"
             href="estudiantes.php"
         >
             Estudiantes
+        </a>
+
+        <a
+            class="<?php echo $paginaActual === 'profesores.php'
+                ? 'active'
+                : ''; ?>"
+            href="profesores.php"
+        >
+            Profesores
+        </a>
+
+        <a class="<?php echo $paginaActual === 'materias.php'
+                ? 'active'
+                : ''; ?>"
+            href="materias.php"
+        >
+            Materias
         </a>
 
         <a
@@ -109,7 +126,7 @@ $paginaInicio = $rolActual === "estudiante"
 
     <?php endif; ?>
 
-    <?php if ($rolActual === "estudiante"): ?>
+    <?php if ($rolActual === "estudiante" || $rolActual === "profesor"): ?>
 
         <a
             class="<?php echo $paginaActual === 'mis_reservas.php'
