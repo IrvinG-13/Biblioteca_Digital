@@ -1,73 +1,119 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Iniciar sesión
+|--------------------------------------------------------------------------
+*/
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-if (!isset($_SESSION["usuario_id"])) {
-    header("Location: login.php");
+/*
+|--------------------------------------------------------------------------
+| Validar sesión
+|--------------------------------------------------------------------------
+*/
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: login.php');
     exit;
 }
 
-if (!in_array($_SESSION["rol"], ["estudiante", "profesor"], true)) {
-    header("Location: dashboard.php");
+/*
+|--------------------------------------------------------------------------
+| Solo estudiantes y profesores
+|--------------------------------------------------------------------------
+*/
+if (
+    !in_array(
+        $_SESSION['rol'] ?? '',
+        ['estudiante', 'profesor'],
+        true
+    )
+) {
+    header('Location: dashboard.php');
     exit;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Archivos necesarios
+|--------------------------------------------------------------------------
+*/
 require_once __DIR__ . '/../app/Core/NoCache.php';
 require_once __DIR__ . '/../app/Models/ReservaModel.php';
 
 NoCache::aplicar();
 
-/**
- * Escapa contenido antes de mostrarlo.
- */
+/*
+|--------------------------------------------------------------------------
+| Escapar contenido
+|--------------------------------------------------------------------------
+*/
 function escaparReserva(?string $valor): string
 {
     return htmlspecialchars(
         (string)$valor,
         ENT_QUOTES,
-        "UTF-8"
+        'UTF-8'
     );
 }
 
-/**
- * Formatea una fecha de base de datos.
- */
-function formatearFechaReserva(?string $fecha): string
-{
-    if ($fecha === null || trim($fecha) === "") {
-        return "Sin fecha límite";
+/*
+|--------------------------------------------------------------------------
+| Formatear fecha
+|--------------------------------------------------------------------------
+*/
+function formatearFechaReserva(
+    ?string $fecha
+): string {
+    if (
+        $fecha === null
+        || trim($fecha) === ''
+    ) {
+        return 'Sin fecha límite';
     }
 
     try {
-        $fechaObjeto = new DateTime($fecha);
+        $fechaObjeto = new DateTime(
+            $fecha
+        );
 
-        return $fechaObjeto->format("d/m/Y");
+        return $fechaObjeto->format(
+            'd/m/Y'
+        );
     } catch (Throwable $e) {
         return escaparReserva($fecha);
     }
 }
 
+/*
+|--------------------------------------------------------------------------
+| Obtener los libros del usuario
+|--------------------------------------------------------------------------
+*/
 $modelo = new ReservaModel();
 
 $reservas = $modelo->obtenerPorUsuario(
-    (int)$_SESSION["usuario_id"]
+    (int)$_SESSION['usuario_id']
 );
 
 /*
 |--------------------------------------------------------------------------
-| Nombres visibles de los estados
+| Estados visibles
 |--------------------------------------------------------------------------
-| La base de datos conserva "en_prestamo", pero al estudiante
-| le mostramos "Leyendo".
 */
 $estados = [
-    "reservado" => "Reservado",
-    "en_prestamo" => "Leyendo",
-    "por_vencer" => "Por vencer",
-    "devuelto" => "Finalizado"
+    'reservado' => 'Reservado',
+    'en_prestamo' => 'Leyendo',
+    'por_vencer' => 'Por vencer',
+    'devuelto' => 'Finalizado',
+    'cancelado' => 'Cancelado'
 ];
+
+$fechaActual = new DateTimeImmutable(
+    'today'
+);
 
 ?>
 
@@ -94,7 +140,7 @@ $estados = [
 
     <link
         rel="stylesheet"
-        href="assets/css/student.css?v=3"
+        href="assets/css/student.css?v=7"
     >
 
 </head>
@@ -106,8 +152,6 @@ $estados = [
     <?php include __DIR__ . '/menu_estudiante.php'; ?>
 
     <main class="student-main">
-
-        <!-- Encabezado -->
 
         <section class="student-page-header">
 
@@ -137,9 +181,9 @@ $estados = [
 
         <?php if (empty($reservas)): ?>
 
-            <!-- Estado vacío -->
-
-            <section class="student-empty-state reservation-empty">
+            <section
+                class="student-empty-state reservation-empty"
+            >
 
                 <div class="empty-icon">
                     ▣
@@ -148,8 +192,8 @@ $estados = [
                 <h2>Aún no tienes libros</h2>
 
                 <p>
-                    Cuando abras un libro gratuito o reserves uno,
-                    aparecerá en esta sección.
+                    Cuando abras un libro gratuito o compres
+                    un acceso digital, aparecerá en esta sección.
                 </p>
 
                 <a
@@ -163,29 +207,109 @@ $estados = [
 
         <?php else: ?>
 
-            <!-- Lista de libros -->
-
             <section class="reservation-list">
 
                 <?php foreach ($reservas as $reserva): ?>
 
                     <?php
 
-                    $estado = $reserva["estado"]
-                        ?? "en_prestamo";
+                    $estado = $reserva['estado']
+                        ?? 'en_prestamo';
 
-                    $nombreEstado = $estados[$estado]
-                        ?? ucfirst(
-                            str_replace("_", " ", $estado)
-                        );
+                    $tipoAcceso =
+                        $reserva['tipo_acceso']
+                        ?? 'gratuito';
 
-                    $tituloBoton = in_array(
+                    $fechaVencimiento =
+                        $reserva['fecha_vencimiento']
+                        ?? null;
+
+                    $accesoVencido = false;
+
+                    /*
+                     * Los libros de pago tienen fecha
+                     * de vencimiento.
+                     */
+                    if (
+                        $tipoAcceso === 'pago'
+                        && $fechaVencimiento !== null
+                        && trim($fechaVencimiento) !== ''
+                    ) {
+                        try {
+                            $fechaLimite =
+                                new DateTimeImmutable(
+                                    $fechaVencimiento
+                                );
+
+                            $accesoVencido =
+                                $fechaLimite < $fechaActual;
+                        } catch (Throwable $e) {
+                            $accesoVencido = true;
+                        }
+                    }
+
+                    $estadoActivo = in_array(
                         $estado,
-                        ["en_prestamo", "por_vencer"],
+                        [
+                            'reservado',
+                            'en_prestamo',
+                            'por_vencer'
+                        ],
                         true
-                    )
-                        ? "Continuar leyendo"
-                        : "Ver libro";
+                    );
+
+                    $puedeLeer =
+                        $estadoActivo
+                        && !$accesoVencido;
+
+                    if ($accesoVencido) {
+                        $nombreEstado =
+                            'Acceso vencido';
+
+                        $claseEstado =
+                            'devuelto';
+
+                        $tituloBoton =
+                            'Renovar acceso';
+
+                        $urlBoton =
+                            'libro_detalle.php?id='
+                            . (int)$reserva['libro_id'];
+                    } elseif ($puedeLeer) {
+                        $nombreEstado =
+                            $estados[$estado]
+                            ?? 'Disponible';
+
+                        $claseEstado =
+                            $estado;
+
+                        $tituloBoton =
+                            'Continuar leyendo';
+
+                        $urlBoton =
+                            'abrir_libro.php?id='
+                            . (int)$reserva['libro_id'];
+                    } else {
+                        $nombreEstado =
+                            $estados[$estado]
+                            ?? ucfirst(
+                                str_replace(
+                                    '_',
+                                    ' ',
+                                    $estado
+                                )
+                            );
+
+                        $claseEstado =
+                            $estado;
+
+                        $tituloBoton =
+                            'Ver libro';
+
+                        $urlBoton =
+                            'libro_detalle.php?id='
+                            . (int)$reserva['libro_id'];
+                    }
 
                     ?>
 
@@ -195,56 +319,72 @@ $estados = [
 
                         <a
                             href="libro_detalle.php?id=<?php
-                            echo (int)$reserva["libro_id"];
+                            echo (int)$reserva['libro_id'];
                             ?>"
                             class="reservation-cover"
                         >
 
-                            <?php if (!empty($reserva["thumbnail"])): ?>
+                            <?php if (
+                                !empty(
+                                    $reserva['thumbnail']
+                                )
+                            ): ?>
 
                                 <img
                                     src="../uploads/thumbnails/<?php
                                     echo rawurlencode(
                                         basename(
                                             str_replace(
-                                                "\\",
-                                                "/",
-                                                $reserva["thumbnail"]
+                                                '\\',
+                                                '/',
+                                                $reserva[
+                                                    'thumbnail'
+                                                ]
                                             )
                                         )
                                     );
                                     ?>"
                                     alt="Portada de <?php
                                     echo escaparReserva(
-                                        $reserva["titulo"]
+                                        $reserva['titulo']
+                                        ?? 'Libro'
                                     );
                                     ?>"
                                 >
 
-                            <?php elseif (!empty($reserva["imagen"])): ?>
+                            <?php elseif (
+                                !empty(
+                                    $reserva['imagen']
+                                )
+                            ): ?>
 
                                 <img
                                     src="../uploads/libros/<?php
                                     echo rawurlencode(
                                         basename(
                                             str_replace(
-                                                "\\",
-                                                "/",
-                                                $reserva["imagen"]
+                                                '\\',
+                                                '/',
+                                                $reserva[
+                                                    'imagen'
+                                                ]
                                             )
                                         )
                                     );
                                     ?>"
                                     alt="Portada de <?php
                                     echo escaparReserva(
-                                        $reserva["titulo"]
+                                        $reserva['titulo']
+                                        ?? 'Libro'
                                     );
                                     ?>"
                                 >
 
                             <?php else: ?>
 
-                                <div class="reservation-placeholder">
+                                <div
+                                    class="reservation-placeholder"
+                                >
                                     LIBRO
                                 </div>
 
@@ -259,8 +399,10 @@ $estados = [
                             <span class="book-category">
 
                                 <?php echo escaparReserva(
-                                    $reserva["categoria_nombre"]
-                                    ?? "Sin categoría"
+                                    $reserva[
+                                        'categoria_nombre'
+                                    ]
+                                    ?? 'Sin categoría'
                                 ); ?>
 
                             </span>
@@ -269,11 +411,14 @@ $estados = [
 
                                 <a
                                     href="libro_detalle.php?id=<?php
-                                    echo (int)$reserva["libro_id"];
+                                    echo (int)$reserva[
+                                        'libro_id'
+                                    ];
                                     ?>"
                                 >
                                     <?php echo escaparReserva(
-                                        $reserva["titulo"]
+                                        $reserva['titulo']
+                                        ?? 'Libro sin título'
                                     ); ?>
                                 </a>
 
@@ -282,8 +427,8 @@ $estados = [
                             <p class="reservation-author">
 
                                 <?php echo escaparReserva(
-                                    $reserva["autor"]
-                                    ?? "Autor no especificado"
+                                    $reserva['autor']
+                                    ?? 'Autor no especificado'
                                 ); ?>
 
                             </p>
@@ -296,10 +441,14 @@ $estados = [
 
                                     <strong>
 
-                                        <?php echo formatearFechaReserva(
-                                            $reserva["fecha_reserva"]
-                                            ?? null
-                                        ); ?>
+                                        <?php echo
+                                            formatearFechaReserva(
+                                                $reserva[
+                                                    'fecha_reserva'
+                                                ]
+                                                ?? null
+                                            );
+                                        ?>
 
                                     </strong>
 
@@ -307,14 +456,20 @@ $estados = [
 
                                 <div>
 
-                                    <span>Acceso disponible hasta</span>
+                                    <span>
+                                        Acceso disponible hasta
+                                    </span>
 
                                     <strong>
 
-                                        <?php echo formatearFechaReserva(
-                                            $reserva["fecha_vencimiento"]
-                                            ?? null
-                                        ); ?>
+                                        <?php echo
+                                            formatearFechaReserva(
+                                                $reserva[
+                                                    'fecha_vencimiento'
+                                                ]
+                                                ?? null
+                                            );
+                                        ?>
 
                                     </strong>
 
@@ -322,7 +477,9 @@ $estados = [
 
                                 <?php if (
                                     !empty(
-                                        $reserva["fecha_devolucion"]
+                                        $reserva[
+                                            'fecha_devolucion'
+                                        ]
                                     )
                                 ): ?>
 
@@ -332,9 +489,13 @@ $estados = [
 
                                         <strong>
 
-                                            <?php echo formatearFechaReserva(
-                                                $reserva["fecha_devolucion"]
-                                            ); ?>
+                                            <?php echo
+                                                formatearFechaReserva(
+                                                    $reserva[
+                                                        'fecha_devolucion'
+                                                    ]
+                                                );
+                                            ?>
 
                                         </strong>
 
@@ -352,7 +513,9 @@ $estados = [
 
                             <span
                                 class="reservation-status <?php
-                                echo escaparReserva($estado);
+                                echo escaparReserva(
+                                    $claseEstado
+                                );
                                 ?>"
                             >
                                 <?php echo escaparReserva(
@@ -361,10 +524,15 @@ $estados = [
                             </span>
 
                             <a
-                                href="libro_detalle.php?id=<?php
-                                echo (int)$reserva["libro_id"];
+                                href="<?php
+                                echo escaparReserva(
+                                    $urlBoton
+                                );
                                 ?>"
                                 class="reservation-button"
+                                <?php if ($puedeLeer): ?>
+                                    target="_blank"
+                                <?php endif; ?>
                             >
                                 <?php echo escaparReserva(
                                     $tituloBoton

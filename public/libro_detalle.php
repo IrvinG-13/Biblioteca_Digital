@@ -21,10 +21,16 @@ if (!isset($_SESSION["usuario_id"])) {
 
 /*
 |--------------------------------------------------------------------------
-| Solo estudiantes
+| Solo estudiantes y profesores
 |--------------------------------------------------------------------------
 */
-if (!in_array($_SESSION["rol"] ?? "", ["estudiante", "profesor"], true)) {
+if (
+    !in_array(
+        $_SESSION["rol"] ?? "",
+        ["estudiante", "profesor"],
+        true
+    )
+) {
     header("Location: dashboard.php");
     exit;
 }
@@ -37,12 +43,13 @@ if (!in_array($_SESSION["rol"] ?? "", ["estudiante", "profesor"], true)) {
 require_once __DIR__ . '/../app/Core/NoCache.php';
 require_once __DIR__ . '/../app/Core/Csrf.php';
 require_once __DIR__ . '/../app/Models/LibroModel.php';
+require_once __DIR__ . '/../app/Models/FacturaModel.php';
 
 NoCache::aplicar();
 
 /*
 |--------------------------------------------------------------------------
-| Token de seguridad para el botón Leer libro
+| Token de seguridad
 |--------------------------------------------------------------------------
 */
 $csrfToken = Csrf::generarToken();
@@ -86,21 +93,21 @@ function construirRutaArchivo(
     $archivo = str_replace("\\", "/", $archivo);
 
     /*
-     * Si la ruta ya comienza con ../, no se modifica.
+     * Si la ruta comienza con ../, no se modifica.
      */
     if (str_starts_with($archivo, "../")) {
         return $archivo;
     }
 
     /*
-     * Si ya contiene uploads/, solamente se agrega ../
+     * Si ya contiene uploads/, se agrega ../
      */
     if (str_starts_with($archivo, "uploads/")) {
         return "../" . $archivo;
     }
 
     /*
-     * Si solo se guardó el nombre del archivo,
+     * Si solamente contiene el nombre del archivo,
      * se construye la ruta completa.
      */
     return "../uploads/"
@@ -114,9 +121,13 @@ function construirRutaArchivo(
 | Obtener el ID del libro
 |--------------------------------------------------------------------------
 */
-$id = (int)($_GET["id"] ?? 0);
+$id = filter_input(
+    INPUT_GET,
+    "id",
+    FILTER_VALIDATE_INT
+);
 
-if ($id <= 0) {
+if (!$id || $id <= 0) {
     header("Location: catalogo.php");
     exit;
 }
@@ -127,7 +138,10 @@ if ($id <= 0) {
 |--------------------------------------------------------------------------
 */
 $modelo = new LibroModel();
-$libro = $modelo->obtenerPorId($id);
+
+$libro = $modelo->obtenerPorId(
+    (int)$id
+);
 
 if ($libro === null) {
     header("Location: catalogo.php");
@@ -156,7 +170,7 @@ $diasAcceso = (int)(
 );
 
 /*
- * Tu base de datos utiliza url_externo.
+ * La base de datos utiliza url_externo.
  * También se deja url_externa como respaldo.
  */
 $urlExterna = trim(
@@ -168,15 +182,45 @@ $urlExterna = trim(
 );
 
 /*
- * Esta variable se usa para comprobar
- * si el libro tiene un PDF registrado.
+ * Comprobar si existe un PDF registrado.
  */
 $archivoPdf = construirRutaArchivo(
     (string)($libro["archivo_pdf"] ?? ""),
     "pdfs"
 );
 
-$error = $_GET["error"] ?? "";
+/*
+|--------------------------------------------------------------------------
+| Comprobar si ya existe acceso vigente
+|--------------------------------------------------------------------------
+*/
+$tieneAccesoActivo = false;
+
+/*
+ * Solo es necesario revisar acceso para libros
+ * propios que sean de pago.
+ */
+if (
+    $origen === "propio"
+    && $tipoAcceso === "pago"
+) {
+    $facturaModelo = new FacturaModel();
+
+    $tieneAccesoActivo =
+        $facturaModelo->usuarioTieneAccesoActivo(
+            (int)$_SESSION["usuario_id"],
+            (int)$id
+        );
+}
+
+/*
+|--------------------------------------------------------------------------
+| Mensajes recibidos por URL
+|--------------------------------------------------------------------------
+*/
+$error = trim(
+    (string)($_GET["error"] ?? "")
+);
 
 ?>
 
@@ -193,7 +237,9 @@ $error = $_GET["error"] ?? "";
     >
 
     <title>
-        <?php echo escaparDetalle($libro["titulo"]); ?>
+        <?php echo escaparDetalle(
+            $libro["titulo"] ?? "Libro"
+        ); ?>
         - Biblioteca Digital
     </title>
 
@@ -204,7 +250,7 @@ $error = $_GET["error"] ?? "";
 
     <link
         rel="stylesheet"
-        href="assets/css/student.css?v=2"
+        href="assets/css/student.css?v=6"
     >
 
 </head>
@@ -224,6 +270,10 @@ $error = $_GET["error"] ?? "";
             ← Volver al catálogo
         </a>
 
+        <!-- =====================================================
+             MENSAJES
+        ====================================================== -->
+
         <?php if ($error === "acceso"): ?>
 
             <div class="student-access-error">
@@ -239,6 +289,15 @@ $error = $_GET["error"] ?? "";
 
                 Ocurrió un problema al registrar la lectura.
                 Intenta nuevamente.
+
+            </div>
+
+        <?php elseif ($error === "acceso_activo"): ?>
+
+            <div class="student-access-error">
+
+                Ya tienes acceso activo a este libro.
+                Puedes encontrarlo en la sección Mis libros.
 
             </div>
 
@@ -267,7 +326,9 @@ $error = $_GET["error"] ?? "";
                         );
                         ?>"
                         alt="Portada de <?php
-                        echo escaparDetalle($libro["titulo"]);
+                        echo escaparDetalle(
+                            $libro["titulo"] ?? "Libro"
+                        );
                         ?>"
                     >
 
@@ -286,14 +347,18 @@ $error = $_GET["error"] ?? "";
                         );
                         ?>"
                         alt="Portada de <?php
-                        echo escaparDetalle($libro["titulo"]);
+                        echo escaparDetalle(
+                            $libro["titulo"] ?? "Libro"
+                        );
                         ?>"
                     >
 
                 <?php else: ?>
 
                     <div class="detail-placeholder">
+
                         <span>LIBRO</span>
+
                     </div>
 
                 <?php endif; ?>
@@ -318,7 +383,7 @@ $error = $_GET["error"] ?? "";
                 <h1>
 
                     <?php echo escaparDetalle(
-                        $libro["titulo"]
+                        $libro["titulo"] ?? "Libro sin título"
                     ); ?>
 
                 </h1>
@@ -481,9 +546,11 @@ $error = $_GET["error"] ?? "";
                     </h2>
 
                     <p>
+
                         Este libro pertenece a una institución
                         externa. El acceso se realizará desde la
                         página de la biblioteca de origen.
+
                     </p>
 
                     <?php if ($urlExterna !== ""): ?>
@@ -544,18 +611,40 @@ $error = $_GET["error"] ?? "";
 
                     </p>
 
-                    <button
-                        type="button"
-                        class="student-disabled-button"
-                        disabled
-                    >
-                        Obtener acceso
-                    </button>
+                    <!-- Ya tiene acceso -->
 
-                    <small>
-                        El proceso de pago se conectará en el
-                        módulo correspondiente.
-                    </small>
+                    <?php if ($tieneAccesoActivo): ?>
+
+                        <a
+                            href="mis_reservas.php"
+                            class="student-primary-button full"
+                        >
+                            Ir a Mis libros
+                        </a>
+
+                        <small>
+                            Ya tienes acceso activo a este libro.
+                        </small>
+
+                    <!-- Todavía no tiene acceso -->
+
+                    <?php else: ?>
+
+                        <a
+                            href="comprar_libro.php?id=<?php
+                            echo (int)$libro["id"];
+                            ?>"
+                            class="student-primary-button full"
+                        >
+                            Obtener acceso
+                        </a>
+
+                        <small>
+                            El pago será procesado mediante el
+                            módulo de facturación.
+                        </small>
+
+                    <?php endif; ?>
 
                 <!-- Libro propio gratuito -->
 
@@ -568,8 +657,10 @@ $error = $_GET["error"] ?? "";
                     <h2>Lectura permanente</h2>
 
                     <p>
+
                         Puedes consultar este libro sin realizar
                         ningún pago.
+
                     </p>
 
                     <?php if ($archivoPdf !== ""): ?>
@@ -620,8 +711,10 @@ $error = $_GET["error"] ?? "";
                         </button>
 
                         <small>
+
                             Este libro no tiene un archivo PDF.
                             La reserva física se conectará después.
+
                         </small>
 
                     <?php else: ?>

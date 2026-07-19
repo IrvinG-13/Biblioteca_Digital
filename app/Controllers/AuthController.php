@@ -4,42 +4,78 @@ require_once __DIR__ . '/../Models/AuthModel.php';
 require_once __DIR__ . '/../Core/Sanitizer.php';
 require_once __DIR__ . '/../Core/Validator.php';
 require_once __DIR__ . '/../Core/Csrf.php';
+require_once __DIR__ . '/../Core/PasswordHasher.php';
 
 class AuthController
 {
     private AuthModel $modelo;
+    private CryptoInterface $passwordHasher;
 
     public function __construct()
     {
         $this->modelo = new AuthModel();
+
+        /*
+         * PasswordHasher implementa CryptoInterface.
+         * De esta manera, el controlador depende del contrato
+         * y no directamente de password_verify().
+         */
+        $this->passwordHasher = new PasswordHasher();
     }
 
     public function login(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Iniciar sesión
+        |--------------------------------------------------------------------------
+        */
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Validar método HTTP
+        |--------------------------------------------------------------------------
+        */
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: login.php");
             exit;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Validar token CSRF
+        |--------------------------------------------------------------------------
+        */
         $csrf = $_POST["csrf_token"] ?? "";
 
         if (!Csrf::validarToken($csrf)) {
             die("Token CSRF inválido.");
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener y limpiar datos
+        |--------------------------------------------------------------------------
+        */
         $usuario = Sanitizer::limpiarTexto(
             $_POST["usuario"] ?? ""
         );
 
-        $password = $_POST["password"] ?? "";
+        $password = (string)(
+            $_POST["password"] ?? ""
+        );
 
         $ip = $_SERVER["REMOTE_ADDR"]
             ?? "IP no detectada";
 
+        /*
+        |--------------------------------------------------------------------------
+        | Validar formato de los datos
+        |--------------------------------------------------------------------------
+        */
         if (
             !Validator::usuarioValido($usuario)
             || !Validator::passwordValida($password)
@@ -55,6 +91,11 @@ class AuthController
             exit;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Buscar usuario
+        |--------------------------------------------------------------------------
+        */
         $datosUsuario = $this->modelo->buscarUsuario(
             $usuario
         );
@@ -74,6 +115,11 @@ class AuthController
             exit;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Comprobar si está bloqueado
+        |--------------------------------------------------------------------------
+        */
         if ((int)$datosUsuario["bloqueado"] === 1) {
             $this->modelo->registrarLog(
                 (int)$datosUsuario["id"],
@@ -89,12 +135,23 @@ class AuthController
             exit;
         }
 
-        if (
-            password_verify(
+        /*
+        |--------------------------------------------------------------------------
+        | Verificar contraseña mediante CryptoInterface
+        |--------------------------------------------------------------------------
+        */
+        $passwordCorrecta =
+            $this->passwordHasher->verificar(
                 $password,
-                $datosUsuario["password_hash"]
-            )
-        ) {
+                (string)$datosUsuario["password_hash"]
+            );
+
+        if ($passwordCorrecta) {
+            /*
+            |--------------------------------------------------------------------------
+            | Reiniciar intentos y registrar acceso exitoso
+            |--------------------------------------------------------------------------
+            */
             $this->modelo->reiniciarIntentos(
                 (int)$datosUsuario["id"]
             );
@@ -107,20 +164,28 @@ class AuthController
             );
 
             /*
-             * Se genera un nuevo identificador de sesión
-             * después de iniciar sesión correctamente.
+             * Generar un nuevo identificador después
+             * de iniciar sesión correctamente.
              */
             session_regenerate_id(true);
 
-            $rol = (string)($datosUsuario["rol"] ?? "");
+            $rol = (string)(
+                $datosUsuario["rol"] ?? ""
+            );
 
             $_SESSION["usuario_id"] =
                 (int)$datosUsuario["id"];
 
             $_SESSION["usuario"] =
-                $datosUsuario["usuario"];
+                (string)$datosUsuario["usuario"];
 
             $_SESSION["rol"] = $rol;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Redirección según el rol
+            |--------------------------------------------------------------------------
+            */
 
             /*
              * El administrador entra al panel administrativo.
@@ -131,17 +196,18 @@ class AuthController
             }
 
             /*
-             * El estudiante entra directamente al catálogo.
-             * El catálogo será su página principal.
+             * Estudiantes y profesores entran al catálogo.
              */
-            if ($rol === "estudiante" || $rol === "profesor") {
+            if (
+                $rol === "estudiante"
+                || $rol === "profesor"
+            ) {
                 header("Location: catalogo.php");
                 exit;
             }
 
             /*
-             * Si el usuario tiene un rol desconocido,
-             * se elimina la sesión.
+             * Si el rol es desconocido, se elimina la sesión.
              */
             session_unset();
             session_destroy();
@@ -150,6 +216,11 @@ class AuthController
             exit;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Contraseña incorrecta
+        |--------------------------------------------------------------------------
+        */
         $this->modelo->sumarIntentoFallido(
             (int)$datosUsuario["id"],
             (int)$datosUsuario["intentos_fallidos"]
