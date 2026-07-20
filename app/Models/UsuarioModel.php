@@ -12,10 +12,6 @@ class UsuarioModel
         $this->db = $conexion->conectar();
     }
 
-    /**
-     * Lista usuarios con buscador y paginación.
-     * $busqueda filtra por el campo "usuario".
-     */
     public function listar(string $busqueda, int $limite, int $offset): array
     {
         $sql = "SELECT id, usuario, rol, bloqueado, intentos_fallidos, created_at
@@ -33,10 +29,6 @@ class UsuarioModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Cuenta el total de usuarios que coinciden con la búsqueda.
-     * Necesario para calcular el número de páginas.
-     */
     public function contar(string $busqueda): int
     {
         $sql = "SELECT COUNT(*) AS total FROM usuarios WHERE usuario LIKE :busqueda";
@@ -50,7 +42,8 @@ class UsuarioModel
 
     public function obtenerPorId(int $id): ?array
     {
-        $sql = "SELECT id, usuario, rol, bloqueado, intentos_fallidos FROM usuarios WHERE id = :id LIMIT 1";
+        $sql = "SELECT id, usuario, rol, bloqueado, intentos_fallidos, cambio_password
+                FROM usuarios WHERE id = :id LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -59,10 +52,6 @@ class UsuarioModel
         return $resultado ?: null;
     }
 
-    /**
-     * Verifica si el nombre de usuario ya existe.
-     * $excluirId se usa al editar, para no chocar contra sí mismo.
-     */
     public function existeUsuario(string $usuario, ?int $excluirId = null): bool
     {
         $sql = "SELECT id FROM usuarios WHERE usuario = :usuario";
@@ -80,10 +69,15 @@ class UsuarioModel
         return $stmt->fetch() !== false;
     }
 
+    /**
+     * Crea un usuario. Siempre queda marcado con cambio_password = 1,
+     * porque la contraseña inicial la definió el administrador,
+     * no el propio dueño de la cuenta.
+     */
     public function crear(string $usuario, string $passwordHash, string $rol): void
     {
-        $sql = "INSERT INTO usuarios (usuario, password_hash, rol)
-                VALUES (:usuario, :password_hash, :rol)";
+        $sql = "INSERT INTO usuarios (usuario, password_hash, rol, cambio_password)
+                VALUES (:usuario, :password_hash, :rol, 1)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":usuario", $usuario);
@@ -94,13 +88,16 @@ class UsuarioModel
 
     /**
      * Actualiza usuario y rol. La contraseña es opcional:
-     * si viene null, no se toca (para no obligar a reescribirla al editar).
+     * si viene null, no se toca. Si el admin sí escribe una
+     * contraseña nueva, se marca cambio_password = 1 de nuevo,
+     * porque otra vez fue el admin quien la definió.
      */
     public function actualizar(int $id, string $usuario, string $rol, ?string $passwordHash): void
     {
         if ($passwordHash !== null) {
             $sql = "UPDATE usuarios
-                    SET usuario = :usuario, rol = :rol, password_hash = :password_hash
+                    SET usuario = :usuario, rol = :rol,
+                        password_hash = :password_hash, cambio_password = 1
                     WHERE id = :id";
         } else {
             $sql = "UPDATE usuarios
@@ -118,11 +115,6 @@ class UsuarioModel
         $stmt->execute();
     }
 
-    /**
-     * Baja lógica: bloquea o reactiva un usuario.
-     * $bloqueado = 1 (baja/bloquear) o 0 (reactivar).
-     * Al reactivar, reinicia también los intentos fallidos.
-     */
     public function cambiarEstado(int $id, int $bloqueado): void
     {
         $sql = "UPDATE usuarios
@@ -135,15 +127,43 @@ class UsuarioModel
         $stmt->execute();
     }
 
-    /**
-     * Elimina físicamente un usuario.
-     * Seguro porque logs_acceso tiene ON DELETE SET NULL en la FK.
-     */
     public function eliminar(int $id): void
     {
         $sql = "DELETE FROM usuarios WHERE id = :id";
 
         $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    /**
+     * Obtiene el hash de contraseña actual de un usuario,
+     * necesario para validar la "contraseña actual" antes
+     * de permitir el cambio.
+     */
+    public function obtenerHashPassword(int $id): ?string
+    {
+        $sql = "SELECT password_hash FROM usuarios WHERE id = :id LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado["password_hash"] : null;
+    }
+
+    /**
+     * Cambia la contraseña del propio usuario y apaga la bandera
+     * cambio_password, ya que ahora la contraseña la definió él mismo.
+     */
+    public function cambiarPasswordPropia(int $id, string $passwordHash): void
+    {
+        $sql = "UPDATE usuarios
+                SET password_hash = :password_hash, cambio_password = 0
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":password_hash", $passwordHash);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
     }

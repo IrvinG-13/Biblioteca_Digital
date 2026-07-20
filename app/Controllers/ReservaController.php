@@ -159,6 +159,8 @@ class ReservaController
             header('Location: login.php');
             exit;
         }
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
     }
 
     /**

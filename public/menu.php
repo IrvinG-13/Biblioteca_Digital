@@ -349,11 +349,16 @@ $paginaInicio = in_array(
     <!-- Cerrar sesión -->
 
     <div class="sidebar-bottom">
-
+        
+        <a class="<?php echo $paginaActual === 'perfil.php'
+                ? 'active'
+                : ''; ?>"
+            href="perfil.php"
+        >
+            Mi cuenta
+        </a>
         <a href="logout.php">
             Salir
         </a>
-
     </div>
-
 </nav>

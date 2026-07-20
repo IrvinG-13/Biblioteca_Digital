@@ -28,17 +28,17 @@ class UsuarioController
      */
     private function verificarSesionAdmin(): void
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        if (
-            !isset($_SESSION["usuario_id"])
-            || ($_SESSION["rol"] ?? "") !== "admin"
-        ) {
+        if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== "admin") {
             header("Location: login.php");
             exit;
         }
+
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
     }
 
     /**

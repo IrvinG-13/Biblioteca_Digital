@@ -42,6 +42,8 @@ class FacturaAdminController
             header('Location: catalogo.php');
             exit;
         }
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
     }
 
     /**
