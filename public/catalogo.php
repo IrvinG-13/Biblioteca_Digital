@@ -74,8 +74,13 @@ $resumen = $libroModel->obtenerResumenCatalogo();
 
     <main class="student-main">
 
-        <section class="student-hero">
+        <?php if (($_GET["password_actualizada"] ?? "") === "1"): ?>
+            <div class="alert alert-success">
+                Tu contraseña fue actualizada correctamente.
+            </div>
+        <?php endif; ?>
 
+        <section class="student-hero">
             <div>
                 <span class="student-eyebrow">
                     Biblioteca Digital

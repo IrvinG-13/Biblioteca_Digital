@@ -47,6 +47,8 @@ class SolicitudController
             header('Location: login.php');
             exit;
         }
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
     }
     /**
      * Obtiene el perfil académico del solicitante en sesión
@@ -57,6 +59,8 @@ class SolicitudController
     private function obtenerSolicitanteSesion(): array
     {
         $this->verificarSesionSolicitante();
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
         $usuarioId = (int)$_SESSION['usuario_id'];
         $rolActual = $_SESSION['rol'] ?? '';
         if ($rolActual === 'profesor') {

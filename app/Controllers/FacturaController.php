@@ -40,6 +40,8 @@ class FacturaController
             header('Location: dashboard.php');
             exit;
         }
+        require_once __DIR__ . '/../Core/SesionGuard.php';
+        SesionGuard::bloquearSiCambioPasswordPendiente();
     }
 
     /**

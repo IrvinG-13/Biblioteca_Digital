@@ -99,21 +99,23 @@ $nombreUsuario = htmlspecialchars(
 
         <div class="content-card">
 
+            <?php if (($_GET["password_actualizada"] ?? "") === "1"): ?>
+                <div class="alert alert-success">
+                    Tu contraseña fue actualizada correctamente.
+                </div>
+            <?php endif; ?>
+
             <section class="dashboard-hero">
-
                 <h1>Biblioteca Digital</h1>
-
                 <p>
                     Sistema de administración de libros y reservas.
                 </p>
-
                 <p>
                     Bienvenido,
                     <strong>
                         <?php echo $nombreUsuario; ?>
                     </strong>
                 </p>
-
             </section>
 
             <section class="stats-grid">

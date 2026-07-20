@@ -181,12 +181,28 @@ class AuthController
 
             $_SESSION["rol"] = $rol;
 
+            $_SESSION["cambio_password"] =
+                (int)($datosUsuario["cambio_password"] ?? 0);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Forzar cambio de contraseña si corresponde
+            |--------------------------------------------------------------------------
+            | Si la contraseña fue definida por el administrador
+            | (al crear o resetear la cuenta), el usuario debe
+            | cambiarla antes de acceder al resto del sistema.
+            |
+            */
+            if ((int)($datosUsuario["cambio_password"] ?? 0) === 1) {
+                header("Location: perfil.php?forzado=1");
+                exit;
+            }
+
             /*
             |--------------------------------------------------------------------------
             | Redirección según el rol
             |--------------------------------------------------------------------------
             */
-
             /*
              * El administrador entra al panel administrativo.
              */
