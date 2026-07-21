@@ -139,6 +139,10 @@ $estadosFactura = [
         rel="stylesheet"
         href="assets/css/student.css?v=8"
     >
+        <link
+        rel="stylesheet"
+        href="assets/css/admin.css?v=7"
+    >
 
 </head>
 
@@ -146,7 +150,7 @@ $estadosFactura = [
 
 <div class="student-layout">
 
-    <?php include __DIR__ . '/menu_estudiante.php'; ?>
+    <?php include __DIR__ . '/menu.php'; ?>
 
     <main class="student-main">
 

@@ -12,7 +12,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 /*
 |--------------------------------------------------------------------------
 | Validar que exista una sesión
-|--------------------------------------------------------------------------
+|-------------------------------------------a-------------------------------
 */
 if (!isset($_SESSION["usuario_id"])) {
     header("Location: login.php");
@@ -243,15 +243,20 @@ $error = trim(
         - Biblioteca Digital
     </title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css"
-    >
+<link
+    rel="stylesheet"
+    href="assets/css/style.css"
+>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/student.css?v=6"
-    >
+<link
+    rel="stylesheet"
+    href="assets/css/admin.css?v=6"
+>
+
+<link
+    rel="stylesheet"
+    href="assets/css/student.css?v=12"
+>
 
 </head>
 
@@ -259,7 +264,7 @@ $error = trim(
 
 <div class="student-layout">
 
-    <?php include __DIR__ . '/menu_estudiante.php'; ?>
+    <?php include __DIR__ . '/menu.php'; ?>
 
     <main class="student-main">
 
@@ -673,7 +678,6 @@ $error = trim(
                         <form
                             action="leer_libro.php"
                             method="POST"
-                            target="_blank"
                             class="book-read-form"
                         >
 

@@ -1,0 +1,53 @@
+.contenido-visor-pdf {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    padding: 20px;
+
+    background: #f5ebe6;
+}
+
+.encabezado-visor-pdf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+.encabezado-visor-pdf h1 {
+    margin: 0;
+
+    color: #2d2420;
+
+    font-family:
+        "Space Grotesk",
+        "Segoe UI",
+        sans-serif;
+
+    font-size: 1.4rem;
+}
+
+.encabezado-visor-pdf a {
+    padding: 9px 14px;
+
+    background: #8c2d19;
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.visor-pdf {
+    display: block;
+
+    width: 100%;
+    height: calc(100vh - 85px);
+
+    background: #ffffff;
+
+    border: 1px solid #d9c8c0;
+    border-radius: 12px;
+}

@@ -4,18 +4,24 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: login.php");
     exit;
 }
 
-if (!in_array($_SESSION['rol'] ?? '', ['estudiante', 'profesor'], true)) {
-    header('Location: dashboard.php');
+if (
+    !in_array(
+        $_SESSION["rol"] ?? "",
+        ["estudiante", "profesor"],
+        true
+    )
+) {
+    header("Location: dashboard.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: catalogo.php');
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: catalogo.php");
     exit;
 }
 
@@ -23,87 +29,111 @@ require_once __DIR__ . '/../app/Core/Csrf.php';
 require_once __DIR__ . '/../app/Models/LibroModel.php';
 require_once __DIR__ . '/../app/Models/ReservaModel.php';
 
-$csrf = $_POST['csrf_token'] ?? '';
+/*
+|--------------------------------------------------------------------------
+| Validar token CSRF
+|--------------------------------------------------------------------------
+*/
+
+$csrf = $_POST["csrf_token"] ?? "";
 
 if (!Csrf::validarToken($csrf)) {
-    die('Token CSRF inválido.');
+    die("Token CSRF inválido.");
 }
+
+/*
+|--------------------------------------------------------------------------
+| Validar ID del libro
+|--------------------------------------------------------------------------
+*/
 
 $libroId = filter_input(
     INPUT_POST,
-    'libro_id',
+    "libro_id",
     FILTER_VALIDATE_INT
 );
 
 if (!$libroId || $libroId <= 0) {
-    header('Location: catalogo.php');
-    exit;
-}
-
-$libroModel = new LibroModel();
-$reservaModel = new ReservaModel();
-
-$libro = $libroModel->obtenerPorId($libroId);
-
-if (!$libro) {
-    header('Location: catalogo.php');
+    header("Location: catalogo.php");
     exit;
 }
 
 /*
- * Solamente los libros propios y gratuitos
- * pueden registrarse desde esta acción.
- */
-$origen = $libro['origen'] ?? 'propio';
-$tipoAcceso = $libro['tipo_acceso'] ?? 'gratuito';
+|--------------------------------------------------------------------------
+| Obtener libro
+|--------------------------------------------------------------------------
+*/
+
+$libroModel = new LibroModel();
+$reservaModel = new ReservaModel();
+
+$libro = $libroModel->obtenerPorId(
+    (int)$libroId
+);
+
+if (!$libro) {
+    header("Location: catalogo.php");
+    exit;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Validar acceso al libro
+|--------------------------------------------------------------------------
+*/
+
+$origen = $libro["origen"] ?? "propio";
+
+$tipoAcceso =
+    $libro["tipo_acceso"] ?? "gratuito";
+
 $archivoPdf = trim(
-    (string)($libro['archivo_pdf'] ?? '')
+    (string)($libro["archivo_pdf"] ?? "")
 );
 
 if (
-    $origen !== 'propio'
-    || $tipoAcceso !== 'gratuito'
-    || $archivoPdf === ''
+    $origen !== "propio"
+    || $tipoAcceso !== "gratuito"
+    || $archivoPdf === ""
 ) {
     header(
-        'Location: libro_detalle.php?id='
-        . $libroId
-        . '&error=acceso'
+        "Location: libro_detalle.php?id="
+        . (int)$libroId
+        . "&error=acceso"
     );
 
     exit;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Registrar lectura y abrir lector integrado
+|--------------------------------------------------------------------------
+*/
+
 try {
     /*
-     * Se registra el libro en Mis libros.
+     * Registrar el libro en Mis libros.
      */
     $reservaModel->registrarLecturaGratuita(
-        (int)$_SESSION['usuario_id'],
+        (int)$_SESSION["usuario_id"],
         (int)$libroId
     );
 
     /*
-     * basename evita que se utilicen rutas externas
-     * almacenadas accidentalmente en la base de datos.
+     * Abrir el lector integrado dentro de ReadPoint.
      */
-    $nombreArchivo = basename(
-        str_replace('\\', '/', $archivoPdf)
+    header(
+        "Location: ver_pdf.php?libro_id="
+        . (int)$libroId
     );
 
-    $rutaPdf = '../uploads/pdfs/'
-        . rawurlencode($nombreArchivo);
-
-    /*
-     * Después de registrarlo, se abre el PDF.
-     */
-    header('Location: ' . $rutaPdf);
     exit;
 } catch (Throwable $e) {
     header(
-        'Location: libro_detalle.php?id='
-        . $libroId
-        . '&error=lectura'
+        "Location: libro_detalle.php?id="
+        . (int)$libroId
+        . "&error=lectura"
     );
 
     exit;

@@ -22,87 +22,246 @@ $error = $_GET["error"] ?? "";
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Carreras - Biblioteca Digital</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Carreras | ReadPoint</title>
+
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/carreras.css?v=2">
 </head>
+
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
-        <div class="content-card">
 
-            <div class="page-header">
-                <h2>Gestión de Carreras</h2>
-                <a class="btn btn-primary" href="carrera_form.php">+ Nueva Carrera</a>
+        <section class="encabezado-carreras">
+
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
+
+                <h1>Gestión de carreras</h1>
+
+                <p>
+                    Consulta y administra las carreras disponibles.
+                </p>
             </div>
 
-            <?php if ($exito === "1"): ?>
-                <div class="alert alert-success">Operación realizada con éxito.</div>
-            <?php elseif ($error === "tieneestudiantes"): ?>
-                <div class="alert alert-error">No se puede eliminar: hay estudiantes asignados a esta carrera.</div>
-            <?php endif; ?>
+            <a
+                class="boton-nueva-carrera"
+                href="carrera_form.php"
+            >
+                Nueva carrera
+            </a>
 
-            <form class="actions-bar" action="carreras.php" method="GET">
-                <input class="search-input" type="text" name="busqueda" placeholder="Buscar carrera..."
-                       value="<?php echo htmlspecialchars($datos["busqueda"]); ?>">
+        </section>
 
-                <button class="btn btn-secondary" type="submit">Buscar</button>
-                <a class="btn btn-secondary" href="carreras.php">Limpiar</a>
+        <?php if ($exito === "1"): ?>
+
+            <div class="alert alert-success">
+                Operación realizada con éxito.
+            </div>
+
+        <?php elseif ($error === "tieneestudiantes"): ?>
+
+            <div class="alert alert-error">
+                No se puede eliminar: hay estudiantes asignados a esta carrera.
+            </div>
+
+        <?php endif; ?>
+
+        <section class="panel-carreras">
+
+            <form
+                class="barra-busqueda-carreras"
+                action="carreras.php"
+                method="GET"
+            >
+                <input
+                    class="campo-busqueda-carreras"
+                    type="text"
+                    name="busqueda"
+                    placeholder="Buscar carrera..."
+                    value="<?php echo htmlspecialchars(
+                        $datos["busqueda"],
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ); ?>"
+                >
+
+                <button
+                    class="boton-buscar"
+                    type="submit"
+                >
+                    Buscar
+                </button>
+
+                <a
+                    class="boton-limpiar"
+                    href="carreras.php"
+                >
+                    Limpiar
+                </a>
             </form>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+            <div class="contenedor-tabla-carreras">
 
-                <tbody>
-                    <?php if (empty($datos["carreras"])): ?>
+                <table class="tabla-carreras">
+
+                    <thead>
                         <tr>
-                            <td colspan="3">No se encontraron carreras.</td>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
                         </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <?php if (empty($datos["carreras"])): ?>
+
+                        <tr>
+                            <td
+                                class="estado-vacio-tabla"
+                                colspan="3"
+                            >
+                                No se encontraron carreras.
+                            </td>
+                        </tr>
+
                     <?php else: ?>
+
                         <?php foreach ($datos["carreras"] as $c): ?>
+
                             <tr>
-                                <td><?php echo htmlspecialchars($c["id"]); ?></td>
-                                <td><?php echo htmlspecialchars($c["nombre"]); ?></td>
+
                                 <td>
-                                    <a class="btn btn-link" href="carrera_form.php?id=<?php echo $c["id"]; ?>">Editar</a>
-
-                                    <form action="carrera_eliminar.php" method="POST" style="display:inline;"
-                                          onsubmit="return confirm('¿Seguro que deseas eliminar esta carrera?');">
-                                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
-                                        <input type="hidden" name="id" value="<?php echo $c["id"]; ?>">
-                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                    </form>
+                                    <strong>
+                                        <?php echo htmlspecialchars(
+                                            $c["id"],
+                                            ENT_QUOTES,
+                                            "UTF-8"
+                                        ); ?>
+                                    </strong>
                                 </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
 
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $datos["totalPaginas"]; $i++): ?>
-                    <?php if ($i === $datos["paginaActual"]): ?>
-                        <strong><?php echo $i; ?></strong>
-                    <?php else: ?>
-                        <a href="carreras.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode($datos["busqueda"]); ?>">
-                            <?php echo $i; ?>
-                        </a>
+                                <td>
+                                    <span class="nombre-carrera">
+                                        <?php echo htmlspecialchars(
+                                            $c["nombre"],
+                                            ENT_QUOTES,
+                                            "UTF-8"
+                                        ); ?>
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="acciones-carrera">
+
+                                        <a
+                                            class="accion-editar"
+                                            href="carrera_form.php?id=<?php echo urlencode(
+                                                $c["id"]
+                                            ); ?>"
+                                        >
+                                            Editar
+                                        </a>
+
+                                        <form
+                                            action="carrera_eliminar.php"
+                                            method="POST"
+                                            onsubmit="return confirm(
+                                                '¿Seguro que deseas eliminar esta carrera?'
+                                            );"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="csrf_token"
+                                                value="<?php echo htmlspecialchars(
+                                                    $token,
+                                                    ENT_QUOTES,
+                                                    "UTF-8"
+                                                ); ?>"
+                                            >
+
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?php echo htmlspecialchars(
+                                                    $c["id"],
+                                                    ENT_QUOTES,
+                                                    "UTF-8"
+                                                ); ?>"
+                                            >
+
+                                            <button
+                                                class="accion-eliminar"
+                                                type="submit"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
                     <?php endif; ?>
-                <?php endfor; ?>
+
+                    </tbody>
+
+                </table>
+
             </div>
 
-        </div>
+            <nav class="paginacion-carreras">
+
+                <?php for (
+                    $i = 1;
+                    $i <= $datos["totalPaginas"];
+                    $i++
+                ): ?>
+
+                    <?php if ($i === $datos["paginaActual"]): ?>
+
+                        <span class="pagina-actual">
+                            <?php echo $i; ?>
+                        </span>
+
+                    <?php else: ?>
+
+                        <a href="carreras.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode(
+                            $datos["busqueda"]
+                        ); ?>">
+                            <?php echo $i; ?>
+                        </a>
+
+                    <?php endif; ?>
+
+                <?php endfor; ?>
+
+            </nav>
+
+        </section>
+
     </main>
 
 </div>

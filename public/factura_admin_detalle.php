@@ -96,6 +96,7 @@ $metodo = $factura['metodo_pago']
         rel="stylesheet"
         href="assets/css/style.css"
     >
+    
 
     <style>
 

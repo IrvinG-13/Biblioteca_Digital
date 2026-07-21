@@ -1,0 +1,454 @@
+/* =========================================================
+   SOLICITUDES DE LIBROS
+========================================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    background: #f5ebe6;
+}
+
+/* Encabezado */
+
+.admin-requests-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-request-eyebrow {
+    color: #8c2d19;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-requests-header h1 {
+    margin: 6px 0 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 2rem;
+}
+
+.admin-requests-header p {
+    max-width: 700px;
+    margin: 0;
+    color: #746761;
+    line-height: 1.6;
+}
+
+.admin-request-counter {
+    display: grid;
+    min-width: 110px;
+    padding: 15px 18px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.admin-request-counter strong {
+    color: #8c2d19;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 1.7rem;
+}
+
+.admin-request-counter span {
+    color: #81736d;
+    font-size: 0.75rem;
+}
+
+/* Alertas */
+
+.alert {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.alert-success {
+    background: #e4f4e8;
+    color: #23613a;
+    border: 1px solid #badfc4;
+}
+
+.alert-error {
+    background: #f8e3df;
+    color: #8c2d19;
+    border: 1px solid #edc1b8;
+}
+
+/* Filtros */
+
+.admin-request-filters {
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(180px, 1fr)
+        auto;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 15px;
+}
+
+.admin-request-filters .form-group,
+.admin-request-response-form .form-group {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+}
+
+.admin-request-filters label,
+.admin-request-response-form label {
+    color: #5f514b;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.admin-request-filters select,
+.admin-request-response-form select,
+.admin-request-response-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font: inherit;
+    outline: none;
+}
+
+.admin-request-filters select,
+.admin-request-response-form select {
+    min-height: 43px;
+}
+
+.admin-request-response-form textarea {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.admin-request-filters select:focus,
+.admin-request-response-form select:focus,
+.admin-request-response-form textarea:focus {
+    border-color: #8c2d19;
+    box-shadow: 0 0 0 3px rgba(140, 45, 25, 0.12);
+}
+
+.admin-request-reset,
+.admin-request-filter-button {
+    display: grid;
+    place-items: center;
+    min-height: 43px;
+    padding: 10px 15px;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.admin-request-reset {
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+}
+
+.admin-request-filter-button {
+    background: #2d2420;
+    color: #ffffff;
+    border: 0;
+}
+
+/* Estado vacío */
+
+.admin-request-empty {
+    padding: 50px 24px;
+    background: #ffffff;
+    border: 1px dashed #d8c6bd;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.admin-request-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 15px;
+    background: #e4f4e8;
+    color: #23613a;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.admin-request-empty h2 {
+    margin: 0 0 8px;
+    color: #2d2420;
+}
+
+.admin-request-empty p {
+    margin: 0;
+    color: #81736d;
+}
+
+/* Lista */
+
+.admin-request-list {
+    display: grid;
+    gap: 20px;
+}
+
+.admin-request-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(45, 36, 32, 0.05);
+}
+
+.admin-request-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 24px;
+    background: #faf6f3;
+    border-bottom: 1px solid #eadbd4;
+}
+
+.admin-request-id {
+    color: #8c2d19;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.admin-request-card-header h2 {
+    margin: 7px 0 11px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 1.25rem;
+}
+
+.admin-request-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.admin-request-category,
+.admin-request-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.admin-request-category {
+    background: #f0e6e1;
+    color: #5d4c45;
+}
+
+.admin-request-status.pendiente {
+    background: #fff0cf;
+    color: #775508;
+}
+
+.admin-request-status.aprobada {
+    background: #e4f4e8;
+    color: #23613a;
+}
+
+.admin-request-status.rechazada {
+    background: #f8e3df;
+    color: #8c2d19;
+}
+
+.admin-request-date {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.admin-request-date span,
+.admin-request-date strong {
+    display: block;
+}
+
+.admin-request-date span {
+    margin-bottom: 4px;
+    color: #93857f;
+    font-size: 0.7rem;
+}
+
+.admin-request-date strong {
+    color: #493d38;
+    font-size: 0.82rem;
+}
+
+/* Contenido de la solicitud */
+
+.admin-request-card-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+    gap: 24px;
+    padding: 24px;
+}
+
+.admin-request-information {
+    display: grid;
+    gap: 16px;
+}
+
+.admin-request-student,
+.admin-request-comment,
+.admin-request-last-response {
+    padding: 17px;
+    background: #faf6f3;
+    border: 1px solid #eee3de;
+    border-radius: 12px;
+}
+
+.admin-request-information h3 {
+    margin: 0 0 10px;
+    color: #8c2d19;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+}
+
+.admin-request-student > strong {
+    display: block;
+    margin-bottom: 9px;
+    color: #2d2420;
+}
+
+.admin-request-student p,
+.admin-request-comment p,
+.admin-request-last-response p {
+    margin: 6px 0 0;
+    color: #665852;
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.admin-request-student p span {
+    font-weight: 700;
+}
+
+.admin-muted-text {
+    color: #93857f !important;
+    font-style: italic;
+}
+
+/* Formulario de respuesta */
+
+.admin-request-response-form {
+    display: grid;
+    align-content: start;
+    gap: 18px;
+    padding: 20px;
+    background: #fdf9f7;
+    border: 1px solid #eadbd4;
+    border-radius: 13px;
+}
+
+.admin-request-response-form small {
+    color: #93857f;
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+.admin-request-save {
+    min-height: 43px;
+    padding: 11px 16px;
+    background: #8c2d19;
+    color: #ffffff;
+    border: 0;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-request-save:hover {
+    background: #6f2114;
+}
+
+/* Paginación */
+
+.admin-request-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-request-pagination a {
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #dfd0c9;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.82rem;
+}
+
+.admin-request-pagination a.active {
+    background: #8c2d19;
+    color: #ffffff;
+    border-color: #8c2d19;
+    font-weight: 700;
+}
+
+/* Responsive */
+
+@media (max-width: 950px) {
+    .admin-request-card-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .admin-requests-header,
+    .admin-request-card-header {
+        flex-direction: column;
+    }
+
+    .admin-request-counter {
+        width: 100%;
+    }
+
+    .admin-request-date {
+        text-align: left;
+    }
+
+    .admin-request-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-request-card-body,
+    .admin-request-card-header {
+        padding: 18px;
+    }
+}

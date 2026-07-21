@@ -1,0 +1,313 @@
+/* =========================================================
+   REPORTE DE RESERVAS
+========================================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    background: #f5ebe6;
+}
+
+/* Encabezado */
+
+.encabezado-reporte-reservas {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.etiqueta-pagina {
+    color: #8c2d19;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.encabezado-reporte-reservas h1 {
+    margin: 6px 0 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 2rem;
+}
+
+.encabezado-reporte-reservas p {
+    margin: 0;
+    color: #746761;
+    line-height: 1.6;
+}
+
+.boton-exportar-reservas {
+    flex-shrink: 0;
+    padding: 12px 18px;
+    background: #8c2d19;
+    color: #ffffff;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.boton-exportar-reservas:hover {
+    background: #6f2114;
+}
+
+/* Filtros */
+
+.filtros-reporte-reservas {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(160px, 1fr))
+        auto
+        auto;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+}
+
+.grupo-filtro-reservas {
+    display: grid;
+    gap: 7px;
+}
+
+.grupo-filtro-reservas label {
+    color: #5f514b;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.grupo-filtro-reservas input,
+.grupo-filtro-reservas select {
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font: inherit;
+    outline: none;
+}
+
+.grupo-filtro-reservas input:focus,
+.grupo-filtro-reservas select:focus {
+    border-color: #8c2d19;
+    box-shadow: 0 0 0 3px rgba(140, 45, 25, 0.12);
+}
+
+.boton-filtrar-reservas,
+.boton-limpiar-reservas {
+    min-height: 43px;
+    padding: 11px 16px;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-filtrar-reservas {
+    border: 0;
+    background: #2d2420;
+    color: #ffffff;
+}
+
+.boton-filtrar-reservas:hover {
+    background: #1f1815;
+}
+
+.boton-limpiar-reservas {
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+}
+
+.boton-limpiar-reservas:hover {
+    background: #faf6f3;
+}
+
+/* Resumen */
+
+.resumen-reporte-reservas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.tarjeta-resumen-reservas {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 15px;
+    box-shadow: 0 8px 22px rgba(45, 36, 32, 0.05);
+}
+
+.tarjeta-resumen-reservas span {
+    display: block;
+    color: #746761;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.tarjeta-resumen-reservas strong {
+    display: block;
+    margin-top: 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 1.9rem;
+}
+
+/* Panel y tabla */
+
+.panel-reporte-reservas {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(45, 36, 32, 0.06);
+}
+
+.contenedor-tabla-reservas {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-reporte-reservas {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+}
+
+.tabla-reporte-reservas th,
+.tabla-reporte-reservas td {
+    padding: 13px 14px;
+    border-bottom: 1px solid #eee3de;
+    text-align: left;
+    vertical-align: top;
+}
+
+.tabla-reporte-reservas th {
+    background: #2d2420;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tabla-reporte-reservas td {
+    color: #493d38;
+    font-size: 0.83rem;
+}
+
+.tabla-reporte-reservas tbody tr:hover {
+    background: #fdf9f7;
+}
+
+.nombre-estudiante-reserva,
+.titulo-libro-reserva {
+    display: block;
+    color: #2d2420;
+}
+
+.detalle-reserva {
+    display: block;
+    margin-top: 4px;
+    color: #81736d;
+    font-size: 0.72rem;
+}
+
+.etiqueta-categoria-reserva,
+.tipo-acceso-reserva,
+.estado-reserva {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.etiqueta-categoria-reserva,
+.tipo-acceso-reserva {
+    background: #f0e6e1;
+    color: #5d4c45;
+}
+
+/* Estados */
+
+.estado-reserva.reservado {
+    background: #e8edf8;
+    color: #35558a;
+}
+
+.estado-reserva.en_prestamo {
+    background: #e4f4e8;
+    color: #23613a;
+}
+
+.estado-reserva.por_vencer {
+    background: #fff0cf;
+    color: #775508;
+}
+
+.estado-reserva.devuelto {
+    background: #f0e6e1;
+    color: #5d4c45;
+}
+
+.estado-reserva.cancelado {
+    background: #f8e3df;
+    color: #8c2d19;
+}
+
+/* Estado vacío */
+
+.estado-vacio-reservas {
+    padding: 45px 20px;
+    color: #81736d;
+    text-align: center;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+    .filtros-reporte-reservas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .resumen-reporte-reservas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .encabezado-reporte-reservas {
+        flex-direction: column;
+    }
+
+    .boton-exportar-reservas {
+        width: 100%;
+        text-align: center;
+    }
+
+    .filtros-reporte-reservas,
+    .resumen-reporte-reservas {
+        grid-template-columns: 1fr;
+    }
+}

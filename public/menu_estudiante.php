@@ -1,107 +1,160 @@
 <?php
 
 $paginaActual = basename(
-    $_SERVER['PHP_SELF']
+    $_SERVER["PHP_SELF"]
 );
+
+$nombreUsuario = htmlspecialchars(
+    $_SESSION["usuario"] ?? "Usuario",
+    ENT_QUOTES,
+    "UTF-8"
+);
+
+$rolUsuario = ($_SESSION["rol"] ?? "") === "profesor"
+    ? "Profesor"
+    : "Estudiante";
 
 ?>
 
 <aside class="student-sidebar">
 
-    <div>
+    <div class="student-sidebar-top">
 
         <a
             href="catalogo.php"
             class="student-brand"
         >
 
-            <span class="student-brand-icon">
-                B
+            <span
+                class="student-brand-icon"
+                aria-hidden="true"
+            >
+                RP
             </span>
 
-            <div>
+            <div class="student-brand-text">
 
-                <strong>Biblioteca Digital</strong>
+                <strong>ReadPoint</strong>
 
-                <small>Área estudiantil</small>
+                <small>
+                    Biblioteca digital
+                </small>
 
             </div>
 
         </a>
 
-        <nav class="student-nav">
-
-            <!-- Inicio -->
+        <nav
+            class="student-nav"
+            aria-label="Navegación principal"
+        >
 
             <a
                 href="catalogo.php"
                 class="<?php echo in_array(
                     $paginaActual,
                     [
-                        'catalogo.php',
-                        'libro_detalle.php',
-                        'comprar_libro.php'
+                        "catalogo.php",
+                        "libro_detalle.php",
+                        "comprar_libro.php"
                     ],
                     true
-                ) ? 'active' : ''; ?>"
+                )
+                    ? "active"
+                    : ""; ?>"
             >
-                <span class="student-nav-icon">
+
+                <span
+                    class="student-nav-icon"
+                    aria-hidden="true"
+                >
                     ⌂
                 </span>
 
-                Inicio
-            </a>
+                <span>Catálogo</span>
 
-            <!-- Mis libros -->
+            </a>
 
             <a
                 href="mis_reservas.php"
                 class="<?php echo $paginaActual
-                    === 'mis_reservas.php'
-                    ? 'active'
-                    : ''; ?>"
+                    === "mis_reservas.php"
+                    ? "active"
+                    : ""; ?>"
             >
-                <span class="student-nav-icon">
+
+                <span
+                    class="student-nav-icon"
+                    aria-hidden="true"
+                >
                     ▣
                 </span>
 
-                Mis libros
-            </a>
+                <span>Mis libros</span>
 
-            <!-- Mis facturas -->
+            </a>
 
             <a
                 href="mis_facturas.php"
                 class="<?php echo in_array(
                     $paginaActual,
                     [
-                        'mis_facturas.php',
-                        'factura_detalle.php'
+                        "mis_facturas.php",
+                        "factura_detalle.php"
                     ],
                     true
-                ) ? 'active' : ''; ?>"
+                )
+                    ? "active"
+                    : ""; ?>"
             >
-                <span class="student-nav-icon">
+
+                <span
+                    class="student-nav-icon"
+                    aria-hidden="true"
+                >
                     ▤
                 </span>
 
-                Mis facturas
-            </a>
+                <span>Mis facturas</span>
 
-            <!-- Mis solicitudes -->
+            </a>
 
             <a
                 href="mis_solicitudes.php"
                 class="<?php echo $paginaActual
-                    === 'mis_solicitudes.php'
-                    ? 'active'
-                    : ''; ?>"
+                    === "mis_solicitudes.php"
+                    ? "active"
+                    : ""; ?>"
             >
-                <span class="student-nav-icon">
+
+                <span
+                    class="student-nav-icon"
+                    aria-hidden="true"
+                >
                     ＋
                 </span>
 
-                Mis solicitudes
+                <span>Mis solicitudes</span>
+
+            </a>
+
+            <a
+                href="perfil.php"
+                class="<?php echo $paginaActual
+                    === "perfil.php"
+                    ? "active"
+                    : ""; ?>"
+            >
+
+                <span
+                    class="student-nav-icon"
+                    aria-hidden="true"
+                >
+                    ◎
+                </span>
+
+                <span>Mi perfil</span>
+
             </a>
 
         </nav>
@@ -110,24 +163,41 @@ $paginaActual = basename(
 
     <div class="student-sidebar-footer">
 
-        <span class="student-sidebar-user">
+        <div class="student-sidebar-profile">
 
-            <?php echo htmlspecialchars(
-                $_SESSION['usuario'] ?? 'Estudiante',
-                ENT_QUOTES,
-                'UTF-8'
-            ); ?>
+            <span
+                class="student-profile-avatar"
+                aria-hidden="true"
+            >
+                <?php echo strtoupper(
+                    substr($nombreUsuario, 0, 1)
+                ); ?>
+            </span>
 
-        </span>
+            <div class="student-profile-information">
+
+                <strong>
+                    <?php echo $nombreUsuario; ?>
+                </strong>
+
+                <small>
+                    <?php echo $rolUsuario; ?>
+                </small>
+
+            </div>
+
+        </div>
 
         <a
             href="logout.php"
             class="student-logout"
         >
 
-            <span>↪</span>
+            <span aria-hidden="true">
+                ↪
+            </span>
 
-            Cerrar sesión
+            <span>Cerrar sesión</span>
 
         </a>
 

@@ -22,115 +22,320 @@ $error = $_GET["error"] ?? "";
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Usuarios - Biblioteca Digital</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Usuarios | ReadPoint</title>
+
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/usuarios.css?v=1">
 </head>
+
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
-        <div class="content-card">
 
-            <div class="page-header">
-                <h2>Gestión de Usuarios</h2>
-                <a class="btn btn-primary" href="usuario_form.php">+ Nuevo Usuario</a>
+        <section class="encabezado-usuarios">
+
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
+
+                <h1>Gestión de usuarios</h1>
+
+                <p>
+                    Consulta, edita, bloquea o elimina los usuarios registrados.
+                </p>
             </div>
 
-            <?php if ($exito === "1"): ?>
-                <div class="alert alert-success">Operación realizada con éxito.</div>
-            <?php elseif ($error === "automodificacion"): ?>
-                <div class="alert alert-error">No puedes bloquear ni eliminar tu propio usuario.</div>
-            <?php endif; ?>
+            <a
+                class="boton-nuevo-usuario"
+                href="usuario_form.php"
+            >
+                Nuevo usuario
+            </a>
 
-            <form class="actions-bar" action="usuarios.php" method="GET">
-                <input class="search-input" type="text" name="busqueda" placeholder="Buscar usuario..."
-                       value="<?php echo htmlspecialchars($datos["busqueda"]); ?>">
+        </section>
 
-                <button class="btn btn-secondary" type="submit">Buscar</button>
-                <a class="btn btn-secondary" href="usuarios.php">Limpiar</a>
+        <?php if ($exito === "1"): ?>
+            <div class="alert alert-success">
+                Operación realizada con éxito.
+            </div>
+        <?php elseif ($error === "automodificacion"): ?>
+            <div class="alert alert-error">
+                No puedes bloquear ni eliminar tu propio usuario.
+            </div>
+        <?php endif; ?>
+
+        <section class="panel-usuarios">
+
+            <form
+                class="barra-busqueda-usuarios"
+                action="usuarios.php"
+                method="GET"
+            >
+                <input
+                    class="campo-busqueda-usuarios"
+                    type="text"
+                    name="busqueda"
+                    placeholder="Buscar por nombre de usuario..."
+                    value="<?php echo htmlspecialchars(
+                        $datos["busqueda"],
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ); ?>"
+                >
+
+                <button
+                    class="boton-buscar"
+                    type="submit"
+                >
+                    Buscar
+                </button>
+
+                <a
+                    class="boton-limpiar"
+                    href="usuarios.php"
+                >
+                    Limpiar
+                </a>
             </form>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Intentos Fallidos</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+            <div class="contenedor-tabla-usuarios">
 
-                <tbody>
-                    <?php if (empty($datos["usuarios"])): ?>
+                <table class="tabla-usuarios">
+
+                    <thead>
                         <tr>
-                            <td colspan="6">No se encontraron usuarios.</td>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Intentos fallidos</th>
+                            <th>Acciones</th>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($datos["usuarios"] as $u): ?>
+                    </thead>
+
+                    <tbody>
+
+                        <?php if (empty($datos["usuarios"])): ?>
+
                             <tr>
-                                <td><?php echo htmlspecialchars($u["id"]); ?></td>
-                                <td><?php echo htmlspecialchars($u["usuario"]); ?></td>
-                                <td><?php echo htmlspecialchars($u["rol"]); ?></td>
-
-                                <td>
-                                    <?php if ((int)$u["bloqueado"] === 1): ?>
-                                        <span class="badge badge-red">Bloqueado</span>
-                                    <?php else: ?>
-                                        <span class="badge badge-green">Activo</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <td><?php echo htmlspecialchars($u["intentos_fallidos"]); ?></td>
-
-                                <td>
-                                    <a class="btn btn-link" href="usuario_form.php?id=<?php echo $u["id"]; ?>">Editar</a>
-
-                                    <form action="usuario_estado.php" method="POST" style="display:inline;">
-                                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
-                                        <input type="hidden" name="id" value="<?php echo $u["id"]; ?>">
-
-                                        <?php if ((int)$u["bloqueado"] === 1): ?>
-                                            <input type="hidden" name="bloqueado" value="0">
-                                            <button class="btn btn-link" type="submit">Reactivar</button>
-                                        <?php else: ?>
-                                            <input type="hidden" name="bloqueado" value="1">
-                                            <button class="btn btn-link" type="submit">Bloquear</button>
-                                        <?php endif; ?>
-                                    </form>
-
-                                    <form action="usuario_eliminar.php" method="POST" style="display:inline;"
-                                          onsubmit="return confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.');">
-                                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
-                                        <input type="hidden" name="id" value="<?php echo $u["id"]; ?>">
-                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                    </form>
+                                <td
+                                    class="estado-vacio-tabla"
+                                    colspan="6"
+                                >
+                                    No se encontraron usuarios.
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
 
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $datos["totalPaginas"]; $i++): ?>
-                    <?php if ($i === $datos["paginaActual"]): ?>
-                        <strong><?php echo $i; ?></strong>
-                    <?php else: ?>
-                        <a href="usuarios.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode($datos["busqueda"]); ?>">
-                            <?php echo $i; ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endfor; ?>
+                        <?php else: ?>
+
+                            <?php foreach ($datos["usuarios"] as $u): ?>
+
+                                <tr>
+
+                                    <td>
+                                        <?php echo htmlspecialchars($u["id"]); ?>
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            <?php echo htmlspecialchars($u["usuario"]); ?>
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="etiqueta-rol">
+                                            <?php echo htmlspecialchars($u["rol"]); ?>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <?php if ((int)$u["bloqueado"] === 1): ?>
+
+                                            <span class="estado-usuario estado-bloqueado">
+                                                Bloqueado
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="estado-usuario estado-activo">
+                                                Activo
+                                            </span>
+
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <td>
+                                        <?php echo htmlspecialchars(
+                                            $u["intentos_fallidos"]
+                                        ); ?>
+                                    </td>
+
+                                    <td>
+
+                                        <div class="acciones-usuario">
+
+                                            <a
+                                                class="accion-editar"
+                                                href="usuario_form.php?id=<?php echo urlencode(
+                                                    $u["id"]
+                                                ); ?>"
+                                            >
+                                                Editar
+                                            </a>
+
+                                            <form
+                                                action="usuario_estado.php"
+                                                method="POST"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="csrf_token"
+                                                    value="<?php echo htmlspecialchars(
+                                                        $token,
+                                                        ENT_QUOTES,
+                                                        "UTF-8"
+                                                    ); ?>"
+                                                >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value="<?php echo htmlspecialchars(
+                                                        $u["id"],
+                                                        ENT_QUOTES,
+                                                        "UTF-8"
+                                                    ); ?>"
+                                                >
+
+                                                <?php if ((int)$u["bloqueado"] === 1): ?>
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="bloqueado"
+                                                        value="0"
+                                                    >
+
+                                                    <button
+                                                        class="accion-estado"
+                                                        type="submit"
+                                                    >
+                                                        Reactivar
+                                                    </button>
+
+                                                <?php else: ?>
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="bloqueado"
+                                                        value="1"
+                                                    >
+
+                                                    <button
+                                                        class="accion-estado"
+                                                        type="submit"
+                                                    >
+                                                        Bloquear
+                                                    </button>
+
+                                                <?php endif; ?>
+                                            </form>
+
+                                            <form
+                                                action="usuario_eliminar.php"
+                                                method="POST"
+                                                onsubmit="return confirm(
+                                                    '¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.'
+                                                );"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="csrf_token"
+                                                    value="<?php echo htmlspecialchars(
+                                                        $token,
+                                                        ENT_QUOTES,
+                                                        "UTF-8"
+                                                    ); ?>"
+                                                >
+
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value="<?php echo htmlspecialchars(
+                                                        $u["id"],
+                                                        ENT_QUOTES,
+                                                        "UTF-8"
+                                                    ); ?>"
+                                                >
+
+                                                <button
+                                                    class="accion-eliminar"
+                                                    type="submit"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
             </div>
 
-        </div>
+            <nav class="paginacion-usuarios">
+
+                <?php for (
+                    $i = 1;
+                    $i <= $datos["totalPaginas"];
+                    $i++
+                ): ?>
+
+                    <?php if ($i === $datos["paginaActual"]): ?>
+
+                        <span class="pagina-actual">
+                            <?php echo $i; ?>
+                        </span>
+
+                    <?php else: ?>
+
+                        <a href="usuarios.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode(
+                            $datos["busqueda"]
+                        ); ?>">
+                            <?php echo $i; ?>
+                        </a>
+
+                    <?php endif; ?>
+
+                <?php endfor; ?>
+
+            </nav>
+
+        </section>
+
     </main>
 
 </div>

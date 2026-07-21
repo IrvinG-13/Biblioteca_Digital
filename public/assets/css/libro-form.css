@@ -1,0 +1,377 @@
+/* =========================================================
+   FORMULARIO DE LIBRO
+========================================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    background: #f5ebe6;
+}
+
+/* Encabezado principal */
+
+.encabezado-formulario-libro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.etiqueta-pagina {
+    color: #8c2d19;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.encabezado-formulario-libro h1 {
+    margin: 6px 0 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 2rem;
+}
+
+.encabezado-formulario-libro p {
+    max-width: 720px;
+    margin: 0;
+    color: #746761;
+    line-height: 1.6;
+}
+
+.boton-volver-libros {
+    flex-shrink: 0;
+    padding: 11px 16px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.boton-volver-libros:hover {
+    background: #faf6f3;
+}
+
+/* Alertas */
+
+.alert {
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.alert-error {
+    margin-bottom: 20px;
+    background: #f8e3df;
+    color: #8c2d19;
+    border: 1px solid #edc1b8;
+}
+
+.alert-success {
+    background: #e4f4e8;
+    color: #23613a;
+    border: 1px solid #badfc4;
+}
+
+/* Formulario */
+
+.formulario-libro {
+    display: grid;
+    gap: 20px;
+    max-width: 1080px;
+}
+
+.panel-formulario-libro {
+    display: grid;
+    gap: 22px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(45, 36, 32, 0.05);
+}
+
+.encabezado-seccion-libro {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eee3de;
+}
+
+.numero-seccion-libro {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    background: #8c2d19;
+    color: #ffffff;
+    border-radius: 10px;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.encabezado-seccion-libro h2 {
+    margin: 0 0 5px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 1.15rem;
+}
+
+.encabezado-seccion-libro p {
+    margin: 0;
+    color: #81736d;
+    font-size: 0.82rem;
+}
+
+/* Filas y campos */
+
+.fila-formulario-libro {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.grupo-campo-libro {
+    display: grid;
+    gap: 8px;
+}
+
+.grupo-campo-libro label {
+    color: #493d38;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.grupo-campo-libro input,
+.grupo-campo-libro select,
+.grupo-campo-libro textarea {
+    width: 100%;
+    padding: 11px 13px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font: inherit;
+    outline: none;
+}
+
+.grupo-campo-libro input,
+.grupo-campo-libro select {
+    min-height: 45px;
+}
+
+.grupo-campo-libro textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.5;
+}
+
+.grupo-campo-libro input[type="file"] {
+    min-height: initial;
+    padding: 10px;
+    background: #faf6f3;
+    cursor: pointer;
+}
+
+.grupo-campo-libro input::placeholder,
+.grupo-campo-libro textarea::placeholder {
+    color: #9a8d87;
+}
+
+.grupo-campo-libro input:focus,
+.grupo-campo-libro select:focus,
+.grupo-campo-libro textarea:focus {
+    border-color: #8c2d19;
+    box-shadow: 0 0 0 3px rgba(140, 45, 25, 0.12);
+}
+
+.grupo-campo-libro input:disabled,
+.grupo-campo-libro select:disabled {
+    background: #f2ece8;
+    color: #998b84;
+    cursor: not-allowed;
+}
+
+.grupo-campo-libro small {
+    color: #8b7d77;
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+
+/* Secciones condicionales */
+
+.seccion-condicional-libro {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    background: #faf6f3;
+    border: 1px solid #eee3de;
+    border-radius: 12px;
+}
+
+.subpanel-acceso-libro {
+    display: grid;
+    gap: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #eadbd4;
+}
+
+.campos-acceso-pago {
+    display: grid;
+    gap: 16px;
+}
+
+/* Archivos */
+
+.fila-archivos-libro {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.grupo-archivo-libro {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+}
+
+.archivo-actual-libro {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    background: #faf6f3;
+    border: 1px solid #eee3de;
+    border-radius: 11px;
+}
+
+.archivo-actual-libro p {
+    margin: 0;
+    color: #493d38;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.archivo-actual-libro small {
+    color: #8b7d77;
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+.portada-actual-libro img {
+    display: block;
+    width: 130px;
+    height: 180px;
+    object-fit: cover;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    box-shadow: 0 5px 14px rgba(45, 36, 32, 0.12);
+}
+
+.boton-ver-pdf-libro {
+    display: inline-grid;
+    place-items: center;
+    justify-self: start;
+    min-height: 40px;
+    padding: 9px 14px;
+    background: #2d2420;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.boton-ver-pdf-libro:hover {
+    background: #8c2d19;
+}
+
+/* Acciones */
+
+.acciones-formulario-libro {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 14px;
+}
+
+.boton-cancelar-libro,
+.boton-guardar-libro {
+    min-height: 44px;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-cancelar-libro {
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+}
+
+.boton-cancelar-libro:hover {
+    background: #faf6f3;
+}
+
+.boton-guardar-libro {
+    background: #8c2d19;
+    color: #ffffff;
+    border: 0;
+}
+
+.boton-guardar-libro:hover {
+    background: #6f2114;
+}
+
+/* Responsive */
+
+@media (max-width: 850px) {
+    .fila-formulario-libro,
+    .fila-archivos-libro {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .encabezado-formulario-libro {
+        flex-direction: column;
+    }
+
+    .boton-volver-libros {
+        width: 100%;
+        text-align: center;
+    }
+
+    .panel-formulario-libro {
+        padding: 20px;
+    }
+
+    .acciones-formulario-libro {
+        flex-direction: column-reverse;
+    }
+
+    .boton-cancelar-libro,
+    .boton-guardar-libro {
+        width: 100%;
+        text-align: center;
+    }
+}

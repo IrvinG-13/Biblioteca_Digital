@@ -1,24 +1,123 @@
 /* =========================================================
-   ÁREA ESTUDIANTIL - BIBLIOTECA DIGITAL
+   READPOINT - ÁREA DE ESTUDIANTES Y PROFESORES
 ========================================================= */
 
-* {
+:root {
+    --color-crema: #f5ebe6;
+    --color-crema-claro: #fdf9f7;
+    --color-blanco: #ffffff;
+
+    --color-marron: #2d2420;
+    --color-marron-oscuro: #211a17;
+    --color-marron-claro: #5f514b;
+
+    --color-rojo: #8c2d19;
+    --color-rojo-oscuro: #6e2113;
+    --color-rojo-claro: #f5dfd9;
+
+    --color-texto: #2d2420;
+    --color-texto-secundario: #746761;
+    --color-texto-suave: #93857f;
+
+    --color-borde: #eadbd4;
+    --color-borde-fuerte: #d9c8c0;
+
+    --color-verde: #287044;
+    --color-verde-fondo: #e4f4e8;
+
+    --color-amarillo: #946118;
+    --color-amarillo-fondo: #fff0d3;
+
+    --color-azul: #345aaa;
+    --color-azul-fondo: #e3ebff;
+
+    --color-error: #8c2d19;
+    --color-error-fondo: #f8e3df;
+
+    --fuente-principal:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    --fuente-titulos:
+        "Space Grotesk",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    --sombra-suave:
+        0 8px 24px rgba(45, 36, 32, 0.06);
+
+    --sombra-media:
+        0 16px 34px rgba(45, 36, 32, 0.11);
+
+    --transicion:
+        180ms ease;
+}
+
+
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+========================================================= */
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
-.student-body {
+html {
+    min-width: 320px;
+}
+
+body {
     margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+}
+
+.student-body {
+    min-width: 320px;
     min-height: 100vh;
-    background: #f4f2ea;
-    color: #1d2922;
-    font-family: Arial, Helvetica, sans-serif;
+
+    background: var(--color-crema);
+    color: var(--color-texto);
+
+    font-family: var(--fuente-principal);
+    line-height: 1.5;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 .student-layout {
     display: grid;
     grid-template-columns: 245px minmax(0, 1fr);
+
     min-height: 100vh;
 }
+
 
 /* =========================================================
    MENÚ LATERAL
@@ -27,113 +126,321 @@
 .student-sidebar {
     position: sticky;
     top: 0;
-    height: 100vh;
-    padding: 28px 20px;
-    background: #183126;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    width: 100%;
+    height: 100vh;
+    padding: 24px 18px;
+
+    overflow-y: auto;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--color-marron) 0%,
+            var(--color-marron-oscuro) 100%
+        );
+
     color: #ffffff;
+
+    border-right:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.student-sidebar-top {
+    min-width: 0;
 }
 
 .student-brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 42px;
+
+    margin-bottom: 38px;
+    padding: 4px 8px;
+
     color: #ffffff;
     text-decoration: none;
 }
 
 .student-brand-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 13px;
-    background: #dce87c;
-    color: #183126;
     display: grid;
     place-items: center;
-    font-size: 23px;
-    font-weight: 900;
+    flex-shrink: 0;
+
+    width: 46px;
+    height: 46px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-rojo),
+            var(--color-rojo-oscuro)
+        );
+
+    color: #ffffff;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 13px;
+
+    font-family: var(--fuente-titulos);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+
+    box-shadow:
+        0 8px 18px rgba(140, 45, 25, 0.28);
 }
 
-.student-brand strong {
-    display: block;
-    font-size: 16px;
+.student-brand-text {
+    min-width: 0;
 }
 
-.student-brand small {
+.student-brand-text strong {
     display: block;
-    margin-top: 4px;
-    color: #aebfb6;
-    font-size: 12px;
+
+    overflow: hidden;
+
+    font-family: var(--fuente-titulos);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.student-brand-text small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 0.7rem;
 }
 
 .student-nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
 }
 
 .student-nav a {
-    min-height: 48px;
-    padding: 0 14px;
-    border-radius: 12px;
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #d9e3dd;
+
+    min-height: 46px;
+    padding: 0 13px;
+
+    overflow: hidden;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-size: 0.83rem;
+    font-weight: 650;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
-    transition: 0.2s ease;
+
+    transition:
+        color var(--transicion),
+        background-color var(--transicion),
+        border-color var(--transicion),
+        transform var(--transicion);
+}
+
+.student-nav a::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+
+    width: 3px;
+    height: 22px;
+
+    background: var(--color-rojo);
+
+    border-radius: 0 4px 4px 0;
+
+    content: "";
+
+    opacity: 0;
+
+    transform:
+        translateY(-50%)
+        scaleY(0.5);
+
+    transition:
+        opacity var(--transicion),
+        transform var(--transicion);
 }
 
 .student-nav a:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.07);
     color: #ffffff;
+
+    transform: translateX(2px);
 }
 
 .student-nav a.active {
-    background: #ffffff;
-    color: #183126;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+    background: rgba(140, 45, 25, 0.2);
+    color: #ffffff;
+
+    border-color: rgba(140, 45, 25, 0.34);
+}
+
+.student-nav a.active::before {
+    opacity: 1;
+
+    transform:
+        translateY(-50%)
+        scaleY(1);
 }
 
 .student-nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
     width: 23px;
-    text-align: center;
-    font-size: 19px;
+    height: 23px;
+
+    color: rgba(255, 255, 255, 0.64);
+
+    font-size: 1rem;
+    line-height: 1;
+
+    transition:
+        color var(--transicion),
+        transform var(--transicion);
+}
+
+.student-nav a:hover .student-nav-icon,
+.student-nav a.active .student-nav-icon {
+    color: #ffffff;
+}
+
+.student-nav a:hover .student-nav-icon {
+    transform: scale(1.06);
 }
 
 .student-sidebar-footer {
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: grid;
+    gap: 13px;
+
+    margin-top: 28px;
+    padding-top: 18px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.1);
 }
 
-.student-sidebar-user {
-    display: block;
-    margin: 0 12px 12px;
-    color: #b9c7bf;
-    font-size: 12px;
-}
-
-.student-logout {
-    min-height: 45px;
-    padding: 0 14px;
-    border-radius: 11px;
+.student-sidebar-profile {
     display: flex;
     align-items: center;
     gap: 11px;
+
+    padding: 10px;
+}
+
+.student-profile-avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 10px;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.student-profile-information {
+    min-width: 0;
+}
+
+.student-profile-information strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 0.78rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.student-profile-information small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.5);
+
+    font-size: 0.67rem;
+}
+
+.student-logout {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 43px;
+    padding: 0 13px;
+
+    color: rgba(255, 255, 255, 0.68);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 10px;
+
+    font-size: 0.8rem;
+    font-weight: 650;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
+
+    transition:
+        background-color var(--transicion),
+        border-color var(--transicion),
+        color var(--transicion);
 }
 
 .student-logout:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(140, 45, 25, 0.18);
+    color: #ffffff;
+
+    border-color: rgba(140, 45, 25, 0.3);
 }
+
+.student-logout:focus-visible,
+.student-nav a:focus-visible,
+.student-brand:focus-visible {
+    outline:
+        3px solid rgba(140, 45, 25, 0.45);
+
+    outline-offset: 3px;
+}
+
 
 /* =========================================================
    CONTENIDO PRINCIPAL
@@ -144,185 +451,314 @@
     padding: 36px 42px 60px;
 }
 
-.student-hero {
-    padding: 38px;
-    border: 1px solid #dde2d8;
-    border-radius: 24px;
-    background:
-        linear-gradient(
-            135deg,
-            #edf2d8 0%,
-            #fafaf2 50%,
-            #e4eee7 100%
-        );
+
+/* =========================================================
+   ALERTAS
+========================================================= */
+
+.alert {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.alert-success {
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
+
+    border: 1px solid #badfc4;
+}
+
+.alert-error {
+    background: var(--color-error-fondo);
+    color: var(--color-error);
+
+    border: 1px solid #edc1b8;
+}
+
+
+/* =========================================================
+   HERO DEL CATÁLOGO
+========================================================= */
+
+.student-hero,
+.student-page-header,
+.student-request-page-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 30px;
+
+    padding: 36px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1dfd8 0%,
+            #fffaf7 52%,
+            #f4e9e4 100%
+        );
+
+    border: 1px solid var(--color-borde);
+    border-radius: 22px;
 }
 
 .student-eyebrow {
     display: inline-block;
-    margin-bottom: 11px;
-    color: #5b7064;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 1.2px;
+
+    margin-bottom: 10px;
+
+    color: var(--color-rojo);
+
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
 }
 
-.student-hero h1 {
+.student-hero h1,
+.student-page-header h1,
+.student-request-page-header h1 {
+    max-width: 680px;
     margin: 0;
-    max-width: 650px;
-    color: #18271f;
-    font-size: clamp(32px, 4vw, 49px);
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 4vw, 3.05rem);
+    letter-spacing: -0.04em;
     line-height: 1.08;
 }
 
-.student-hero p {
+.student-hero p,
+.student-page-header p,
+.student-request-page-header p {
     max-width: 680px;
-    margin: 15px 0 0;
-    color: #606d65;
-    font-size: 15px;
-    line-height: 1.6;
+    margin: 14px 0 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.92rem;
+    line-height: 1.65;
 }
+
 
 /* =========================================================
    RESUMEN DEL CATÁLOGO
 ========================================================= */
 
 .catalog-summary {
-    min-width: 320px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+
+    min-width: 320px;
 }
 
 .catalog-summary div {
-    padding: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-radius: 17px;
-    background: rgba(255, 255, 255, 0.82);
+    padding: 21px;
+
+    background: rgba(255, 255, 255, 0.84);
+
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 18px rgba(45, 36, 32, 0.04);
 }
 
 .catalog-summary strong {
     display: block;
-    color: #183126;
-    font-size: 29px;
+
+    color: var(--color-rojo);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.8rem;
 }
 
 .catalog-summary span {
     display: block;
+
     margin-top: 5px;
-    color: #6e7a72;
-    font-size: 12px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.72rem;
     line-height: 1.4;
 }
 
+
 /* =========================================================
-   BUSCADOR
+   BUSCADOR DEL CATÁLOGO
 ========================================================= */
 
 .catalog-toolbar {
-    margin-top: 27px;
+    margin-top: 25px;
 }
 
 .catalog-search-form {
-    padding: 16px;
-    border: 1px solid #dfe3de;
-    border-radius: 17px;
-    background: #ffffff;
     display: grid;
-    grid-template-columns: minmax(260px, 1fr) 230px auto auto;
+    grid-template-columns:
+        minmax(260px, 1fr)
+        230px
+        auto
+        auto;
+
     gap: 12px;
-    box-shadow: 0 6px 18px rgba(24, 49, 38, 0.04);
+
+    padding: 16px;
+
+    background: var(--color-blanco);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+
+    box-shadow: var(--sombra-suave);
 }
 
 .catalog-search-box {
-    min-width: 0;
-    height: 47px;
-    padding: 0 14px;
-    border: 1px solid #d6dcd7;
-    border-radius: 11px;
-    background: #fafbf9;
     display: flex;
     align-items: center;
     gap: 10px;
+
+    min-width: 0;
+    height: 47px;
+    padding: 0 14px;
+
+    background: var(--color-crema-claro);
+
+    border: 1px solid var(--color-borde-fuerte);
+    border-radius: 10px;
 }
 
 .catalog-search-box span {
-    color: #7a877f;
-    font-size: 21px;
+    color: var(--color-texto-suave);
+    font-size: 1.25rem;
 }
 
 .catalog-search-box input {
     width: 100%;
-    border: none;
-    outline: none;
+
     background: transparent;
-    color: #26332b;
-    font-size: 14px;
+    color: var(--color-texto);
+
+    border: 0;
+    outline: 0;
+
+    font-size: 0.85rem;
+}
+
+.catalog-search-box input::placeholder {
+    color: #9d8f88;
 }
 
 .catalog-search-form select {
     height: 47px;
     padding: 0 13px;
-    border: 1px solid #d6dcd7;
-    border-radius: 11px;
+
     background: #ffffff;
-    color: #354139;
-    outline: none;
+    color: var(--color-texto);
+
+    border: 1px solid var(--color-borde-fuerte);
+    border-radius: 10px;
+
+    outline: 0;
+}
+
+.catalog-search-box:focus-within,
+.catalog-search-form select:focus {
+    border-color: var(--color-rojo);
+
+    box-shadow:
+        0 0 0 3px rgba(140, 45, 25, 0.11);
 }
 
 .catalog-search-button,
 .catalog-clear-button {
-    min-height: 47px;
-    padding: 0 22px;
-    border-radius: 11px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    min-height: 47px;
+    padding: 0 21px;
+
+    border-radius: 999px;
+
+    font-size: 0.82rem;
+    font-weight: 750;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 800;
+
     cursor: pointer;
 }
 
 .catalog-search-button {
-    border: none;
-    background: #183126;
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-rojo),
+            var(--color-rojo-oscuro)
+        );
+
     color: #ffffff;
+
+    border: 0;
+
+    box-shadow:
+        0 8px 19px rgba(140, 45, 25, 0.2);
+
+    transition:
+        transform var(--transicion),
+        box-shadow var(--transicion);
 }
 
 .catalog-search-button:hover {
-    background: #244536;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(140, 45, 25, 0.3);
 }
 
 .catalog-clear-button {
-    border: 1px solid #d6dcd7;
     background: #ffffff;
-    color: #435047;
+    color: var(--color-marron);
+
+    border: 1px solid var(--color-borde-fuerte);
 }
 
+.catalog-clear-button:hover {
+    background: var(--color-crema-claro);
+}
+
+
 /* =========================================================
-   TÍTULO DEL CATÁLOGO
+   ENCABEZADO DEL CATÁLOGO
 ========================================================= */
 
 .catalog-heading {
-    margin: 32px 0 18px;
+    margin: 31px 0 18px;
 }
 
 .catalog-heading h2 {
     margin: 0;
-    color: #18271f;
-    font-size: 26px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.55rem;
 }
 
 .catalog-heading p {
     margin: 6px 0 0;
-    color: #758078;
-    font-size: 14px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.82rem;
 }
+
 
 /* =========================================================
    TARJETAS DE LIBROS
@@ -330,87 +766,112 @@
 
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
     gap: 22px;
 }
 
 .book-card {
     min-width: 0;
+
     overflow: hidden;
-    border: 1px solid #dfe3de;
-    border-radius: 19px;
+
     background: #ffffff;
-    box-shadow: 0 7px 20px rgba(24, 49, 38, 0.05);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 18px;
+
+    box-shadow: var(--sombra-suave);
+
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 200ms ease,
+        box-shadow 200ms ease;
 }
 
 .book-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 18px 35px rgba(24, 49, 38, 0.12);
+
+    box-shadow: var(--sombra-media);
 }
 
 .book-image-container {
     position: relative;
+
     display: block;
+
     height: 325px;
+
     overflow: hidden;
-    background: #e6e9e4;
+
+    background: #eee4df;
 }
 
 .catalog-book-image {
     width: 100%;
     height: 100%;
-    display: block;
+
     object-fit: cover;
-    transition: transform 0.3s ease;
+
+    transition:
+        transform 300ms ease;
 }
 
 .book-card:hover .catalog-book-image {
-    transform: scale(1.03);
+    transform: scale(1.035);
 }
 
 .book-placeholder,
 .detail-placeholder {
+    display: grid;
+    place-items: center;
+
     width: 100%;
     height: 100%;
+
     background:
         linear-gradient(
             145deg,
-            #dde5dc,
-            #f3f4ec
+            #eadbd4,
+            #faf5f2
         );
-    display: grid;
-    place-items: center;
-    color: #657269;
-    font-weight: 900;
-    letter-spacing: 2px;
+
+    color: var(--color-texto-secundario);
+
+    font-family: var(--fuente-titulos);
+    font-weight: 800;
+    letter-spacing: 0.12em;
 }
 
 .book-origin-label {
     position: absolute;
     top: 14px;
     left: 14px;
+
     padding: 7px 11px;
+
     border-radius: 999px;
-    font-size: 11px;
-    font-weight: 900;
+
+    font-size: 0.68rem;
+    font-weight: 800;
 }
 
-.book-origin-label.free {
-    background: #dff4e5;
-    color: #287044;
+.book-origin-label.free,
+.detail-badge.free {
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
 }
 
-.book-origin-label.paid {
-    background: #fff0d3;
-    color: #946118;
+.book-origin-label.paid,
+.detail-badge.paid {
+    background: var(--color-amarillo-fondo);
+    color: var(--color-amarillo);
 }
 
-.book-origin-label.external {
-    background: #e3ebff;
-    color: #345aaa;
+.book-origin-label.external,
+.detail-badge.external {
+    background: var(--color-azul-fondo);
+    color: var(--color-azul);
 }
 
 .book-card-content {
@@ -418,61 +879,78 @@
 }
 
 .book-category,
-.book-detail-category {
-    color: #728078;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.8px;
+.book-detail-category,
+.purchase-category {
+    color: var(--color-rojo);
+
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .book-card h3 {
     min-height: 49px;
     margin: 9px 0 5px;
-    font-size: 18px;
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.08rem;
     line-height: 1.35;
 }
 
 .book-card h3 a {
-    color: #17291f;
+    color: var(--color-marron);
     text-decoration: none;
+}
+
+.book-card h3 a:hover {
+    color: var(--color-rojo);
 }
 
 .book-author {
     margin: 0;
-    color: #6a756e;
-    font-size: 13px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.78rem;
 }
 
 .book-description {
     min-height: 58px;
     margin: 14px 0 0;
-    color: #667169;
-    font-size: 13px;
-    line-height: 1.5;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.78rem;
+    line-height: 1.55;
 }
 
 .book-card-footer {
-    margin-top: 18px;
-    padding-top: 15px;
-    border-top: 1px solid #edf0ed;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+
+    margin-top: 18px;
+    padding-top: 15px;
+
+    border-top: 1px solid #f0e5e0;
 }
 
 .book-availability {
-    color: #647068;
-    font-size: 11px;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.68rem;
 }
 
 .availability-dot {
+    display: inline-block;
+
     width: 8px;
     height: 8px;
     margin-right: 5px;
+
     border-radius: 50%;
-    display: inline-block;
 }
 
 .availability-dot.available {
@@ -488,15 +966,175 @@
 }
 
 .book-details-link {
-    color: #183126;
+    color: var(--color-rojo);
+
+    font-size: 0.72rem;
+    font-weight: 800;
     text-decoration: none;
-    font-size: 12px;
-    font-weight: 900;
 }
 
 .book-details-link:hover {
     text-decoration: underline;
 }
+
+
+/* =========================================================
+   BOTONES PRINCIPALES
+========================================================= */
+
+.student-primary-button,
+.reservation-button {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 47px;
+    padding: 0 21px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-rojo),
+            var(--color-rojo-oscuro)
+        );
+
+    color: #ffffff;
+
+    border: 0;
+    border-radius: 999px;
+
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 20px rgba(140, 45, 25, 0.22);
+
+    isolation: isolate;
+
+    transition:
+        transform var(--transicion),
+        box-shadow var(--transicion),
+        filter var(--transicion);
+}
+
+.student-primary-button::before,
+.reservation-button::before {
+    position: absolute;
+    top: -50%;
+    left: -45%;
+    z-index: -1;
+
+    width: 34%;
+    height: 200%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.22),
+            transparent
+        );
+
+    content: "";
+
+    transform: rotate(18deg);
+
+    transition:
+        left 500ms ease;
+}
+
+.student-primary-button:hover,
+.reservation-button:hover {
+    filter: brightness(1.06);
+
+    box-shadow:
+        0 13px 28px rgba(105, 81, 76, 0.42);
+
+    transform: translateY(-2px);
+}
+
+.student-primary-button:hover::before,
+.reservation-button:hover::before {
+    left: 115%;
+}
+
+.student-primary-button.full {
+    width: 100%;
+}
+
+.student-disabled-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 47px;
+    padding: 0 21px;
+
+    background: #ece5e1;
+    color: #93857f;
+
+    border: 0;
+    border-radius: 999px;
+
+    font-size: 0.82rem;
+    font-weight: 800;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+========================================================= */
+
+.student-empty-state {
+    padding: 70px 25px;
+
+    background: #ffffff;
+
+    border: 1px dashed var(--color-borde-fuerte);
+    border-radius: 19px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    display: grid;
+    place-items: center;
+
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+
+    background: var(--color-rojo-claro);
+    color: var(--color-rojo);
+
+    border-radius: 50%;
+
+    font-size: 1.65rem;
+}
+
+.student-empty-state h2 {
+    margin: 0;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+}
+
+.student-empty-state p {
+    margin: 10px 0 24px;
+
+    color: var(--color-texto-secundario);
+}
+
 
 /* =========================================================
    DETALLE DEL LIBRO
@@ -506,11 +1144,18 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
+
     margin-bottom: 24px;
-    color: #415148;
-    text-decoration: none;
-    font-size: 14px;
+
+    color: var(--color-marron-claro);
+
+    font-size: 0.82rem;
     font-weight: 800;
+    text-decoration: none;
+}
+
+.back-catalog-link:hover {
+    color: var(--color-rojo);
 }
 
 .book-detail-layout {
@@ -519,22 +1164,27 @@
         minmax(270px, 380px)
         minmax(340px, 1fr)
         320px;
+
     gap: 38px;
     align-items: start;
 }
 
 .book-detail-cover {
     overflow: hidden;
-    border-radius: 22px;
-    background: #e4e8e2;
-    box-shadow: 0 20px 42px rgba(24, 49, 38, 0.14);
+
+    background: #eee4df;
+
+    border-radius: 21px;
+
+    box-shadow:
+        0 20px 42px rgba(45, 36, 32, 0.14);
 }
 
 .book-detail-cover img {
     width: 100%;
     min-height: 500px;
     max-height: 680px;
-    display: block;
+
     object-fit: cover;
 }
 
@@ -548,294 +1198,264 @@
 
 .book-detail-information h1 {
     margin: 11px 0 12px;
-    color: #17291f;
-    font-size: clamp(32px, 4vw, 50px);
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    letter-spacing: -0.04em;
     line-height: 1.08;
 }
 
 .book-detail-author {
     margin: 0;
-    color: #657169;
-    font-size: 16px;
+
+    color: var(--color-texto-secundario);
 }
 
 .book-detail-badges {
-    margin-top: 21px;
     display: flex;
     flex-wrap: wrap;
     gap: 9px;
+
+    margin-top: 21px;
 }
 
 .detail-badge {
     padding: 8px 12px;
+
     border-radius: 999px;
-    font-size: 11px;
-    font-weight: 900;
+
+    font-size: 0.68rem;
+    font-weight: 800;
 }
 
 .detail-badge.own {
-    background: #e7eee8;
-    color: #41574a;
-}
-
-.detail-badge.free {
-    background: #dff4e5;
-    color: #287044;
-}
-
-.detail-badge.paid {
-    background: #fff0d3;
-    color: #946118;
-}
-
-.detail-badge.external {
-    background: #e3ebff;
-    color: #345aaa;
+    background: #eee5e1;
+    color: var(--color-marron-claro);
 }
 
 .book-synopsis {
     margin-top: 34px;
     padding-top: 27px;
-    border-top: 1px solid #dfe4df;
+
+    border-top: 1px solid var(--color-borde);
 }
 
 .book-synopsis h2 {
     margin: 0 0 13px;
-    color: #1b2d23;
-    font-size: 21px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.25rem;
 }
 
 .book-synopsis p {
     margin: 0;
-    color: #5e6962;
-    font-size: 15px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.9rem;
     line-height: 1.75;
 }
 
 .book-metadata {
-    margin-top: 31px;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
     gap: 13px;
+
+    margin-top: 31px;
 }
 
 .book-metadata div {
     padding: 16px;
-    border: 1px solid #dfe4df;
-    border-radius: 13px;
+
     background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 13px;
 }
 
 .book-metadata span {
     display: block;
-    color: #78827b;
-    font-size: 11px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.68rem;
 }
 
 .book-metadata strong {
     display: block;
+
     margin-top: 6px;
-    color: #26342b;
-    font-size: 14px;
+
+    color: var(--color-marron);
+
+    font-size: 0.82rem;
 }
 
 .book-action-panel {
     position: sticky;
     top: 28px;
+
     padding: 27px;
-    border: 1px solid #dfe4df;
-    border-radius: 20px;
+
     background: #ffffff;
-    box-shadow: 0 15px 34px rgba(24, 49, 38, 0.09);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 19px;
+
+    box-shadow: var(--sombra-media);
 }
 
 .action-panel-label {
-    color: #6d7971;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.8px;
+    color: var(--color-rojo);
+
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .book-action-panel h2 {
     margin: 12px 0;
-    color: #193025;
-    font-size: 22px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
 }
 
 .book-action-panel p {
-    color: #657169;
-    font-size: 14px;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
     line-height: 1.55;
 }
 
 .book-action-panel small {
     display: block;
+
     margin-top: 12px;
-    color: #879089;
-    font-size: 11px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.68rem;
     line-height: 1.45;
 }
 
 .book-price {
     margin: 13px 0;
-    color: #183126;
-    font-size: 39px;
-    font-weight: 900;
+
+    color: var(--color-rojo);
+
+    font-family: var(--fuente-titulos);
+    font-size: 2.4rem;
+    font-weight: 800;
 }
 
-.student-primary-button,
-.student-disabled-button {
-    min-height: 49px;
-    padding: 0 22px;
-    border-radius: 11px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 900;
-}
-
-.student-primary-button {
-    background: #183126;
-    color: #ffffff;
-}
-
-.student-primary-button:hover {
-    background: #244536;
-}
-
-.student-primary-button.full {
-    width: 100%;
-}
-
-.student-disabled-button {
-    width: 100%;
-    background: #e7eae7;
-    color: #858f88;
-    cursor: not-allowed;
-}
 
 /* =========================================================
-   ESTADO VACÍO
-========================================================= */
-
-.student-empty-state {
-    padding: 70px 25px;
-    border: 1px dashed #ccd5ce;
-    border-radius: 20px;
-    background: #ffffff;
-    text-align: center;
-}
-
-.empty-icon {
-    width: 65px;
-    height: 65px;
-    margin: 0 auto 18px;
-    border-radius: 50%;
-    background: #edf2ea;
-    display: grid;
-    place-items: center;
-    color: #526159;
-    font-size: 27px;
-}
-
-.student-empty-state h2 {
-    margin: 0;
-    color: #1b2c22;
-}
-
-.student-empty-state p {
-    margin: 10px 0 24px;
-    color: #6c776f;
-}
-
-/* =========================================================
-   PÁGINA DE COMPRA
+   COMPRA
 ========================================================= */
 
 .purchase-layout {
-    margin-top: 25px;
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr)
+    grid-template-columns:
+        minmax(0, 0.9fr)
         minmax(0, 1.1fr);
+
     gap: 24px;
     align-items: start;
+
+    margin-top: 25px;
 }
 
-.purchase-summary {
-    padding: 27px;
-    border: 1px solid #dfe4df;
-    border-radius: 21px;
+.purchase-summary,
+.student-request-form {
+    padding: 28px;
+
     background: #ffffff;
-    box-shadow: 0 10px 27px rgba(24, 49, 38, 0.06);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 20px;
+
+    box-shadow: var(--sombra-suave);
 }
 
 .purchase-book {
-    padding-bottom: 22px;
-    border-bottom: 1px solid #e7ebe7;
     display: grid;
     grid-template-columns: 110px 1fr;
     gap: 20px;
     align-items: center;
+
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid var(--color-borde);
 }
 
 .purchase-cover {
     width: 110px;
     height: 145px;
+
     overflow: hidden;
+
+    background: #eee4df;
+
     border-radius: 12px;
-    background: #eef1ed;
 }
 
 .purchase-cover img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
 }
 
 .purchase-cover-empty {
+    display: grid;
+    place-items: center;
+
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #69756d;
-    font-size: 13px;
-    font-weight: 900;
-}
 
-.purchase-category {
-    color: #738078;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.75rem;
+    font-weight: 800;
 }
 
 .purchase-book-information h2 {
     margin: 8px 0 7px;
-    color: #1b2d23;
-    font-size: 23px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.4rem;
     line-height: 1.25;
 }
 
 .purchase-book-information p {
     margin: 0;
-    color: #6d7871;
-    font-size: 14px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
 }
 
 .purchase-data {
-    padding: 22px 0;
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    padding: 22px 0;
 }
 
-.purchase-data div {
+.purchase-data div,
+.purchase-total {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -843,635 +1463,127 @@
 }
 
 .purchase-data span {
-    color: #707b74;
-    font-size: 13px;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.78rem;
 }
 
 .purchase-data strong {
-    color: #26372d;
-    font-size: 13px;
+    color: var(--color-marron);
+
+    font-size: 0.78rem;
     text-align: right;
 }
 
 .purchase-total {
     padding-top: 20px;
-    border-top: 1px solid #e7ebe7;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+
+    border-top: 1px solid var(--color-borde);
 }
 
 .purchase-total span {
-    color: #26372d;
-    font-size: 15px;
-    font-weight: 900;
+    color: var(--color-marron);
+
+    font-weight: 800;
 }
 
 .purchase-total strong {
-    color: #183126;
-    font-size: 29px;
-}
+    color: var(--color-rojo);
 
-.purchase-form {
-    margin-top: 0;
-}
-
-.student-request-secondary-button {
-    min-height: 49px;
-    padding: 0 22px;
-    border: 1px solid #ccd5ce;
-    border-radius: 11px;
-    background: #ffffff;
-    color: #34473b;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 900;
-}
-
-.student-request-secondary-button:hover {
-    background: #f0f3f0;
-}
-
-@media (max-width: 950px) {
-    .purchase-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .purchase-summary,
-    .student-request-form {
-        padding: 22px;
-    }
-
-    .purchase-book {
-        grid-template-columns: 85px 1fr;
-    }
-
-    .purchase-cover {
-        width: 85px;
-        height: 115px;
-    }
-
-    .student-request-actions {
-        align-items: stretch;
-        flex-direction: column-reverse;
-    }
-
-    .student-request-actions a,
-    .student-request-actions button {
-        width: 100%;
-    }
+    font-family: var(--fuente-titulos);
+    font-size: 1.75rem;
 }
 
 
 /* =========================================================
-   FACTURA
+   MIS LIBROS Y RESERVAS
 ========================================================= */
-
-.invoice-success-message {
-    margin-bottom: 22px;
-    padding: 18px 21px;
-    border: 1px solid #b9d9c7;
-    border-radius: 13px;
-    background: #edf8f1;
-    color: #234934;
-    font-size: 14px;
-}
-
-.invoice-success-message strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.invoice-page-header {
-    align-items: center;
-}
-
-.invoice-header-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.invoice-document {
-    margin-top: 25px;
-    padding: 34px;
-    border: 1px solid #dfe5df;
-    border-radius: 21px;
-    background: #ffffff;
-    box-shadow: 0 12px 32px rgba(24, 49, 38, 0.07);
-}
-
-.invoice-document-header {
-    padding-bottom: 26px;
-    border-bottom: 1px solid #e4e9e5;
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-}
-
-.invoice-company {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.invoice-company-logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: #153e2f;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 900;
-}
-
-.invoice-company strong,
-.invoice-company small {
-    display: block;
-}
-
-.invoice-company strong {
-    color: #193328;
-    font-size: 20px;
-}
-
-.invoice-company small {
-    margin-top: 4px;
-    color: #748078;
-}
-
-.invoice-number {
-    text-align: right;
-}
-
-.invoice-number span,
-.invoice-number strong,
-.invoice-number small {
-    display: block;
-}
-
-.invoice-number span {
-    color: #78847c;
-    font-size: 12px;
-    font-weight: 900;
-    text-transform: uppercase;
-}
-
-.invoice-number strong {
-    margin: 6px 0;
-    color: #16382a;
-    font-size: 18px;
-}
-
-.invoice-number small {
-    color: #78847c;
-}
-
-.invoice-information-grid {
-    padding: 27px 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 17px;
-}
-
-.invoice-information-box {
-    padding: 18px;
-    border: 1px solid #e0e6e1;
-    border-radius: 13px;
-    background: #f9faf8;
-}
-
-.invoice-information-box strong,
-.invoice-information-box small {
-    display: block;
-}
-
-.invoice-label {
-    color: #778279;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-}
-
-.invoice-information-box strong {
-    margin-top: 8px;
-    color: #23372d;
-    font-size: 15px;
-}
-
-.invoice-information-box small {
-    margin-top: 6px;
-    color: #778279;
-}
-
-.invoice-status.pagada {
-    color: #18723f;
-}
-
-.invoice-status.pendiente {
-    color: #9b6412;
-}
-
-.invoice-status.anulada {
-    color: #a33535;
-}
-
-.invoice-detail-section,
-.invoice-access-section {
-    padding: 25px 0;
-    border-top: 1px solid #e4e9e5;
-}
-
-.invoice-detail-section h2,
-.invoice-access-section h2 {
-    margin: 0 0 18px;
-    color: #1f352a;
-    font-size: 18px;
-}
-
-.invoice-table-wrapper {
-    overflow-x: auto;
-}
-
-.invoice-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.invoice-table th {
-    padding: 13px;
-    background: #f1f4f1;
-    color: #59665e;
-    text-align: left;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-.invoice-table td {
-    padding: 16px 13px;
-    border-bottom: 1px solid #e6ebe7;
-    color: #304238;
-    font-size: 14px;
-}
-
-.invoice-table td strong,
-.invoice-table td small {
-    display: block;
-}
-
-.invoice-table td small {
-    margin-top: 5px;
-    color: #7a857e;
-}
-
-.invoice-access-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.invoice-access-grid div {
-    padding: 16px;
-    border-radius: 12px;
-    background: #f5f7f4;
-}
-
-.invoice-access-grid span,
-.invoice-access-grid strong {
-    display: block;
-}
-
-.invoice-access-grid span {
-    color: #758078;
-    font-size: 12px;
-}
-
-.invoice-access-grid strong {
-    margin-top: 7px;
-    color: #293c31;
-}
-
-.invoice-totals {
-    width: min(100%, 390px);
-    margin-left: auto;
-    padding-top: 24px;
-    border-top: 1px solid #e4e9e5;
-}
-
-.invoice-totals div {
-    padding: 9px 0;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.invoice-totals span {
-    color: #6c7971;
-}
-
-.invoice-totals strong {
-    color: #24382d;
-}
-
-.invoice-total-final {
-    margin-top: 8px;
-    padding-top: 17px !important;
-    border-top: 2px solid #d9e0da;
-}
-
-.invoice-total-final span,
-.invoice-total-final strong {
-    color: #16382a;
-    font-size: 20px;
-    font-weight: 900;
-}
-
-.invoice-footer {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid #e4e9e5;
-    color: #78837c;
-    text-align: center;
-    font-size: 12px;
-}
-
-.invoice-footer p {
-    margin: 4px 0;
-}
-
-@media print {
-    .student-sidebar,
-    .student-page-header,
-    .invoice-success-message {
-        display: none !important;
-    }
-
-    .student-main {
-        padding: 0;
-    }
-
-    .invoice-document {
-        margin: 0;
-        padding: 20px;
-        border: none;
-        box-shadow: none;
-    }
-}
-
-@media (max-width: 800px) {
-    .invoice-information-grid,
-    .invoice-access-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .invoice-document-header,
-    .invoice-page-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .invoice-number {
-        text-align: left;
-    }
-
-    .invoice-header-actions {
-        width: 100%;
-        flex-direction: column;
-    }
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1250px) {
-    .book-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .book-detail-layout {
-        grid-template-columns: 310px minmax(0, 1fr);
-    }
-
-    .book-action-panel {
-        position: static;
-        grid-column: 1 / -1;
-    }
-}
-
-@media (max-width: 950px) {
-    .student-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .student-sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        padding: 16px;
-    }
-
-    .student-brand {
-        margin-bottom: 18px;
-    }
-
-    .student-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .student-sidebar-footer {
-        margin-top: 18px;
-    }
-
-    .student-main {
-        padding: 25px 20px 50px;
-    }
-
-    .student-hero {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .catalog-summary {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .catalog-search-form {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .book-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .book-detail-layout {
-        grid-template-columns: 280px minmax(0, 1fr);
-    }
-}
-
-@media (max-width: 680px) {
-    .catalog-search-form {
-        grid-template-columns: 1fr;
-    }
-
-    .book-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .book-image-container {
-        height: 390px;
-    }
-
-    .book-detail-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .book-detail-cover {
-        max-width: 390px;
-    }
-
-    .book-metadata {
-        grid-template-columns: 1fr;
-    }
-
-    .catalog-summary {
-        grid-template-columns: 1fr;
-    }
-}
-
-.reservation-status.reservado {
-    background: #eee8ff;
-    color: #6548a8;
-}
-
-.reservation-status.en_prestamo {
-    background: #e3ebff;
-    color: #315baf;
-}
-
-.reservation-status.por_vencer {
-    background: #fff0d6;
-    color: #9a6518;
-}
-
-.reservation-status.devuelto {
-    background: #def3e3;
-    color: #2c7041;
-}
-/* =========================================================
-   PÁGINA MIS LIBROS
-========================================================= */
-
-.student-page-header {
-    padding: 32px 34px;
-    border: 1px solid #dde3dc;
-    border-radius: 22px;
-    background:
-        linear-gradient(
-            135deg,
-            #eef3dc 0%,
-            #fafaf3 55%,
-            #e7efe9 100%
-        );
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-}
-
-.student-page-header h1 {
-    margin: 0;
-    color: #17291f;
-    font-size: clamp(32px, 4vw, 45px);
-    line-height: 1.1;
-}
-
-.student-page-header p {
-    max-width: 650px;
-    margin: 13px 0 0;
-    color: #647068;
-    font-size: 15px;
-    line-height: 1.6;
-}
 
 .reservation-empty {
     margin-top: 28px;
 }
 
 .reservation-list {
-    margin-top: 28px;
     display: flex;
     flex-direction: column;
     gap: 18px;
+
+    margin-top: 28px;
 }
 
 .reservation-card {
-    min-width: 0;
-    padding: 18px;
-    border: 1px solid #dfe4df;
-    border-radius: 19px;
-    background: #ffffff;
     display: grid;
     grid-template-columns:
         135px
         minmax(0, 1fr)
         190px;
+
     gap: 24px;
     align-items: center;
-    box-shadow: 0 8px 24px rgba(24, 49, 38, 0.06);
+
+    min-width: 0;
+    padding: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 18px;
+
+    box-shadow: var(--sombra-suave);
+
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 200ms ease,
+        box-shadow 200ms ease;
 }
 
 .reservation-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 34px rgba(24, 49, 38, 0.11);
+
+    box-shadow: var(--sombra-media);
 }
 
 .reservation-cover {
+    display: block;
+
     width: 135px;
     height: 185px;
+
     overflow: hidden;
+
+    background: #eee4df;
+
     border-radius: 13px;
-    display: block;
-    background: #e8ece7;
-    box-shadow: 0 7px 17px rgba(24, 49, 38, 0.12);
+
+    box-shadow:
+        0 7px 17px rgba(45, 36, 32, 0.12);
 }
 
 .reservation-cover img {
     width: 100%;
     height: 100%;
-    display: block;
+
     object-fit: cover;
 }
 
 .reservation-placeholder {
-    width: 100%;
-    height: 100%;
     display: grid;
     place-items: center;
+
+    width: 100%;
+    height: 100%;
+
     background:
         linear-gradient(
             145deg,
-            #dfe6dd,
-            #f3f4ee
+            #eadbd4,
+            #faf5f2
         );
-    color: #6d7971;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 1.5px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
 }
 
 .reservation-information {
@@ -1480,8 +1592,11 @@
 
 .reservation-information h2 {
     margin: 9px 0 7px;
-    color: #182b21;
-    font-size: 24px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.45rem;
     line-height: 1.25;
 }
 
@@ -1491,20 +1606,23 @@
 }
 
 .reservation-information h2 a:hover {
-    text-decoration: underline;
+    color: var(--color-rojo);
 }
 
 .reservation-author {
     margin: 0;
-    color: #68746c;
-    font-size: 14px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
 }
 
 .reservation-dates {
-    margin-top: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px 35px;
+
+    margin-top: 24px;
 }
 
 .reservation-dates div {
@@ -1513,39 +1631,49 @@
 
 .reservation-dates span {
     display: block;
+
     margin-bottom: 5px;
-    color: #879089;
-    font-size: 10px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.62rem;
     font-weight: 800;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
 }
 
 .reservation-dates strong {
     display: block;
-    color: #344139;
-    font-size: 13px;
+
+    color: var(--color-marron-claro);
+
+    font-size: 0.76rem;
 }
 
 .reservation-actions {
-    min-height: 150px;
-    padding-left: 23px;
-    border-left: 1px solid #e7ebe7;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-between;
     gap: 20px;
+
+    min-height: 150px;
+    padding-left: 23px;
+
+    border-left: 1px solid var(--color-borde);
 }
 
 .reservation-status {
-    padding: 8px 13px;
-    border-radius: 999px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-weight: 900;
+
+    padding: 8px 13px;
+
+    border-radius: 999px;
+
+    font-size: 0.67rem;
+    font-weight: 800;
 }
 
 .reservation-status.reservado {
@@ -1554,177 +1682,84 @@
 }
 
 .reservation-status.en_prestamo {
-    background: #dff4e5;
-    color: #287044;
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
 }
 
 .reservation-status.por_vencer {
-    background: #fff0d3;
-    color: #946118;
+    background: var(--color-amarillo-fondo);
+    color: var(--color-amarillo);
 }
 
 .reservation-status.devuelto {
-    background: #e7eae7;
-    color: #667068;
+    background: #eee5e1;
+    color: var(--color-marron-claro);
 }
 
-.reservation-button {
-    width: 100%;
-    min-height: 45px;
-    padding: 0 17px;
-    border-radius: 11px;
-    background: #183126;
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 900;
-    transition: background 0.2s ease;
-}
-
-.reservation-button:hover {
-    background: #284a3a;
-}
-
-@media (max-width: 900px) {
-    .student-page-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .reservation-card {
-        grid-template-columns: 120px minmax(0, 1fr);
-    }
-
-    .reservation-cover {
-        width: 120px;
-        height: 165px;
-    }
-
-    .reservation-actions {
-        min-height: 0;
-        padding: 17px 0 0;
-        border-top: 1px solid #e7ebe7;
-        border-left: none;
-        grid-column: 1 / -1;
-        align-items: center;
-        flex-direction: row;
-    }
-
-    .reservation-button {
-        width: auto;
-        min-width: 170px;
-    }
-}
-
-@media (max-width: 560px) {
-    .reservation-card {
-        grid-template-columns: 1fr;
-    }
-
-    .reservation-cover {
-        width: 145px;
-        height: 200px;
-    }
-
-    .reservation-actions {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .reservation-button {
-        width: 100%;
-    }
-}
 
 /* =========================================================
-   PÁGINA SOLICITAR LIBRO
+   SOLICITUD DE LIBROS
 ========================================================= */
 
-.student-request-page-header {
-    padding: 32px 34px;
-    border: 1px solid #dde3dc;
-    border-radius: 22px;
-    background:
-        linear-gradient(
-            135deg,
-            #eef3dc 0%,
-            #fafaf3 55%,
-            #e7efe9 100%
-        );
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 28px;
-}
-
-.student-request-page-header h1 {
-    margin: 0;
-    color: #17291f;
-    font-size: clamp(32px, 4vw, 45px);
-    line-height: 1.1;
-}
-
-.student-request-page-header p {
-    max-width: 650px;
-    margin: 13px 0 0;
-    color: #647068;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
 .student-request-secondary-button {
-    min-height: 47px;
-    padding: 0 20px;
-    border: 1px solid #cfd8d1;
-    border-radius: 11px;
-    background: #ffffff;
-    color: #183126;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    min-height: 47px;
+    padding: 0 20px;
+
+    background: #ffffff;
+    color: var(--color-marron);
+
+    border: 1px solid var(--color-borde-fuerte);
+    border-radius: 999px;
+
     white-space: nowrap;
+
+    font-size: 0.78rem;
+    font-weight: 800;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 900;
+
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
+        background-color var(--transicion),
+        border-color var(--transicion),
+        transform var(--transicion);
 }
 
 .student-request-secondary-button:hover {
-    border-color: #9eafa4;
-    background: #f6f8f5;
+    background: var(--color-crema-claro);
+
+    border-color: #bca89f;
+
     transform: translateY(-1px);
 }
 
-/* =========================================================
-   INFORMACIÓN DEL ESTUDIANTE
-========================================================= */
-
 .student-request-profile {
-    margin-top: 23px;
-    padding: 21px 24px;
-    border: 1px solid #dfe4df;
-    border-radius: 17px;
-    background: #ffffff;
     display: grid;
     grid-template-columns:
         minmax(220px, 1.4fr)
         minmax(150px, 0.7fr)
         minmax(220px, 1fr);
+
     gap: 0;
-    box-shadow: 0 7px 20px rgba(24, 49, 38, 0.05);
+
+    margin-top: 23px;
+    padding: 21px 24px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+
+    box-shadow: var(--sombra-suave);
 }
 
 .student-request-profile div {
     min-width: 0;
     padding: 2px 25px;
-    border-right: 1px solid #e7ebe7;
+
+    border-right: 1px solid var(--color-borde);
 }
 
 .student-request-profile div:first-child {
@@ -1733,86 +1768,94 @@
 
 .student-request-profile div:last-child {
     padding-right: 0;
-    border-right: none;
+
+    border-right: 0;
 }
 
 .student-request-profile span {
     display: block;
+
     margin-bottom: 7px;
-    color: #7a867e;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 0.8px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .student-request-profile strong {
     display: block;
+
     overflow-wrap: anywhere;
-    color: #26362c;
-    font-size: 14px;
+
+    color: var(--color-marron);
+
+    font-size: 0.82rem;
     line-height: 1.45;
 }
-
-/* =========================================================
-   ALERTAS DE LA SOLICITUD
-========================================================= */
 
 .student-request-alert {
     margin-top: 22px;
     padding: 15px 18px;
-    border: 1px solid #eccaca;
-    border-radius: 12px;
-    background: #fff1f1;
-    color: #9c3535;
-    font-size: 13px;
+
+    background: var(--color-error-fondo);
+    color: var(--color-error);
+
+    border: 1px solid #edc1b8;
+    border-radius: 11px;
+
+    font-size: 0.78rem;
     font-weight: 700;
 }
 
-/* =========================================================
-   FORMULARIO DE SOLICITUD
-========================================================= */
-
 .student-request-form {
     margin-top: 23px;
-    padding: 31px 33px;
-    border: 1px solid #dfe4df;
-    border-radius: 21px;
-    background: #ffffff;
-    box-shadow: 0 10px 27px rgba(24, 49, 38, 0.06);
 }
 
 .student-request-form-header {
-    margin-bottom: 27px;
-    padding-bottom: 23px;
-    border-bottom: 1px solid #e7ebe7;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 25px;
+
+    margin-bottom: 27px;
+    padding-bottom: 23px;
+
+    border-bottom: 1px solid var(--color-borde);
 }
 
 .student-request-form-header h2 {
     margin: 0;
-    color: #1a2c22;
-    font-size: 25px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.5rem;
 }
 
 .student-request-form-header p {
     margin: 8px 0 0;
-    color: #6b766f;
-    font-size: 14px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
     line-height: 1.55;
 }
 
 .student-request-status {
     padding: 8px 13px;
+
+    background: var(--color-amarillo-fondo);
+    color: var(--color-amarillo);
+
     border-radius: 999px;
-    background: #fff0d3;
-    color: #946118;
+
     white-space: nowrap;
-    font-size: 11px;
-    font-weight: 900;
+
+    font-size: 0.67rem;
+    font-weight: 800;
 }
 
 .student-request-form .form-group {
@@ -1821,43 +1864,47 @@
 
 .student-request-form .form-group label {
     display: block;
+
     margin-bottom: 8px;
-    color: #27372d;
-    font-size: 13px;
-    font-weight: 900;
+
+    color: var(--color-marron);
+
+    font-size: 0.78rem;
+    font-weight: 800;
 }
 
 .student-request-form .form-group input,
 .student-request-form .form-group select,
 .student-request-form .form-group textarea {
     width: 100%;
-    border: 1px solid #d4dbd6;
-    border-radius: 11px;
-    background: #fafbf9;
-    color: #26342b;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    outline: none;
+
+    background: var(--color-crema-claro);
+    color: var(--color-texto);
+
+    border: 1px solid var(--color-borde-fuerte);
+    border-radius: 10px;
+
+    outline: 0;
+
+    font-family: var(--fuente-principal);
+    font-size: 0.84rem;
+
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+        border-color var(--transicion),
+        box-shadow var(--transicion),
+        background-color var(--transicion);
 }
 
-.student-request-form .form-group input {
-    height: 49px;
-    padding: 0 15px;
-}
-
+.student-request-form .form-group input,
 .student-request-form .form-group select {
     height: 49px;
-    padding: 0 14px;
-    cursor: pointer;
+    padding: 0 15px;
 }
 
 .student-request-form .form-group textarea {
     min-height: 150px;
     padding: 14px 15px;
+
     line-height: 1.55;
     resize: vertical;
 }
@@ -1865,34 +1912,32 @@
 .student-request-form .form-group input:focus,
 .student-request-form .form-group select:focus,
 .student-request-form .form-group textarea:focus {
-    border-color: #718d7b;
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(113, 141, 123, 0.13);
-}
 
-.student-request-form .form-group input::placeholder,
-.student-request-form .form-group textarea::placeholder {
-    color: #929c95;
+    border-color: var(--color-rojo);
+
+    box-shadow:
+        0 0 0 4px rgba(140, 45, 25, 0.11);
 }
 
 .student-request-form .form-group small {
     display: block;
+
     margin-top: 7px;
-    color: #7a857e;
-    font-size: 11px;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.68rem;
     line-height: 1.45;
 }
 
-/* =========================================================
-   CONTADOR Y NOTA
-========================================================= */
-
 .student-request-help-row {
-    margin-top: 7px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+
+    margin-top: 7px;
 }
 
 .student-request-help-row small {
@@ -1900,108 +1945,44 @@
 }
 
 .student-request-help-row span {
-    color: #7a857e;
-    font-size: 11px;
+    color: var(--color-texto-suave);
+
+    font-size: 0.68rem;
 }
 
 .student-request-note {
     margin-top: 5px;
     padding: 16px 18px;
-    border: 1px solid #dde5ce;
-    border-radius: 12px;
-    background: #f2f5e8;
-    color: #536158;
-    font-size: 13px;
+
+    background: #fbf3ef;
+    color: var(--color-texto-secundario);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 11px;
+
+    font-size: 0.78rem;
     line-height: 1.6;
 }
 
 .student-request-note strong {
-    color: #26382d;
+    color: var(--color-marron);
 }
 
-/* =========================================================
-   ACCIONES DEL FORMULARIO
-========================================================= */
-
 .student-request-actions {
-    margin-top: 27px;
-    padding-top: 23px;
-    border-top: 1px solid #e7ebe7;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+
+    margin-top: 27px;
+    padding-top: 23px;
+
+    border-top: 1px solid var(--color-borde);
 }
 
 .student-request-actions .student-primary-button,
 .student-request-actions .student-request-secondary-button {
     min-width: 145px;
-}
-
-/* =========================================================
-   RESPONSIVE DE SOLICITUDES
-========================================================= */
-
-@media (max-width: 850px) {
-    .student-request-page-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .student-request-profile {
-        grid-template-columns: 1fr;
-    }
-
-    .student-request-profile div,
-    .student-request-profile div:first-child,
-    .student-request-profile div:last-child {
-        padding: 14px 0;
-        border-right: none;
-        border-bottom: 1px solid #e7ebe7;
-    }
-
-    .student-request-profile div:first-child {
-        padding-top: 0;
-    }
-
-    .student-request-profile div:last-child {
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-}
-
-@media (max-width: 600px) {
-    .student-request-page-header {
-        padding: 25px 22px;
-    }
-
-    .student-request-page-header .student-request-secondary-button {
-        width: 100%;
-    }
-
-    .student-request-form {
-        padding: 25px 21px;
-    }
-
-    .student-request-form-header {
-        flex-direction: column;
-    }
-
-    .student-request-help-row {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .student-request-actions {
-        align-items: stretch;
-        flex-direction: column-reverse;
-    }
-
-    .student-request-actions .student-primary-button,
-    .student-request-actions .student-request-secondary-button {
-        width: 100%;
-    }
 }
 
 
@@ -2014,51 +1995,63 @@
 }
 
 .my-invoices-list {
-    margin-top: 25px;
     display: flex;
     flex-direction: column;
     gap: 18px;
+
+    margin-top: 25px;
 }
 
 .my-invoice-card {
-    padding: 24px;
-    border: 1px solid #dde4de;
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 8px 24px rgba(24, 49, 38, 0.06);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 25px;
-    transition: transform 0.2s ease,
-        box-shadow 0.2s ease;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 17px;
+
+    box-shadow: var(--sombra-suave);
+
+    transition:
+        transform var(--transicion),
+        box-shadow var(--transicion);
 }
 
 .my-invoice-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(24, 49, 38, 0.09);
+
+    box-shadow: var(--sombra-media);
 }
 
 .my-invoice-main {
-    min-width: 0;
-    flex: 1;
     display: flex;
     align-items: flex-start;
     gap: 18px;
+    flex: 1;
+
+    min-width: 0;
 }
 
 .my-invoice-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
     width: 54px;
     height: 54px;
-    flex-shrink: 0;
+
+    background: var(--color-rojo-claro);
+    color: var(--color-rojo);
+
     border-radius: 14px;
-    background: #edf2ed;
-    color: #183c2d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 900;
+
+    font-size: 1.4rem;
+    font-weight: 800;
 }
 
 .my-invoice-information {
@@ -2074,58 +2067,71 @@
 }
 
 .my-invoice-number {
-    color: #7b867f;
-    font-size: 11px;
-    font-weight: 900;
+    color: var(--color-texto-suave);
+
+    font-size: 0.67rem;
+    font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
 .my-invoice-heading h2 {
     margin: 6px 0 0;
-    color: #1d3428;
-    font-size: 20px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
 }
 
 .my-invoice-author {
     margin: 6px 0 18px;
-    color: #748078;
-    font-size: 13px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.76rem;
 }
 
 .my-invoice-status {
     padding: 7px 12px;
+
     border-radius: 999px;
-    font-size: 11px;
-    font-weight: 900;
+
     white-space: nowrap;
+
+    font-size: 0.67rem;
+    font-weight: 800;
 }
 
 .my-invoice-status.pagada {
-    background: #e5f5eb;
-    color: #18713f;
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
 }
 
 .my-invoice-status.pendiente {
-    background: #fff1d8;
-    color: #976111;
+    background: var(--color-amarillo-fondo);
+    color: var(--color-amarillo);
 }
 
 .my-invoice-status.anulada {
-    background: #fbe6e6;
-    color: #a33a3a;
+    background: var(--color-error-fondo);
+    color: var(--color-error);
 }
 
 .my-invoice-data {
     display: grid;
-    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    grid-template-columns:
+        repeat(4, minmax(120px, 1fr));
+
     gap: 15px;
 }
 
 .my-invoice-data div {
     padding: 12px;
+
+    background: var(--color-crema-claro);
+
     border-radius: 10px;
-    background: #f7f9f7;
 }
 
 .my-invoice-data span,
@@ -2134,91 +2140,1120 @@
 }
 
 .my-invoice-data span {
-    color: #7a857e;
-    font-size: 11px;
+    color: var(--color-texto-suave);
+
+    font-size: 0.67rem;
 }
 
 .my-invoice-data strong {
     margin-top: 5px;
-    color: #304238;
-    font-size: 12px;
+
+    color: var(--color-marron);
+
+    font-size: 0.74rem;
 }
 
 .my-invoice-actions {
-    min-width: 155px;
-    padding-left: 23px;
-    border-left: 1px solid #e3e8e4;
     display: flex;
     align-items: stretch;
     flex-direction: column;
     gap: 17px;
+
+    min-width: 155px;
+    padding-left: 23px;
+
+    border-left: 1px solid var(--color-borde);
 }
 
 .my-invoice-total span,
 .my-invoice-total strong {
     display: block;
+
     text-align: right;
 }
 
 .my-invoice-total span {
-    color: #78837c;
-    font-size: 11px;
+    color: var(--color-texto-suave);
+
+    font-size: 0.67rem;
 }
 
 .my-invoice-total strong {
     margin-top: 5px;
-    color: #17392b;
-    font-size: 24px;
+
+    color: var(--color-rojo);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.45rem;
 }
 
-@media (max-width: 1050px) {
-    .my-invoice-card {
-        align-items: stretch;
-        flex-direction: column;
+
+/* =========================================================
+   DETALLE DE FACTURA
+========================================================= */
+
+.invoice-success-message {
+    margin-bottom: 22px;
+    padding: 18px 21px;
+
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
+
+    border: 1px solid #badfc4;
+    border-radius: 13px;
+
+    font-size: 0.82rem;
+}
+
+.invoice-success-message strong {
+    display: block;
+
+    margin-bottom: 4px;
+}
+
+.invoice-page-header {
+    align-items: center;
+}
+
+.invoice-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.invoice-document {
+    margin-top: 25px;
+    padding: 34px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 20px;
+
+    box-shadow: var(--sombra-suave);
+}
+
+.invoice-document-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+
+    padding-bottom: 26px;
+
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.invoice-company {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.invoice-company-logo {
+    display: grid;
+    place-items: center;
+
+    width: 52px;
+    height: 52px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-rojo),
+            var(--color-rojo-oscuro)
+        );
+
+    color: #ffffff;
+
+    border-radius: 14px;
+
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.invoice-company strong,
+.invoice-company small,
+.invoice-number span,
+.invoice-number strong,
+.invoice-number small {
+    display: block;
+}
+
+.invoice-company strong {
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.2rem;
+}
+
+.invoice-company small,
+.invoice-number small {
+    margin-top: 4px;
+
+    color: var(--color-texto-suave);
+}
+
+.invoice-number {
+    text-align: right;
+}
+
+.invoice-number span {
+    color: var(--color-texto-suave);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.invoice-number strong {
+    margin: 6px 0;
+
+    color: var(--color-rojo);
+
+    font-size: 1.05rem;
+}
+
+.invoice-information-grid,
+.invoice-access-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 17px;
+
+    padding: 27px 0;
+}
+
+.invoice-information-box,
+.invoice-access-grid div {
+    padding: 18px;
+
+    background: var(--color-crema-claro);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+}
+
+.invoice-label {
+    color: var(--color-texto-suave);
+
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.invoice-information-box strong {
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--color-marron);
+
+    font-size: 0.88rem;
+}
+
+.invoice-information-box small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--color-texto-suave);
+}
+
+.invoice-status.pagada {
+    color: var(--color-verde);
+}
+
+.invoice-status.pendiente {
+    color: var(--color-amarillo);
+}
+
+.invoice-status.anulada {
+    color: var(--color-error);
+}
+
+.invoice-detail-section,
+.invoice-access-section {
+    padding: 25px 0;
+
+    border-top: 1px solid var(--color-borde);
+}
+
+.invoice-detail-section h2,
+.invoice-access-section h2 {
+    margin: 0 0 18px;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.1rem;
+}
+
+.invoice-table-wrapper {
+    overflow-x: auto;
+}
+
+.invoice-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.invoice-table th {
+    padding: 13px;
+
+    background: var(--color-marron);
+    color: #ffffff;
+
+    text-align: left;
+
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.invoice-table td {
+    padding: 16px 13px;
+
+    color: var(--color-marron-claro);
+
+    border-bottom: 1px solid var(--color-borde);
+
+    font-size: 0.82rem;
+}
+
+.invoice-table td strong,
+.invoice-table td small {
+    display: block;
+}
+
+.invoice-table td small {
+    margin-top: 5px;
+
+    color: var(--color-texto-suave);
+}
+
+.invoice-access-grid span,
+.invoice-access-grid strong {
+    display: block;
+}
+
+.invoice-access-grid span {
+    color: var(--color-texto-suave);
+
+    font-size: 0.7rem;
+}
+
+.invoice-access-grid strong {
+    margin-top: 7px;
+
+    color: var(--color-marron);
+}
+
+.invoice-totals {
+    width: min(100%, 390px);
+    margin-left: auto;
+    padding-top: 24px;
+
+    border-top: 1px solid var(--color-borde);
+}
+
+.invoice-totals div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 9px 0;
+}
+
+.invoice-totals span {
+    color: var(--color-texto-secundario);
+}
+
+.invoice-totals strong {
+    color: var(--color-marron);
+}
+
+.invoice-total-final {
+    margin-top: 8px;
+    padding-top: 17px !important;
+
+    border-top: 2px solid var(--color-borde-fuerte);
+}
+
+.invoice-total-final span,
+.invoice-total-final strong {
+    color: var(--color-rojo);
+
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.invoice-footer {
+    margin-top: 28px;
+    padding-top: 20px;
+
+    color: var(--color-texto-suave);
+
+    border-top: 1px solid var(--color-borde);
+
+    text-align: center;
+    font-size: 0.7rem;
+}
+
+.invoice-footer p {
+    margin: 4px 0;
+}
+/* =========================================================
+   DETALLE DEL LIBRO - MENSAJES Y LECTURA
+========================================================= */
+
+.student-access-error {
+    margin-bottom: 24px;
+    padding: 15px 18px;
+
+    background: var(--color-error-fondo);
+    color: var(--color-error);
+
+    border: 1px solid #edc1b8;
+    border-left: 4px solid var(--color-rojo);
+    border-radius: 11px;
+
+    font-size: 0.82rem;
+    font-weight: 650;
+    line-height: 1.55;
+
+    box-shadow:
+        0 6px 18px rgba(140, 45, 25, 0.06);
+}
+
+.book-read-form {
+    width: 100%;
+    margin: 0;
+}
+
+.book-read-form .student-primary-button {
+    width: 100%;
+}
+
+/* =========================================================
+   RESPONSIVE DEL SIDEBAR READPOINT
+========================================================= */
+
+@media (max-width: 950px) {
+    .student-layout {
+        display: block;
+        min-height: 100vh;
     }
 
-    .my-invoice-actions {
-        padding-top: 18px;
-        padding-left: 0;
-        border-top: 1px solid #e3e8e4;
-        border-left: none;
+    .student-layout > .sidebar {
+        position: static;
+
+        width: 100%;
+        min-width: 0;
+        height: auto;
+
+        padding: 12px;
+
+        overflow: visible;
+    }
+
+    .student-layout > .sidebar .encabezado-sidebar {
+        display: flex;
         align-items: center;
-        flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
+
+        padding: 4px 12px 10px;
     }
 
-    .my-invoice-total span,
-    .my-invoice-total strong {
-        text-align: left;
-    }
-}
+    .student-layout > .sidebar .logo-sidebar {
+        width: 92px;
+        height: 92px;
+        max-width: 92px;
 
-@media (max-width: 800px) {
-    .my-invoice-data {
-        grid-template-columns: repeat(2, 1fr);
+        object-fit: contain;
     }
-}
 
-@media (max-width: 550px) {
-    .my-invoice-main {
+    .student-layout > .sidebar .contenido-enlaces-sidebar {
+        display: grid;
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 6px;
+
+        padding: 12px 2px;
+
+        overflow: visible;
+    }
+
+    .student-layout > .sidebar .enlace-sidebar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        width: 100%;
+        min-height: 43px;
+        margin: 0;
+        padding: 9px 10px;
+
+        text-align: center;
+    }
+
+    .student-layout > .sidebar .enlace-sidebar:hover {
+        transform: none;
+    }
+
+    .student-layout > .sidebar .icono-sidebar {
+        flex: 0 0 18px;
+
+        width: 18px;
+        height: 18px;
+    }
+
+    .student-layout > .sidebar .icono-sidebar svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .student-layout > .sidebar .texto-enlace-sidebar {
+        min-width: 0;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .student-layout > .sidebar .sidebar-bottom {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 6px;
+
+        padding: 12px 2px 0;
+    }
+
+    .student-main {
+        width: 100%;
+        padding: 25px 20px 50px;
+    }
+
+    .student-hero,
+    .student-page-header,
+    .student-request-page-header {
+        align-items: flex-start;
         flex-direction: column;
     }
 
-    .my-invoice-heading {
-        flex-direction: column;
+    .catalog-summary {
+        width: 100%;
+        min-width: 0;
     }
 
-    .my-invoice-data {
+    .catalog-search-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .book-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .book-detail-layout {
+        grid-template-columns:
+            280px
+            minmax(0, 1fr);
+    }
+
+    .purchase-layout {
         grid-template-columns: 1fr;
     }
 
-    .my-invoice-actions {
+    .reservation-card {
+        grid-template-columns:
+            120px
+            minmax(0, 1fr);
+    }
+
+    .reservation-cover {
+        width: 120px;
+        height: 165px;
+    }
+
+    .reservation-actions {
+        grid-column: 1 / -1;
+
+        align-items: center;
+        flex-direction: row;
+
+        min-height: 0;
+        padding: 17px 0 0;
+
+        border-top: 1px solid var(--color-borde);
+        border-left: 0;
+    }
+
+    .reservation-button {
+        width: auto;
+        min-width: 170px;
+    }
+
+    .student-request-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .student-request-profile div,
+    .student-request-profile div:first-child,
+    .student-request-profile div:last-child {
+        padding: 14px 0;
+
+        border-right: 0;
+        border-bottom: 1px solid var(--color-borde);
+    }
+
+    .student-request-profile div:first-child {
+        padding-top: 0;
+    }
+
+    .student-request-profile div:last-child {
+        padding-bottom: 0;
+
+        border-bottom: 0;
+    }
+}
+
+@media (max-width: 650px) {
+    .student-layout > .sidebar .contenido-enlaces-sidebar {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .student-layout > .sidebar .sidebar-bottom {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 430px) {
+    .student-layout > .sidebar .contenido-enlaces-sidebar,
+    .student-layout > .sidebar .sidebar-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .student-layout > .sidebar .enlace-sidebar {
+        justify-content: flex-start;
+
+        text-align: left;
+    }
+
+    .student-layout > .sidebar .texto-enlace-sidebar {
+        white-space: normal;
+    }
+}
+
+
+/* =========================================================
+   IMPRESIÓN DE FACTURAS
+========================================================= */
+
+@media print {
+    .student-sidebar,
+    .student-page-header,
+    .invoice-success-message {
+        display: none !important;
+    }
+
+    .student-layout {
+        display: block;
+    }
+
+    .student-main {
+        padding: 0;
+    }
+
+    .invoice-document {
+        margin: 0;
+        padding: 20px;
+
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================================
+   LISTADO DE SOLICITUDES
+========================================================= */
+
+.student-request-summary {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 24px;
+}
+
+.student-request-summary div {
+    min-width: 190px;
+    padding: 18px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 15px;
+
+    box-shadow: var(--sombra-suave);
+}
+
+.student-request-summary span {
+    display: block;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.student-request-summary strong {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--color-rojo);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.7rem;
+}
+
+.request-empty-state {
+    margin-top: 24px;
+}
+
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    margin-top: 24px;
+}
+
+.request-card {
+    padding: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 18px;
+
+    box-shadow: var(--sombra-suave);
+
+    transition:
+        transform var(--transicion),
+        box-shadow var(--transicion);
+}
+
+.request-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--sombra-media);
+}
+
+.request-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.request-card-id {
+    color: var(--color-rojo);
+
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.request-card-header h2 {
+    margin: 6px 0 0;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: 1.35rem;
+    line-height: 1.3;
+}
+
+.request-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 8px 13px;
+
+    border-radius: 999px;
+
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.request-status.pendiente {
+    background: var(--color-amarillo-fondo);
+    color: var(--color-amarillo);
+}
+
+.request-status.aprobada {
+    background: var(--color-verde-fondo);
+    color: var(--color-verde);
+}
+
+.request-status.rechazada {
+    background: var(--color-error-fondo);
+    color: var(--color-error);
+}
+
+.request-card-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 13px;
+
+    margin-top: 20px;
+}
+
+.request-information-box {
+    padding: 15px;
+
+    background: var(--color-crema-claro);
+
+    border: 1px solid var(--color-borde);
+    border-radius: 11px;
+}
+
+.request-information-box span,
+.request-section-label {
+    display: block;
+
+    color: var(--color-texto-suave);
+
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.request-information-box strong {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--color-marron);
+
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.request-card-content {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+    margin-top: 22px;
+}
+
+.request-card-content div {
+    min-width: 0;
+}
+
+.request-card-content p {
+    margin: 8px 0 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
+    line-height: 1.65;
+
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+    .student-request-summary {
+        justify-content: stretch;
+    }
+
+    .student-request-summary div {
+        width: 100%;
+    }
+
+    .request-card-grid,
+    .request-card-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .request-card {
+        padding: 20px;
+    }
+
+    .request-card-header {
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   CORRECCIÓN DE ANCHO - DETALLE DEL LIBRO
+========================================================= */
+
+.student-layout {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: clip;
+}
+
+.student-main {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+}
+
+.book-detail-layout {
+    width: 100%;
+    max-width: 100%;
+
+    grid-template-columns:
+        minmax(220px, 320px)
+        minmax(0, 1fr)
+        minmax(250px, 300px);
+
+    gap: clamp(20px, 2.4vw, 34px);
+}
+
+.book-detail-cover,
+.book-detail-information,
+.book-action-panel {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.book-detail-information {
+    overflow-wrap: anywhere;
+}
+
+.book-detail-information h1,
+.book-synopsis p,
+.book-action-panel p,
+.book-metadata strong {
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.book-detail-cover img {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: 620px;
+
+    object-fit: cover;
+}
+
+.book-action-panel {
+    padding: clamp(20px, 2vw, 27px);
+}
+
+/* En laptops, el panel de acciones pasa abajo */
+
+@media (max-width: 1380px) {
+    .book-detail-layout {
+        grid-template-columns:
+            minmax(240px, 320px)
+            minmax(0, 1fr);
+
+        gap: 28px;
+    }
+
+    .book-action-panel {
+        position: static;
+
+        grid-column: 1 / -1;
+
+        width: 100%;
+    }
+}
+
+/* Tabletas */
+
+@media (max-width: 850px) {
+    .book-detail-layout {
+        grid-template-columns:
+            minmax(210px, 280px)
+            minmax(0, 1fr);
+
+        gap: 22px;
+    }
+
+    .student-main {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+}
+
+/* Celulares */
+
+@media (max-width: 680px) {
+    .book-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .book-detail-cover {
+        width: min(100%, 390px);
+        margin: 0 auto;
+    }
+
+    .book-detail-cover img {
+        max-height: none;
+    }
+
+    .book-action-panel {
+        grid-column: auto;
+    }
+}
+/* =========================================================
+   LECTOR DIGITAL - VISTA AMPLIA
+========================================================= */
+
+.reader-page {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    padding: 16px 18px 22px;
+
+    overflow: hidden;
+}
+
+.reader-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+
+    margin-bottom: 14px;
+    padding: 16px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1dfd8 0%,
+            #fffaf7 55%,
+            #f4e9e4 100%
+        );
+
+    border: 1px solid var(--color-borde);
+    border-radius: 15px;
+}
+
+.reader-header h1 {
+    margin: 4px 0 0;
+
+    color: var(--color-marron);
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    line-height: 1.15;
+}
+
+.reader-header p {
+    margin: 5px 0 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.78rem;
+}
+
+.reader-card {
+    width: 100%;
+    max-width: 100%;
+
+    height: calc(100vh - 125px);
+    min-height: 760px;
+
+    overflow: hidden;
+
+    background: #3a3a3a;
+
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+
+    box-shadow: var(--sombra-suave);
+}
+
+.reader-frame {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+}
+
+/* Permite que el lector aproveche más espacio */
+.reader-page.student-main {
+    padding-top: 14px;
+    padding-right: 16px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+}
+
+@media (max-width: 950px) {
+    .reader-page {
+        padding: 14px;
+    }
+
+    .reader-card {
+        height: calc(100vh - 205px);
+        min-height: 650px;
+    }
+}
+
+@media (max-width: 700px) {
+    .reader-header {
         align-items: stretch;
         flex-direction: column;
     }
 
-    .my-invoice-actions .reservation-button {
+    .reader-header .student-request-secondary-button {
         width: 100%;
-        text-align: center;
+    }
+
+    .reader-card {
+        height: calc(100vh - 250px);
+        min-height: 560px;
     }
 }

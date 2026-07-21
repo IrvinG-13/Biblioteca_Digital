@@ -55,23 +55,18 @@ $resumen = $libroModel->obtenerResumenCatalogo();
     >
 
     <title>Catálogo - Biblioteca Digital</title>
-    <link
-    rel="stylesheet"
-    href="assets/css/style.css"
->
+        <link rel="stylesheet" href="assets/css/style.css">
 
-<link
-    rel="stylesheet"
-    href="assets/css/student.css?v=1"
->
-</head>
+        <link rel="stylesheet" href="assets/css/admin.css?v=4">
+
+        <link rel="stylesheet" href="assets/css/student.css?v=10">
+        </head>
 
 <body class="student-body">
 
 <div class="student-layout">
 
-    <?php include __DIR__ . '/menu_estudiante.php'; ?>
-
+    <?php include __DIR__ . '/menu.php'; ?>
     <main class="student-main">
 
         <?php if (($_GET["password_actualizada"] ?? "") === "1"): ?>

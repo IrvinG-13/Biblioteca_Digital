@@ -133,15 +133,20 @@ $fechaActual = new DateTimeImmutable(
         Mis libros - Biblioteca Digital
     </title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css"
-    >
+<link
+    rel="stylesheet"
+    href="assets/css/style.css"
+>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/student.css?v=7"
-    >
+<link
+    rel="stylesheet"
+    href="assets/css/admin.css?v=7"
+>
+
+<link
+    rel="stylesheet"
+    href="assets/css/student.css?v=15"
+>
 
 </head>
 
@@ -149,8 +154,7 @@ $fechaActual = new DateTimeImmutable(
 
 <div class="student-layout">
 
-    <?php include __DIR__ . '/menu_estudiante.php'; ?>
-
+    <?php include __DIR__ . '/menu.php'; ?>
     <main class="student-main">
 
         <section class="student-page-header">
@@ -272,9 +276,9 @@ $fechaActual = new DateTimeImmutable(
                         $tituloBoton =
                             'Renovar acceso';
 
-                        $urlBoton =
-                            'libro_detalle.php?id='
-                            . (int)$reserva['libro_id'];
+                    $urlBoton =
+                        'ver_pdf.php?libro_id='
+                        . (int)$reserva['libro_id'];
                     } elseif ($puedeLeer) {
                         $nombreEstado =
                             $estados[$estado]
@@ -531,7 +535,6 @@ $fechaActual = new DateTimeImmutable(
                                 ?>"
                                 class="reservation-button"
                                 <?php if ($puedeLeer): ?>
-                                    target="_blank"
                                 <?php endif; ?>
                             >
                                 <?php echo escaparReserva(
