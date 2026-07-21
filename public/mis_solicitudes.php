@@ -11,68 +11,85 @@ $controller = new SolicitudController();
 
 /*
  * También valida que el usuario tenga sesión iniciada,
- * sea estudiante y esté vinculado a la tabla estudiantes.
+ * sea estudiante o profesor y esté vinculado a su tabla.
  */
 $datos = $controller->listarMisSolicitudes();
-$tipoSolicitante = $datos['tipo'];
-$solicitante = $datos['solicitante'];
-$solicitudes = $datos['solicitudes'];
 
-$exito = $_GET['exito'] ?? '';
-$error = $_GET['error'] ?? '';
+$tipoSolicitante = $datos["tipo"];
+$solicitante = $datos["solicitante"];
+$solicitudes = $datos["solicitudes"];
+
+$exito = $_GET["exito"] ?? "";
+$error = $_GET["error"] ?? "";
 
 $esc = static function ($valor): string {
     return htmlspecialchars(
         (string)$valor,
         ENT_QUOTES,
-        'UTF-8'
+        "UTF-8"
     );
 };
 
 /*
- * Construye el nombre completo del estudiante.
+ * Construir información del solicitante.
  */
-if ($tipoSolicitante === 'profesor') {
-    $nombreCompleto = $solicitante['nombre'] ?? '';
-    $identificacion = $solicitante['cedula'] ?? '';
-    $carreraOMateria = $solicitante['materia'] ?? 'No especificada';
+if ($tipoSolicitante === "profesor") {
+    $nombreCompleto = $solicitante["nombre"] ?? "";
+    $identificacion = $solicitante["cedula"] ?? "";
+    $carreraOMateria =
+        $solicitante["materia"] ?? "No especificada";
 } else {
     $partesNombre = [
-        $solicitante['primer_nombre'] ?? '',
-        $solicitante['segundo_nombre'] ?? '',
-        $solicitante['primer_apellido'] ?? '',
-        $solicitante['segundo_apellido'] ?? ''
+        $solicitante["primer_nombre"] ?? "",
+        $solicitante["segundo_nombre"] ?? "",
+        $solicitante["primer_apellido"] ?? "",
+        $solicitante["segundo_apellido"] ?? ""
     ];
+
     $partesNombre = array_filter(
         $partesNombre,
-        static fn ($parte) => trim((string)$parte) !== ''
+        static fn ($parte) =>
+            trim((string)$parte) !== ""
     );
-    $nombreCompleto = implode(' ', $partesNombre);
-    $identificacion = $solicitante['cip'] ?? '';
-    $carreraOMateria = $solicitante['carrera_nombre'] ?? 'No especificada';
+
+    $nombreCompleto = implode(
+        " ",
+        $partesNombre
+    );
+
+    $identificacion =
+        $solicitante["cip"] ?? "";
+
+    $carreraOMateria =
+        $solicitante["carrera_nombre"]
+        ?? "No especificada";
 }
 
 /*
- * Formatea las fechas para mostrarlas de manera más clara.
+ * Formatear fechas.
  */
 $formatearFecha = static function (
     ?string $fecha,
     bool $incluirHora = true
 ): string {
-    if ($fecha === null || trim($fecha) === '') {
-        return 'No registrada';
+    if (
+        $fecha === null
+        || trim($fecha) === ""
+    ) {
+        return "No registrada";
     }
 
     try {
         $fechaObjeto = new DateTime($fecha);
 
         return $incluirHora
-            ? $fechaObjeto->format('d/m/Y H:i')
-            : $fechaObjeto->format('d/m/Y');
+            ? $fechaObjeto->format("d/m/Y H:i")
+            : $fechaObjeto->format("d/m/Y");
     } catch (Throwable $e) {
         return $fecha;
     }
 };
+
 ?>
 
 <!DOCTYPE html>
@@ -88,426 +105,350 @@ $formatearFecha = static function (
     >
 
     <title>
-        Mis Solicitudes - Biblioteca Digital
+        Mis solicitudes - ReadPoint
     </title>
-        <link
-    rel="stylesheet"
-    href="assets/css/style.css"
->
 
-<link
-    rel="stylesheet"
-    href="assets/css/student.css?v=1"
->
-</head>
-
-</head>
-
-<body>
-
-<div class="app-layout">
-
-    <main
-        class="main-content"
-        style="margin-left: 0; width: 100%;"
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css"
     >
 
-        <div class="content-card">
+    <link
+        rel="stylesheet"
+        href="assets/css/student.css?v=8"
+    >
+        <link
+        rel="stylesheet"
+        href="assets/css/admin.css?v=7"
+    >
 
-            <!-- Encabezado -->
+</head>
 
-            <div class="page-header">
+<body class="student-body">
 
-                <div>
+<div class="student-layout">
 
-                    <h2>
-                        Mis solicitudes de libros
-                    </h2>
+    <?php include __DIR__ . '/menu.php'; ?>
 
-                    <p>
-                        Consulta el estado y la respuesta de las
-                        solicitudes que has enviado.
-                    </p>
+    <main class="student-main">
 
-                </div>
+        <section class="student-request-page-header">
 
-                <div>
+            <div>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="catalogo.php"
-                    >
-                        Inicio
-                    </a>
+                <span class="student-eyebrow">
+                    Gestión de solicitudes
+                </span>
 
-                    <a
-                        class="btn btn-primary"
-                        href="solicitar_libro.php"
-                    >
-                        + Nueva solicitud
-                    </a>
+                <h1>
+                    Mis solicitudes de libros
+                </h1>
 
-                    <a
-                        class="btn btn-danger"
-                        href="logout.php"
-                    >
-                        Cerrar sesión
-                    </a>
-
-                </div>
+                <p>
+                    Consulta el estado, la fecha y la respuesta
+                    de las solicitudes que has enviado.
+                </p>
 
             </div>
 
-            <!-- Información del estudiante -->
+            <a
+                href="solicitar_libro.php"
+                class="student-primary-button"
+            >
+                + Nueva solicitud
+            </a>
 
-            <div class="alert alert-success">
+        </section>
 
-                <strong><?php echo $tipoSolicitante === 'profesor' ? 'Profesor' : 'Estudiante'; ?>:</strong>
-                
-                <?php echo $esc($nombreCompleto); ?>
-                
-                <br>
-                
-                <strong>Cédula / CIP:</strong>
-                
-                <?php echo $esc($identificacion); ?>
-                
-                <br>
-                
-                <strong><?php echo $tipoSolicitante === 'profesor' ? 'Materia' : 'Carrera'; ?>:</strong>
-                
-                <?php echo $esc($carreraOMateria); ?>
-            
-            </div>
+        <section class="student-request-profile">
 
-            <!-- Mensajes -->
+            <div>
 
-            <?php if ($exito === '1'): ?>
-
-                <div class="alert alert-success">
-
-                    La solicitud fue registrada correctamente
-                    y se encuentra pendiente de revisión.
-
-                </div>
-
-            <?php elseif ($error === 'cargar'): ?>
-
-                <div class="alert alert-error">
-
-                    No fue posible cargar las solicitudes.
-
-                </div>
-
-            <?php endif; ?>
-
-            <!-- Resumen -->
-
-            <div class="actions-bar">
+                <span>
+                    <?php echo $tipoSolicitante === "profesor"
+                        ? "Profesor"
+                        : "Estudiante"; ?>
+                </span>
 
                 <strong>
-
-                    Total de solicitudes:
-
-                    <?php echo count($solicitudes); ?>
-
+                    <?php echo $esc($nombreCompleto); ?>
                 </strong>
 
             </div>
 
-            <!-- Tabla -->
+            <div>
 
-            <div style="overflow-x: auto;">
+                <span>Cédula / CIP</span>
 
-                <table class="table">
+                <strong>
+                    <?php echo $esc($identificacion); ?>
+                </strong>
 
-                    <thead>
+            </div>
 
-                    <tr>
+            <div>
 
-                        <th>ID</th>
+                <span>
+                    <?php echo $tipoSolicitante === "profesor"
+                        ? "Materia"
+                        : "Carrera"; ?>
+                </span>
 
-                        <th>Libro solicitado</th>
+                <strong>
+                    <?php echo $esc($carreraOMateria); ?>
+                </strong>
 
-                        <th>Materia o área</th>
+            </div>
 
-                        <th>Motivo</th>
+        </section>
 
-                        <th>Estado</th>
+        <?php if ($exito === "1"): ?>
 
-                        <th>Fecha de solicitud</th>
+            <div class="alert alert-success">
 
-                        <th>Respuesta del administrador</th>
+                La solicitud fue registrada correctamente
+                y se encuentra pendiente de revisión.
 
-                        <th>Fecha de respuesta</th>
+            </div>
 
-                    </tr>
+        <?php elseif ($error === "cargar"): ?>
 
-                    </thead>
+            <div class="alert alert-error">
 
-                    <tbody>
+                No fue posible cargar las solicitudes.
 
-                    <?php if (empty($solicitudes)): ?>
+            </div>
 
-                        <tr>
+        <?php endif; ?>
 
-                            <td colspan="8">
+        <section class="student-request-summary">
 
-                                Todavía no has realizado solicitudes
-                                de libros.
+            <div>
 
-                                <br><br>
+                <span>Total de solicitudes</span>
 
-                                <a
-                                    class="btn btn-primary"
-                                    href="solicitar_libro.php"
-                                >
-                                    Realizar mi primera solicitud
-                                </a>
+                <strong>
+                    <?php echo count($solicitudes); ?>
+                </strong>
 
-                            </td>
+            </div>
 
-                        </tr>
+        </section>
 
-                    <?php else: ?>
+        <?php if (empty($solicitudes)): ?>
 
-                        <?php foreach ($solicitudes as $solicitud): ?>
+            <section class="student-empty-state request-empty-state">
 
-                            <?php
+                <div class="empty-icon">
+                    ＋
+                </div>
 
-                            $estado =
-                                $solicitud['estado']
-                                ?? 'pendiente';
+                <h2>
+                    Aún no tienes solicitudes
+                </h2>
 
-                            $textoEstado = match ($estado) {
-                                'aprobada' => 'Aprobada',
-                                'rechazada' => 'Rechazada',
-                                default => 'Pendiente'
-                            };
+                <p>
+                    Puedes solicitar un libro que todavía
+                    no esté disponible en el catálogo.
+                </p>
 
-                            $claseEstado = match ($estado) {
-                                'aprobada' => 'badge-blue',
-                                'rechazada' => 'badge-yellow',
-                                default => 'badge-yellow'
-                            };
+                <a
+                    href="solicitar_libro.php"
+                    class="student-primary-button"
+                >
+                    Realizar mi primera solicitud
+                </a>
 
-                            $observacion =
-                                trim(
-                                    (string)(
+            </section>
+
+        <?php else: ?>
+
+            <section class="request-list">
+
+                <?php foreach ($solicitudes as $solicitud): ?>
+
+                    <?php
+
+                    $estado =
+                        $solicitud["estado"]
+                        ?? "pendiente";
+
+                    $textoEstado = match ($estado) {
+                        "aprobada" => "Aprobada",
+                        "rechazada" => "Rechazada",
+                        default => "Pendiente"
+                    };
+
+                    $observacion = trim(
+                        (string)(
+                            $solicitud["observacion_admin"]
+                            ?? ""
+                        )
+                    );
+
+                    ?>
+
+                    <article class="request-card">
+
+                        <header class="request-card-header">
+
+                            <div>
+
+                                <span class="request-card-id">
+                                    Solicitud
+                                    #<?php echo (int)$solicitud["id"]; ?>
+                                </span>
+
+                                <h2>
+                                    <?php echo $esc(
                                         $solicitud[
-                                            'observacion_admin'
-                                        ] ?? ''
+                                            "titulo_solicitado"
+                                        ] ?? ""
+                                    ); ?>
+                                </h2>
+
+                            </div>
+
+                            <span
+                                class="request-status <?php
+                                echo $esc($estado);
+                                ?>"
+                            >
+                                <?php echo $textoEstado; ?>
+                            </span>
+
+                        </header>
+
+                        <div class="request-card-grid">
+
+                            <div class="request-information-box">
+
+                                <span>Materia o área</span>
+
+                                <strong>
+                                    <?php echo $esc(
+                                        $solicitud["area"]
+                                        ?? "No especificada"
+                                    ); ?>
+                                </strong>
+
+                            </div>
+
+                            <div class="request-information-box">
+
+                                <span>Fecha de solicitud</span>
+
+                                <strong>
+                                    <?php echo $esc(
+                                        $formatearFecha(
+                                            $solicitud["fecha"]
+                                            ?? null
+                                        )
+                                    ); ?>
+                                </strong>
+
+                            </div>
+
+                            <div class="request-information-box">
+
+                                <span>Fecha de respuesta</span>
+
+                                <strong>
+                                    <?php echo !empty(
+                                        $solicitud["fecha_respuesta"]
                                     )
-                                );
+                                        ? $esc(
+                                            $formatearFecha(
+                                                $solicitud[
+                                                    "fecha_respuesta"
+                                                ]
+                                            )
+                                        )
+                                        : "Pendiente"; ?>
+                                </strong>
 
-                            ?>
+                            </div>
 
-                            <tr>
+                        </div>
 
-                                <!-- ID -->
+                        <div class="request-card-content">
 
-                                <td>
+                            <div>
 
-                                    <?php echo (int)$solicitud['id']; ?>
+                                <span class="request-section-label">
+                                    Motivo de la solicitud
+                                </span>
 
-                                </td>
-
-                                <!-- Título -->
-
-                                <td>
-
-                                    <strong>
-
-                                        <?php echo $esc(
-                                            $solicitud[
-                                                'titulo_solicitado'
-                                            ] ?? ''
-                                        ); ?>
-
-                                    </strong>
-
-                                </td>
-
-                                <!-- Área -->
-
-                                <td>
-
-                                    <span class="badge badge-blue">
-
-                                        <?php echo $esc(
-                                            $solicitud['area'] ?? ''
-                                        ); ?>
-
-                                    </span>
-
-                                </td>
-
-                                <!-- Motivo -->
-
-                                <td>
+                                <p>
 
                                     <?php if (
                                         !empty(
-                                            $solicitud['comentario']
+                                            $solicitud["comentario"]
                                         )
                                     ): ?>
 
                                         <?php echo nl2br(
                                             $esc(
                                                 $solicitud[
-                                                    'comentario'
+                                                    "comentario"
                                                 ]
                                             )
                                         ); ?>
 
                                     <?php else: ?>
 
-                                        <small>
-                                            Sin motivo adicional.
-                                        </small>
+                                        Sin motivo adicional.
 
                                     <?php endif; ?>
 
-                                </td>
+                                </p>
 
-                                <!-- Estado -->
+                            </div>
 
-                                <td>
+                            <div>
 
-                                    <span
-                                        class="badge <?php
-                                        echo $claseEstado;
-                                        ?>"
-                                    >
+                                <span class="request-section-label">
+                                    Respuesta del administrador
+                                </span>
 
-                                        <?php echo $textoEstado; ?>
+                                <p>
 
-                                    </span>
-
-                                    <?php if (
-                                        $estado === 'pendiente'
-                                    ): ?>
-
-                                        <br>
-
-                                        <small>
-                                            Esperando revisión.
-                                        </small>
-
-                                    <?php elseif (
-                                        $estado === 'aprobada'
-                                    ): ?>
-
-                                        <br>
-
-                                        <small>
-                                            La solicitud fue aceptada.
-                                        </small>
-
-                                    <?php elseif (
-                                        $estado === 'rechazada'
-                                    ): ?>
-
-                                        <br>
-
-                                        <small>
-                                            La solicitud no fue aceptada.
-                                        </small>
-
-                                    <?php endif; ?>
-
-                                </td>
-
-                                <!-- Fecha de solicitud -->
-
-                                <td>
-
-                                    <?php echo $esc(
-                                        $formatearFecha(
-                                            $solicitud['fecha']
-                                            ?? null
-                                        )
-                                    ); ?>
-
-                                </td>
-
-                                <!-- Observación -->
-
-                                <td>
-
-                                    <?php if (
-                                        $observacion !== ''
-                                    ): ?>
+                                    <?php if ($observacion !== ""): ?>
 
                                         <?php echo nl2br(
                                             $esc($observacion)
                                         ); ?>
 
                                     <?php elseif (
-                                        $estado === 'pendiente'
+                                        $estado === "pendiente"
                                     ): ?>
 
-                                        <small>
-                                            Aún no existe una respuesta.
-                                        </small>
+                                        Aún no existe una respuesta.
 
                                     <?php else: ?>
 
-                                        <small>
-                                            Sin observación.
-                                        </small>
+                                        Sin observación registrada.
 
                                     <?php endif; ?>
 
-                                </td>
+                                </p>
 
-                                <!-- Fecha de respuesta -->
+                            </div>
 
-                                <td>
+                        </div>
 
-                                    <?php if (
-                                        !empty(
-                                            $solicitud[
-                                                'fecha_respuesta'
-                                            ]
-                                        )
-                                    ): ?>
+                    </article>
 
-                                        <?php echo $esc(
-                                            $formatearFecha(
-                                                $solicitud[
-                                                    'fecha_respuesta'
-                                                ]
-                                            )
-                                        ); ?>
+                <?php endforeach; ?>
 
-                                    <?php else: ?>
+            </section>
 
-                                        <small>
-                                            Pendiente
-                                        </small>
-
-                                    <?php endif; ?>
-
-                                </td>
-
-                            </tr>
-
-                        <?php endforeach; ?>
-
-                    <?php endif; ?>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
+        <?php endif; ?>
 
     </main>
 
 </div>
 
 </body>
+
 </html>

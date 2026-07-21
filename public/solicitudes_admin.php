@@ -138,7 +138,6 @@ $mensajeVacio = match ($estadoActual) {
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -146,642 +145,606 @@ $mensajeVacio = match ($estadoActual) {
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Solicitudes de libros - Administración
-    </title>
+    <title>Solicitudes de libros | ReadPoint</title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css?v=solicitudes-8"
-    >
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/solicitudes.css?v=2">
 </head>
 
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
 
-        <div class="content-card">
+        <section class="admin-requests-header">
 
-            <div class="page-header admin-requests-header">
+            <div>
+                <span class="admin-request-eyebrow">
+                    Bandeja administrativa
+                </span>
 
-                <div>
+                <h1>Solicitudes de libros</h1>
 
-                    <span class="admin-request-eyebrow">
-                        Bandeja administrativa
-                    </span>
+                <p>
+                    Revisa las solicitudes de estudiantes y profesores,
+                    apruébalas o recházalas y registra una respuesta.
+                </p>
+            </div>
 
-                    <h2>Solicitudes de libros</h2>
+            <div class="admin-request-counter">
 
-                    <p>
-                        Revisa las solicitudes de los estudiantes,
-                        apruébalas o recházalas y registra una respuesta.
-                    </p>
+                <strong>
+                    <?php echo (int)$totalSolicitudes; ?>
+                </strong>
 
-                </div>
-
-                <div class="admin-request-counter">
-
-                    <strong>
-                        <?php echo (int)$totalSolicitudes; ?>
-                    </strong>
-
-                    <span>
-                        resultado<?php echo $totalSolicitudes === 1
-                            ? ''
-                            : 's'; ?>
-                    </span>
-
-                </div>
+                <span>
+                    resultado<?php echo $totalSolicitudes === 1
+                        ? ""
+                        : "s"; ?>
+                </span>
 
             </div>
 
-            <?php if ($exito === '1'): ?>
+        </section>
 
-                <div class="alert alert-success">
+        <?php if ($exito === "1"): ?>
 
-                    La solicitud fue actualizada correctamente.
-                    Las solicitudes respondidas dejan de aparecer
-                    cuando el filtro está en Pendientes.
+            <div class="alert alert-success">
+                La solicitud fue actualizada correctamente.
+                Las solicitudes respondidas dejan de aparecer
+                cuando el filtro está en Pendientes.
+            </div>
 
-                </div>
+        <?php elseif (isset($mensajesError[$error])): ?>
 
-            <?php elseif (isset($mensajesError[$error])): ?>
+            <div class="alert alert-error">
+                <?php echo $esc(
+                    $mensajesError[$error]
+                ); ?>
+            </div>
 
-                <div class="alert alert-error">
+        <?php endif; ?>
 
-                    <?php echo $esc(
-                        $mensajesError[$error]
-                    ); ?>
+        <form
+            action="solicitudes_admin.php"
+            method="GET"
+            class="admin-request-filters"
+            id="admin-request-filters"
+        >
 
-                </div>
+            <div class="form-group">
 
-            <?php endif; ?>
+                <label for="categoria">
+                    Categoría
+                </label>
 
-            <!-- Los selectores aplican el filtro automáticamente. -->
-
-            <form
-                action="solicitudes_admin.php"
-                method="GET"
-                class="admin-request-filters"
-                id="admin-request-filters"
-            >
-
-                <div class="form-group">
-
-                    <label for="categoria">
-                        Categoría
-                    </label>
-
-                    <select
-                        id="categoria"
-                        name="categoria"
-                    >
-
-                        <option value="">
-                            Todas las categorías
-                        </option>
-
-                        <?php foreach ($categorias as $categoria): ?>
-
-                            <option
-                                value="<?php echo $esc($categoria); ?>"
-                                <?php echo $categoriaActual === $categoria
-                                    ? 'selected'
-                                    : ''; ?>
-                            >
-                                <?php echo $esc($categoria); ?>
-                            </option>
-
-                        <?php endforeach; ?>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="estado">
-                        Estado
-                    </label>
-
-                    <select
-                        id="estado"
-                        name="estado"
-                    >
-
-                        <?php foreach ($estados as $estado): ?>
-
-                            <option
-                                value="<?php echo $esc($estado); ?>"
-                                <?php echo $estadoActual === $estado
-                                    ? 'selected'
-                                    : ''; ?>
-                            >
-                                <?php echo $esc(
-                                    $textoFiltroEstado($estado)
-                                ); ?>
-                            </option>
-
-                        <?php endforeach; ?>
-
-                    </select>
-
-                </div>
-
-                <a
-                    href="solicitudes_admin.php"
-                    class="admin-request-reset"
+                <select
+                    id="categoria"
+                    name="categoria"
                 >
-                    Restablecer filtros
-                </a>
 
-                <noscript>
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        Aplicar filtros
-                    </button>
-
-                </noscript>
-
-            </form>
-
-            <?php if (empty($solicitudes)): ?>
-
-                <section class="admin-request-empty">
-
-                    <div class="admin-request-empty-icon">
-                        ✓
-                    </div>
-
-                    <h3>No hay solicitudes</h3>
-
-                    <p>
-                        <?php echo $esc($mensajeVacio); ?>
-                    </p>
-
-                </section>
-
-            <?php else: ?>
-
-                <section class="admin-request-list">
-
-                    <?php foreach ($solicitudes as $solicitud): ?>
-
-                        <?php
-
-                        $estadoSolicitud =
-                            $solicitud['estado']
-                            ?? 'pendiente';
-
-                        $observacionActual = trim(
-                            (string)(
-                                $solicitud[
-                                    'observacion_admin'
-                                ] ?? ''
-                            )
-                        );
-
-                        ?>
-
-                        <article class="admin-request-card">
-
-                            <header class="admin-request-card-header">
-
-                                <div>
-
-                                    <span class="admin-request-id">
-
-                                        Solicitud #
-
-                                        <?php echo (int)(
-                                            $solicitud['id']
-                                        ); ?>
-
-                                    </span>
-
-                                    <h3>
-
-                                        <?php echo $esc(
-                                            $solicitud[
-                                                'titulo_solicitado'
-                                            ] ?? ''
-                                        ); ?>
-
-                                    </h3>
-
-                                    <div class="admin-request-tags">
-
-                                        <span class="admin-request-category">
-
-                                            <?php echo $esc(
-                                                $solicitud['area']
-                                                ?? 'Sin categoría'
-                                            ); ?>
-
-                                        </span>
-
-                                        <span
-                                            class="admin-request-status <?php
-                                            echo $esc(
-                                                $estadoSolicitud
-                                            );
-                                            ?>"
-                                        >
-
-                                            <?php echo $esc(
-                                                $textoEstadoSolicitud(
-                                                    $estadoSolicitud
-                                                )
-                                            ); ?>
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="admin-request-date">
-
-                                    <span>Enviada el</span>
-
-                                    <strong>
-
-                                        <?php echo $esc(
-                                            $formatearFecha(
-                                                $solicitud['fecha']
-                                                ?? null
-                                            )
-                                        ); ?>
-
-                                    </strong>
-
-                                </div>
-
-                            </header>
-
-                            <div class="admin-request-card-body">
-
-                                <section class="admin-request-information">
-
-                                    <?php
-                                    $esProfesorSolicitud =
-                                        ($solicitud['tipo_solicitante'] ?? 'estudiante') === 'profesor';
-                                    ?>
-                                    <div class="admin-request-student">
-                                        <h4><?php echo $esProfesorSolicitud ? 'Profesor' : 'Estudiante'; ?></h4>
-                                        <strong>
-                                            <?php echo $esc(
-                                                $nombreCompleto(
-                                                    $solicitud
-                                                )
-                                            ); ?>
-                                        </strong>
-                                        <p>
-                                            <span>Cédula / CIP:</span>
-                                            <?php echo $esc(
-                                                $solicitud['identificacion_solicitante']
-                                                ?? 'No registrado'
-                                            ); ?>
-                                        </p>
-                                        <p>
-                                            <span><?php echo $esProfesorSolicitud ? 'Materia:' : 'Carrera:'; ?></span>
-                                            <?php echo $esc(
-                                                $solicitud['carrera_o_materia']
-                                                ?? 'No especificada'
-                                            ); ?>
-                                        </p>
-                                    </div>
-                                    
-                                    <div class="admin-request-comment">
-
-                                        <h4>
-                                            Motivo de la solicitud
-                                        </h4>
-
-                                        <?php if (
-                                            !empty(
-                                                $solicitud['comentario']
-                                            )
-                                        ): ?>
-
-                                            <p>
-
-                                                <?php echo nl2br(
-                                                    $esc(
-                                                        $solicitud[
-                                                            'comentario'
-                                                        ]
-                                                    )
-                                                ); ?>
-
-                                            </p>
-
-                                        <?php else: ?>
-
-                                            <p class="admin-muted-text">
-
-                                                El estudiante no agregó
-                                                un motivo adicional.
-
-                                            </p>
-
-                                        <?php endif; ?>
-
-                                    </div>
-
-                                    <?php if (
-                                        !empty(
-                                            $solicitud[
-                                                'fecha_respuesta'
-                                            ]
-                                        )
-                                    ): ?>
-
-                                        <div class="admin-request-last-response">
-
-                                            <h4>
-                                                Última respuesta
-                                            </h4>
-
-                                            <p>
-
-                                                Atendida por:
-
-                                                <strong>
-
-                                                    <?php echo $esc(
-                                                        $solicitud[
-                                                            'gestor_usuario'
-                                                        ]
-                                                        ?? 'Administrador'
-                                                    ); ?>
-
-                                                </strong>
-
-                                            </p>
-
-                                            <p>
-
-                                                Fecha:
-
-                                                <strong>
-
-                                                    <?php echo $esc(
-                                                        $formatearFecha(
-                                                            $solicitud[
-                                                                'fecha_respuesta'
-                                                            ]
-                                                        )
-                                                    ); ?>
-
-                                                </strong>
-
-                                            </p>
-
-                                        </div>
-
-                                    <?php endif; ?>
-
-                                </section>
-
-                                <form
-                                    action="solicitud_estado_procesar.php"
-                                    method="POST"
-                                    class="admin-request-response-form"
-                                >
-
-                                    <input
-                                        type="hidden"
-                                        name="csrf_token"
-                                        value="<?php echo $esc(
-                                            $token
-                                        ); ?>"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="id"
-                                        value="<?php echo (int)(
-                                            $solicitud['id']
-                                        ); ?>"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="vista_actual"
-                                        value="<?php echo $esc(
-                                            $estadoActual
-                                        ); ?>"
-                                    >
-
-                                    <input
-                                        type="hidden"
-                                        name="categoria_actual"
-                                        value="<?php echo $esc(
-                                            $categoriaActual
-                                        ); ?>"
-                                    >
-
-                                    <div class="form-group">
-
-                                        <label
-                                            for="estado-<?php
-                                            echo (int)$solicitud['id'];
-                                            ?>"
-                                        >
-                                            Estado de la solicitud
-                                        </label>
-
-                                        <select
-                                            id="estado-<?php
-                                            echo (int)$solicitud['id'];
-                                            ?>"
-                                            name="estado"
-                                            required
-                                        >
-
-                                            <option
-                                                value="pendiente"
-                                                <?php echo $estadoSolicitud
-                                                    === 'pendiente'
-                                                    ? 'selected'
-                                                    : ''; ?>
-                                            >
-                                                Pendiente
-                                            </option>
-
-                                            <option
-                                                value="aprobada"
-                                                <?php echo $estadoSolicitud
-                                                    === 'aprobada'
-                                                    ? 'selected'
-                                                    : ''; ?>
-                                            >
-                                                Aprobada
-                                            </option>
-
-                                            <option
-                                                value="rechazada"
-                                                <?php echo $estadoSolicitud
-                                                    === 'rechazada'
-                                                    ? 'selected'
-                                                    : ''; ?>
-                                            >
-                                                Rechazada
-                                            </option>
-
-                                        </select>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label
-                                            for="observacion-<?php
-                                            echo (int)$solicitud['id'];
-                                            ?>"
-                                        >
-                                            Respuesta para el estudiante
-                                        </label>
-
-                                        <textarea
-                                            id="observacion-<?php
-                                            echo (int)$solicitud['id'];
-                                            ?>"
-                                            name="observacion_admin"
-                                            rows="5"
-                                            maxlength="1000"
-                                            placeholder="Ej. La solicitud fue aprobada y el libro será incorporado próximamente."
-                                        ><?php echo $esc(
-                                            $observacionActual
-                                        ); ?></textarea>
-
-                                        <small>
-                                            La respuesta aparecerá en
-                                            “Mis solicitudes” del estudiante.
-                                        </small>
-
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary admin-request-save"
-                                    >
-                                        Guardar respuesta
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </article>
+                    <option value="">
+                        Todas las categorías
+                    </option>
+
+                    <?php foreach ($categorias as $categoria): ?>
+
+                        <option
+                            value="<?php echo $esc($categoria); ?>"
+                            <?php echo $categoriaActual === $categoria
+                                ? "selected"
+                                : ""; ?>
+                        >
+                            <?php echo $esc($categoria); ?>
+                        </option>
 
                     <?php endforeach; ?>
 
-                </section>
+                </select>
 
-                <?php if ($totalPaginas > 1): ?>
+            </div>
 
-                    <nav class="admin-request-pagination">
+            <div class="form-group">
 
-                        <?php if ($paginaActual > 1): ?>
+                <label for="estado">
+                    Estado
+                </label>
 
-                            <a
-                                href="<?php echo $esc(
-                                    $construirUrlPagina(
-                                        $paginaActual - 1,
-                                        $categoriaActual,
-                                        $estadoActual
+                <select
+                    id="estado"
+                    name="estado"
+                >
+
+                    <?php foreach ($estados as $estado): ?>
+
+                        <option
+                            value="<?php echo $esc($estado); ?>"
+                            <?php echo $estadoActual === $estado
+                                ? "selected"
+                                : ""; ?>
+                        >
+                            <?php echo $esc(
+                                $textoFiltroEstado($estado)
+                            ); ?>
+                        </option>
+
+                    <?php endforeach; ?>
+
+                </select>
+
+            </div>
+
+            <a
+                href="solicitudes_admin.php"
+                class="admin-request-reset"
+            >
+                Restablecer filtros
+            </a>
+
+            <noscript>
+                <button
+                    type="submit"
+                    class="admin-request-filter-button"
+                >
+                    Aplicar filtros
+                </button>
+            </noscript>
+
+        </form>
+
+        <?php if (empty($solicitudes)): ?>
+
+            <section class="admin-request-empty">
+
+                <div
+                    class="admin-request-empty-icon"
+                    aria-hidden="true"
+                >
+                    ✓
+                </div>
+
+                <h2>No hay solicitudes</h2>
+
+                <p>
+                    <?php echo $esc($mensajeVacio); ?>
+                </p>
+
+            </section>
+
+        <?php else: ?>
+
+            <section class="admin-request-list">
+
+                <?php foreach ($solicitudes as $solicitud): ?>
+
+                    <?php
+
+                    $estadoSolicitud =
+                        $solicitud["estado"]
+                        ?? "pendiente";
+
+                    $observacionActual = trim(
+                        (string)(
+                            $solicitud[
+                                "observacion_admin"
+                            ] ?? ""
+                        )
+                    );
+
+                    $esProfesorSolicitud =
+                        (
+                            $solicitud["tipo_solicitante"]
+                            ?? "estudiante"
+                        ) === "profesor";
+
+                    ?>
+
+                    <article class="admin-request-card">
+
+                        <header class="admin-request-card-header">
+
+                            <div>
+
+                                <span class="admin-request-id">
+                                    Solicitud #
+                                    <?php echo (int)$solicitud["id"]; ?>
+                                </span>
+
+                                <h2>
+                                    <?php echo $esc(
+                                        $solicitud["titulo_solicitado"]
+                                        ?? ""
+                                    ); ?>
+                                </h2>
+
+                                <div class="admin-request-tags">
+
+                                    <span class="admin-request-category">
+                                        <?php echo $esc(
+                                            $solicitud["area"]
+                                            ?? "Sin categoría"
+                                        ); ?>
+                                    </span>
+
+                                    <span
+                                        class="admin-request-status <?php echo $esc(
+                                            $estadoSolicitud
+                                        ); ?>"
+                                    >
+                                        <?php echo $esc(
+                                            $textoEstadoSolicitud(
+                                                $estadoSolicitud
+                                            )
+                                        ); ?>
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="admin-request-date">
+
+                                <span>Enviada el</span>
+
+                                <strong>
+                                    <?php echo $esc(
+                                        $formatearFecha(
+                                            $solicitud["fecha"]
+                                            ?? null
+                                        )
+                                    ); ?>
+                                </strong>
+
+                            </div>
+
+                        </header>
+
+                        <div class="admin-request-card-body">
+
+                            <section class="admin-request-information">
+
+                                <div class="admin-request-student">
+
+                                    <h3>
+                                        <?php echo $esProfesorSolicitud
+                                            ? "Profesor"
+                                            : "Estudiante"; ?>
+                                    </h3>
+
+                                    <strong>
+                                        <?php echo $esc(
+                                            $nombreCompleto(
+                                                $solicitud
+                                            )
+                                        ); ?>
+                                    </strong>
+
+                                    <p>
+                                        <span>Cédula / CIP:</span>
+
+                                        <?php echo $esc(
+                                            $solicitud[
+                                                "identificacion_solicitante"
+                                            ] ?? "No registrado"
+                                        ); ?>
+                                    </p>
+
+                                    <p>
+                                        <span>
+                                            <?php echo $esProfesorSolicitud
+                                                ? "Materia:"
+                                                : "Carrera:"; ?>
+                                        </span>
+
+                                        <?php echo $esc(
+                                            $solicitud[
+                                                "carrera_o_materia"
+                                            ] ?? "No especificada"
+                                        ); ?>
+                                    </p>
+
+                                </div>
+
+                                <div class="admin-request-comment">
+
+                                    <h3>
+                                        Motivo de la solicitud
+                                    </h3>
+
+                                    <?php if (
+                                        !empty(
+                                            $solicitud["comentario"]
+                                        )
+                                    ): ?>
+
+                                        <p>
+                                            <?php echo nl2br(
+                                                $esc(
+                                                    $solicitud[
+                                                        "comentario"
+                                                    ]
+                                                )
+                                            ); ?>
+                                        </p>
+
+                                    <?php else: ?>
+
+                                        <p class="admin-muted-text">
+                                            El solicitante no agregó
+                                            un motivo adicional.
+                                        </p>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                                <?php if (
+                                    !empty(
+                                        $solicitud["fecha_respuesta"]
                                     )
-                                ); ?>"
+                                ): ?>
+
+                                    <div class="admin-request-last-response">
+
+                                        <h3>
+                                            Última respuesta
+                                        </h3>
+
+                                        <p>
+                                            Atendida por:
+
+                                            <strong>
+                                                <?php echo $esc(
+                                                    $solicitud[
+                                                        "gestor_usuario"
+                                                    ] ?? "Administrador"
+                                                ); ?>
+                                            </strong>
+                                        </p>
+
+                                        <p>
+                                            Fecha:
+
+                                            <strong>
+                                                <?php echo $esc(
+                                                    $formatearFecha(
+                                                        $solicitud[
+                                                            "fecha_respuesta"
+                                                        ]
+                                                    )
+                                                ); ?>
+                                            </strong>
+                                        </p>
+
+                                    </div>
+
+                                <?php endif; ?>
+
+                            </section>
+
+                            <form
+                                action="solicitud_estado_procesar.php"
+                                method="POST"
+                                class="admin-request-response-form"
                             >
-                                ← Anterior
-                            </a>
 
-                        <?php endif; ?>
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="<?php echo $esc(
+                                        $token
+                                    ); ?>"
+                                >
 
-                        <?php for (
-                            $pagina = 1;
-                            $pagina <= $totalPaginas;
-                            $pagina++
-                        ): ?>
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?php echo (int)(
+                                        $solicitud["id"]
+                                    ); ?>"
+                                >
 
-                            <a
-                                href="<?php echo $esc(
-                                    $construirUrlPagina(
-                                        $pagina,
-                                        $categoriaActual,
+                                <input
+                                    type="hidden"
+                                    name="vista_actual"
+                                    value="<?php echo $esc(
                                         $estadoActual
-                                    )
-                                ); ?>"
-                                class="<?php echo $pagina
-                                    === $paginaActual
-                                    ? 'active'
-                                    : ''; ?>"
-                            >
-                                <?php echo $pagina; ?>
-                            </a>
+                                    ); ?>"
+                                >
 
-                        <?php endfor; ?>
+                                <input
+                                    type="hidden"
+                                    name="categoria_actual"
+                                    value="<?php echo $esc(
+                                        $categoriaActual
+                                    ); ?>"
+                                >
 
-                        <?php if (
-                            $paginaActual < $totalPaginas
-                        ): ?>
+                                <div class="form-group">
 
-                            <a
-                                href="<?php echo $esc(
-                                    $construirUrlPagina(
-                                        $paginaActual + 1,
-                                        $categoriaActual,
-                                        $estadoActual
-                                    )
-                                ); ?>"
-                            >
-                                Siguiente →
-                            </a>
+                                    <label
+                                        for="estado-<?php echo (int)$solicitud["id"]; ?>"
+                                    >
+                                        Estado de la solicitud
+                                    </label>
 
-                        <?php endif; ?>
+                                    <select
+                                        id="estado-<?php echo (int)$solicitud["id"]; ?>"
+                                        name="estado"
+                                        required
+                                    >
 
-                    </nav>
+                                        <option
+                                            value="pendiente"
+                                            <?php echo $estadoSolicitud
+                                                === "pendiente"
+                                                ? "selected"
+                                                : ""; ?>
+                                        >
+                                            Pendiente
+                                        </option>
 
-                <?php endif; ?>
+                                        <option
+                                            value="aprobada"
+                                            <?php echo $estadoSolicitud
+                                                === "aprobada"
+                                                ? "selected"
+                                                : ""; ?>
+                                        >
+                                            Aprobada
+                                        </option>
+
+                                        <option
+                                            value="rechazada"
+                                            <?php echo $estadoSolicitud
+                                                === "rechazada"
+                                                ? "selected"
+                                                : ""; ?>
+                                        >
+                                            Rechazada
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label
+                                        for="observacion-<?php echo (int)$solicitud["id"]; ?>"
+                                    >
+                                        Respuesta para el solicitante
+                                    </label>
+
+                                    <textarea
+                                        id="observacion-<?php echo (int)$solicitud["id"]; ?>"
+                                        name="observacion_admin"
+                                        rows="5"
+                                        maxlength="1000"
+                                        placeholder="Ej. La solicitud fue aprobada y el libro será incorporado próximamente."
+                                    ><?php echo $esc(
+                                        $observacionActual
+                                    ); ?></textarea>
+
+                                    <small>
+                                        La respuesta aparecerá en
+                                        “Mis solicitudes” del usuario.
+                                    </small>
+
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    class="admin-request-save"
+                                >
+                                    Guardar respuesta
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </article>
+
+                <?php endforeach; ?>
+
+            </section>
+
+            <?php if ($totalPaginas > 1): ?>
+
+                <nav class="admin-request-pagination">
+
+                    <?php if ($paginaActual > 1): ?>
+
+                        <a
+                            href="<?php echo $esc(
+                                $construirUrlPagina(
+                                    $paginaActual - 1,
+                                    $categoriaActual,
+                                    $estadoActual
+                                )
+                            ); ?>"
+                        >
+                            Anterior
+                        </a>
+
+                    <?php endif; ?>
+
+                    <?php for (
+                        $pagina = 1;
+                        $pagina <= $totalPaginas;
+                        $pagina++
+                    ): ?>
+
+                        <a
+                            href="<?php echo $esc(
+                                $construirUrlPagina(
+                                    $pagina,
+                                    $categoriaActual,
+                                    $estadoActual
+                                )
+                            ); ?>"
+                            class="<?php echo $pagina
+                                === $paginaActual
+                                ? "active"
+                                : ""; ?>"
+                        >
+                            <?php echo $pagina; ?>
+                        </a>
+
+                    <?php endfor; ?>
+
+                    <?php if (
+                        $paginaActual < $totalPaginas
+                    ): ?>
+
+                        <a
+                            href="<?php echo $esc(
+                                $construirUrlPagina(
+                                    $paginaActual + 1,
+                                    $categoriaActual,
+                                    $estadoActual
+                                )
+                            ); ?>"
+                        >
+                            Siguiente
+                        </a>
+
+                    <?php endif; ?>
+
+                </nav>
 
             <?php endif; ?>
 
-        </div>
+        <?php endif; ?>
 
     </main>
 
 </div>
 
 <script>
-
 document.addEventListener(
-    'DOMContentLoaded',
+    "DOMContentLoaded",
     function () {
         const formulario =
             document.getElementById(
-                'admin-request-filters'
+                "admin-request-filters"
             );
 
         const categoria =
-            document.getElementById('categoria');
+            document.getElementById("categoria");
 
         const estado =
-            document.getElementById('estado');
+            document.getElementById("estado");
 
         [categoria, estado].forEach(
             function (selector) {
                 selector.addEventListener(
-                    'change',
+                    "change",
                     function () {
                         formulario.submit();
                     }
@@ -790,7 +753,6 @@ document.addEventListener(
         );
     }
 );
-
 </script>
 
 </body>

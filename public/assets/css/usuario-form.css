@@ -1,0 +1,202 @@
+/* =========================================================
+   FORMULARIO DE USUARIO
+========================================================= */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    background: #f5ebe6;
+}
+
+/* Encabezado */
+
+.encabezado-formulario-usuario {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.etiqueta-pagina {
+    color: #8c2d19;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.encabezado-formulario-usuario h1 {
+    margin: 6px 0 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 2rem;
+}
+
+.encabezado-formulario-usuario p {
+    margin: 0;
+    color: #746761;
+    line-height: 1.6;
+}
+
+.boton-volver-usuarios {
+    flex-shrink: 0;
+    padding: 11px 16px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.boton-volver-usuarios:hover {
+    background: #faf6f3;
+}
+
+/* Alertas */
+
+.alert {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.alert-error {
+    background: #f8e3df;
+    color: #8c2d19;
+    border: 1px solid #edc1b8;
+}
+
+/* Panel */
+
+.panel-formulario-usuario {
+    max-width: 760px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(45, 36, 32, 0.06);
+}
+
+.formulario-usuario {
+    display: grid;
+    gap: 22px;
+}
+
+/* Campos */
+
+.grupo-campo-usuario {
+    display: grid;
+    gap: 8px;
+}
+
+.grupo-campo-usuario label {
+    color: #493d38;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.grupo-campo-usuario input,
+.grupo-campo-usuario select {
+    width: 100%;
+    min-height: 45px;
+    padding: 11px 13px;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font: inherit;
+    outline: none;
+}
+
+.grupo-campo-usuario input::placeholder {
+    color: #9a8d87;
+}
+
+.grupo-campo-usuario input:focus,
+.grupo-campo-usuario select:focus {
+    border-color: #8c2d19;
+    box-shadow: 0 0 0 3px rgba(140, 45, 25, 0.12);
+}
+
+.grupo-campo-usuario small {
+    color: #8b7d77;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+/* Acciones */
+
+.acciones-formulario-usuario {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 6px;
+}
+
+.boton-cancelar-usuario,
+.boton-guardar-usuario {
+    min-height: 43px;
+    padding: 11px 17px;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-cancelar-usuario {
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    color: #2d2420;
+    border: 1px solid #d9c8c0;
+}
+
+.boton-cancelar-usuario:hover {
+    background: #faf6f3;
+}
+
+.boton-guardar-usuario {
+    background: #8c2d19;
+    color: #ffffff;
+    border: 0;
+}
+
+.boton-guardar-usuario:hover {
+    background: #6f2114;
+}
+
+/* Responsive */
+
+@media (max-width: 760px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .encabezado-formulario-usuario {
+        flex-direction: column;
+    }
+
+    .boton-volver-usuarios {
+        width: 100%;
+        text-align: center;
+    }
+
+    .panel-formulario-usuario {
+        padding: 20px;
+    }
+
+    .acciones-formulario-usuario {
+        flex-direction: column-reverse;
+    }
+
+    .boton-cancelar-usuario,
+    .boton-guardar-usuario {
+        width: 100%;
+        text-align: center;
+    }
+}

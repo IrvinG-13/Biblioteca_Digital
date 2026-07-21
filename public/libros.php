@@ -48,7 +48,6 @@ $esc = static function ($valor): string {
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -56,94 +55,79 @@ $esc = static function ($valor): string {
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Gestión de Libros - Biblioteca Digital
-    </title>
+    <title>Libros | ReadPoint</title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css"
-    >
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/libros.css?v=2">
 </head>
 
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
 
-        <div class="content-card">
+        <section class="encabezado-libros">
 
-            <!-- Encabezado -->
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
 
-            <div class="page-header">
+                <h1>Gestión de libros</h1>
 
-                <div>
+                <p>
+                    Administra los libros propios, gratuitos, pagados y externos.
+                </p>
+            </div>
 
-                    <h2>
-                        Gestión de Libros
-                    </h2>
+            <div class="acciones-encabezado-libros">
 
-                    <p>
-                        Administra los libros propios, gratuitos,
-                        pagados y externos.
-                    </p>
+                <a
+                    class="boton-exportar-libros"
+                    href="libro_exportar.php"
+                >
+                    Exportar a Excel
+                </a>
 
-                </div>
-
-                <div>
-
-                    <a
-                        class="btn btn-secondary"
-                        href="libro_exportar.php"
-                    >
-                        Exportar a Excel
-                    </a>
-
-                    <a
-                        class="btn btn-primary"
-                        href="libro_form.php"
-                    >
-                        + Nuevo Libro
-                    </a>
-
-                </div>
+                <a
+                    class="boton-nuevo-libro"
+                    href="libro_form.php"
+                >
+                    Nuevo libro
+                </a>
 
             </div>
 
-            <!-- Mensajes -->
+        </section>
 
-            <?php if ($exito === "1"): ?>
+        <?php if ($exito === "1"): ?>
 
-                <div class="alert alert-success">
-                    Operación realizada correctamente.
-                </div>
+            <div class="alert alert-success">
+                Operación realizada correctamente.
+            </div>
 
-            <?php elseif (isset($mensajesError[$error])): ?>
+        <?php elseif (isset($mensajesError[$error])): ?>
 
-                <div class="alert alert-error">
+            <div class="alert alert-error">
+                <?php echo $esc($mensajesError[$error]); ?>
+            </div>
 
-                    <?php echo $esc(
-                        $mensajesError[$error]
-                    ); ?>
+        <?php endif; ?>
 
-                </div>
-
-            <?php endif; ?>
-
-            <!-- Buscador -->
+        <section class="panel-libros">
 
             <form
-                class="actions-bar"
+                class="barra-busqueda-libros"
                 action="libros.php"
                 method="GET"
             >
 
                 <input
-                    class="search-input"
+                    class="campo-busqueda-libros"
                     type="text"
                     name="busqueda"
                     placeholder="Buscar por título, autor o categoría..."
@@ -153,14 +137,14 @@ $esc = static function ($valor): string {
                 >
 
                 <button
-                    class="btn btn-secondary"
+                    class="boton-buscar boton-principal-readpoint"
                     type="submit"
                 >
                     Buscar
                 </button>
 
                 <a
-                    class="btn btn-secondary"
+                    class="boton-limpiar boton-principal-readpoint"
                     href="libros.php"
                 >
                     Limpiar
@@ -168,40 +152,24 @@ $esc = static function ($valor): string {
 
             </form>
 
-            <!-- Tabla -->
+            <div class="contenedor-tabla-libros">
 
-            <div style="overflow-x: auto;">
-
-                <table class="table">
+                <table class="tabla-libros">
 
                     <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-
-                        <th>Portada</th>
-
-                        <th>Libro</th>
-
-                        <th>Categoría</th>
-
-                        <th>Origen</th>
-
-                        <th>Costo de compra</th>
-
-                        <th>Acceso digital</th>
-
-                        <th>Disponibilidad</th>
-
-                        <th>PDF / Enlace</th>
-
-                        <th>Fecha</th>
-
-                        <th>Acciones</th>
-
-                    </tr>
-
+                        <tr>
+                            <th>ID</th>
+                            <th>Portada</th>
+                            <th>Libro</th>
+                            <th>Categoría</th>
+                            <th>Origen</th>
+                            <th>Costo</th>
+                            <th>Acceso digital</th>
+                            <th>Disponibilidad</th>
+                            <th>Recurso</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
                     </thead>
 
                     <tbody>
@@ -209,11 +177,12 @@ $esc = static function ($valor): string {
                     <?php if (empty($datos["libros"])): ?>
 
                         <tr>
-
-                            <td colspan="11">
+                            <td
+                                class="estado-vacio-tabla"
+                                colspan="11"
+                            >
                                 No se encontraron libros.
                             </td>
-
                         </tr>
 
                     <?php else: ?>
@@ -223,29 +192,20 @@ $esc = static function ($valor): string {
                             <?php
 
                             $thumbnail = basename(
-                                (string)(
-                                    $libro["thumbnail"] ?? ""
-                                )
+                                (string)($libro["thumbnail"] ?? "")
                             );
 
                             $archivoPdf = basename(
-                                (string)(
-                                    $libro["archivo_pdf"] ?? ""
-                                )
+                                (string)($libro["archivo_pdf"] ?? "")
                             );
 
-                            $origen =
-                                $libro["origen"] ?? "propio";
-
-                            $esExterno =
-                                $origen === "externo";
+                            $origen = $libro["origen"] ?? "propio";
+                            $esExterno = $origen === "externo";
 
                             $tipoAcceso =
-                                $libro["tipo_acceso"]
-                                ?? "gratuito";
+                                $libro["tipo_acceso"] ?? "gratuito";
 
-                            $esPago =
-                                $tipoAcceso === "pago";
+                            $esPago = $tipoAcceso === "pago";
 
                             $precioAcceso = (float)(
                                 $libro["precio_acceso"] ?? 0
@@ -255,13 +215,11 @@ $esc = static function ($valor): string {
                                 $libro["dias_acceso"] ?? null;
 
                             $disponibles = (int)(
-                                $libro["unidades_disponibles"]
-                                ?? 0
+                                $libro["unidades_disponibles"] ?? 0
                             );
 
                             $totales = (int)(
-                                $libro["unidades_totales"]
-                                ?? 0
+                                $libro["unidades_totales"] ?? 0
                             );
 
                             $urlExterno =
@@ -278,35 +236,29 @@ $esc = static function ($valor): string {
 
                             <tr>
 
-                                <!-- ID -->
-
                                 <td>
-                                    <?php echo (int)$libro["id"]; ?>
+                                    <strong>
+                                        <?php echo (int)$libro["id"]; ?>
+                                    </strong>
                                 </td>
-
-                                <!-- Portada -->
 
                                 <td>
 
                                     <?php if ($thumbnail !== ""): ?>
 
                                         <img
-                                            class="book-cover"
-                                            src="../uploads/thumbnails/<?php
-                                            echo rawurlencode(
+                                            class="portada-libro"
+                                            src="../uploads/thumbnails/<?php echo rawurlencode(
                                                 $thumbnail
-                                            );
-                                            ?>"
-                                            alt="Portada de <?php
-                                            echo $esc(
+                                            ); ?>"
+                                            alt="Portada de <?php echo $esc(
                                                 $libro["titulo"]
-                                            );
-                                            ?>"
+                                            ); ?>"
                                         >
 
                                     <?php else: ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-advertencia">
                                             Sin imagen
                                         </span>
 
@@ -314,70 +266,49 @@ $esc = static function ($valor): string {
 
                                 </td>
 
-                                <!-- Libro -->
-
                                 <td>
 
-                                    <strong>
-
+                                    <strong class="titulo-libro">
                                         <?php echo $esc(
                                             $libro["titulo"]
                                         ); ?>
-
                                     </strong>
 
-                                    <br>
-
-                                    <small>
-
+                                    <span class="detalle-libro">
                                         Autor:
-
                                         <?php echo $esc(
                                             $libro["autor"]
                                         ); ?>
-
-                                    </small>
-
-                                </td>
-
-                                <!-- Categoría -->
-
-                                <td>
-
-                                    <span class="badge badge-blue">
-
-                                        <?php echo $esc(
-                                            $libro["categoria_nombre"]
-                                        ); ?>
-
                                     </span>
 
                                 </td>
 
-                                <!-- Origen -->
+                                <td>
+                                    <span class="etiqueta-libro etiqueta-neutral">
+                                        <?php echo $esc(
+                                            $libro["categoria_nombre"]
+                                        ); ?>
+                                    </span>
+                                </td>
 
                                 <td>
 
                                     <?php if ($esExterno): ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-advertencia">
                                             Externo
                                         </span>
 
-                                        <br>
-
-                                        <small>
-
+                                        <span class="detalle-libro">
                                             <?php echo $esc(
                                                 $libro["institucion_origen"]
                                                 ?? "Institución no especificada"
                                             ); ?>
-
-                                        </small>
+                                        </span>
 
                                     <?php else: ?>
 
-                                        <span class="badge badge-blue">
+                                        <span class="etiqueta-libro etiqueta-neutral">
                                             Propio
                                         </span>
 
@@ -385,71 +316,53 @@ $esc = static function ($valor): string {
 
                                 </td>
 
-                                <!-- Costo de adquisición -->
-
                                 <td>
 
                                     <strong>
-
                                         B/.
                                         <?php echo number_format(
-                                            (float)(
-                                                $libro["costo"] ?? 0
-                                            ),
+                                            (float)($libro["costo"] ?? 0),
                                             2,
                                             ".",
                                             ","
                                         ); ?>
-
                                     </strong>
 
-                                    <br>
-
-                                    <small>
+                                    <span class="detalle-libro">
                                         Costo para la biblioteca
-                                    </small>
+                                    </span>
 
                                 </td>
-
-                                <!-- Tipo de acceso -->
 
                                 <td>
 
                                     <?php if ($esExterno): ?>
 
-                                        <span class="badge badge-yellow">
-                                            Gestionado externamente
+                                        <span class="etiqueta-libro etiqueta-advertencia">
+                                            Externo
                                         </span>
 
-                                        <br>
-
-                                        <small>
-                                            La otra institución define
-                                            sus condiciones.
-                                        </small>
+                                        <span class="detalle-libro">
+                                            Condiciones definidas por la institución.
+                                        </span>
 
                                     <?php elseif ($tipoAcceso === "gratuito"): ?>
 
-                                        <span class="badge badge-blue">
+                                        <span class="etiqueta-libro etiqueta-disponible">
                                             Gratuito
                                         </span>
 
-                                        <br>
-
-                                        <small>
+                                        <span class="detalle-libro">
                                             Acceso permanente
-                                        </small>
+                                        </span>
 
                                     <?php elseif ($esPago): ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-advertencia">
                                             Pagado
                                         </span>
 
-                                        <br>
-
-                                        <strong>
-
+                                        <strong class="precio-acceso">
                                             B/.
                                             <?php echo number_format(
                                                 $precioAcceso,
@@ -457,24 +370,17 @@ $esc = static function ($valor): string {
                                                 ".",
                                                 ","
                                             ); ?>
-
                                         </strong>
 
-                                        <br>
-
-                                        <small>
-
+                                        <span class="detalle-libro">
                                             Acceso por
-
                                             <?php echo (int)$diasAcceso; ?>
-
                                             días
-
-                                        </small>
+                                        </span>
 
                                     <?php else: ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-advertencia">
                                             No definido
                                         </span>
 
@@ -482,171 +388,137 @@ $esc = static function ($valor): string {
 
                                 </td>
 
-                                <!-- Disponibilidad -->
-
                                 <td>
 
                                     <?php if ($esExterno): ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-advertencia">
                                             Biblioteca externa
                                         </span>
 
                                     <?php elseif ($disponibles > 0): ?>
 
-                                        <span class="badge badge-blue">
+                                        <span class="etiqueta-libro etiqueta-disponible">
                                             Disponible
                                         </span>
 
-                                        <br>
-
-                                        <small>
-
+                                        <span class="detalle-libro">
                                             <?php echo $disponibles; ?>
-
                                             de
-
                                             <?php echo $totales; ?>
-
                                             unidades
-
-                                        </small>
+                                        </span>
 
                                     <?php else: ?>
 
-                                        <span class="badge badge-yellow">
+                                        <span class="etiqueta-libro etiqueta-no-disponible">
                                             No disponible
                                         </span>
 
-                                        <br>
-
-                                        <small>
-
+                                        <span class="detalle-libro">
                                             0 de
-
                                             <?php echo $totales; ?>
-
                                             unidades
-
-                                        </small>
+                                        </span>
 
                                     <?php endif; ?>
 
                                 </td>
 
-                                <!-- PDF o enlace -->
-
                                 <td>
 
-                                    <?php if ($archivoPdf !== ""): ?>
+                                    <div class="recursos-libro">
 
+                                        <?php if ($archivoPdf !== ""): ?>
                                         <a
-                                            class="btn btn-link"
-                                            href="../uploads/pdfs/<?php
-                                            echo rawurlencode(
+                                            href="ver_pdf.php?archivo=<?php echo rawurlencode(
                                                 $archivoPdf
-                                            );
-                                            ?>"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            ); ?>"
                                         >
                                             Ver PDF
                                         </a>
 
-                                        <br>
+                                        <?php endif; ?>
 
-                                    <?php endif; ?>
+                                        <?php if ($esExterno && $urlValida): ?>
 
-                                    <?php if (
-                                        $esExterno &&
-                                        $urlValida
-                                    ): ?>
+                                            <a
+                                                href="<?php echo $esc(
+                                                    $urlExterno
+                                                ); ?>"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Biblioteca de origen
+                                            </a>
+
+                                        <?php endif; ?>
+
+                                        <?php if (
+                                            $archivoPdf === "" &&
+                                            (!$esExterno || !$urlValida)
+                                        ): ?>
+
+                                            <span class="etiqueta-libro etiqueta-advertencia">
+                                                Sin archivo
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <span class="fecha-libro">
+                                        <?php echo $esc(
+                                            $libro["created_at"]
+                                        ); ?>
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="acciones-libro">
 
                                         <a
-                                            class="btn btn-link"
-                                            href="<?php echo $esc(
-                                                $urlExterno
-                                            ); ?>"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            class="accion-editar"
+                                            href="libro_form.php?id=<?php echo (int)$libro["id"]; ?>"
                                         >
-                                            Biblioteca de origen
+                                            Editar
                                         </a>
 
-                                    <?php endif; ?>
-
-                                    <?php if (
-                                        $archivoPdf === "" &&
-                                        (
-                                            !$esExterno ||
-                                            !$urlValida
-                                        )
-                                    ): ?>
-
-                                        <span class="badge badge-yellow">
-                                            Sin archivo
-                                        </span>
-
-                                    <?php endif; ?>
-
-                                </td>
-
-                                <!-- Fecha -->
-
-                                <td>
-
-                                    <?php echo $esc(
-                                        $libro["created_at"]
-                                    ); ?>
-
-                                </td>
-
-                                <!-- Acciones -->
-
-                                <td>
-
-                                    <a
-                                        class="btn btn-link"
-                                        href="libro_form.php?id=<?php
-                                        echo (int)$libro["id"];
-                                        ?>"
-                                    >
-                                        Editar
-                                    </a>
-
-                                    <form
-                                        action="libro_eliminar.php"
-                                        method="POST"
-                                        style="display: inline;"
-                                        onsubmit="return confirm(
-                                            '¿Seguro que deseas eliminar este libro?'
-                                        );"
-                                    >
-
-                                        <input
-                                            type="hidden"
-                                            name="csrf_token"
-                                            value="<?php echo $esc(
-                                                $token
-                                            ); ?>"
+                                        <form
+                                            action="libro_eliminar.php"
+                                            method="POST"
+                                            onsubmit="return confirm(
+                                                '¿Seguro que deseas eliminar este libro?'
+                                            );"
                                         >
 
-                                        <input
-                                            type="hidden"
-                                            name="id"
-                                            value="<?php
-                                            echo (int)$libro["id"];
-                                            ?>"
-                                        >
+                                            <input
+                                                type="hidden"
+                                                name="csrf_token"
+                                                value="<?php echo $esc(
+                                                    $token
+                                                ); ?>"
+                                            >
 
-                                        <button
-                                            class="btn btn-danger"
-                                            type="submit"
-                                        >
-                                            Eliminar
-                                        </button>
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?php echo (int)$libro["id"]; ?>"
+                                            >
 
-                                    </form>
+                                            <button
+                                                class="accion-eliminar boton-principal-readpoint"
+                                                type="submit"
+                                            >
+                                                Eliminar
+                                            </button>
+
+                                        </form>
+
+                                    </div>
 
                                 </td>
 
@@ -662,11 +534,9 @@ $esc = static function ($valor): string {
 
             </div>
 
-            <!-- Paginación -->
-
             <?php if ($datos["totalPaginas"] > 1): ?>
 
-                <div class="pagination">
+                <nav class="paginacion-libros">
 
                     <?php for (
                         $i = 1;
@@ -674,25 +544,17 @@ $esc = static function ($valor): string {
                         $i++
                     ): ?>
 
-                        <?php if (
-                            $i === $datos["paginaActual"]
-                        ): ?>
+                        <?php if ($i === $datos["paginaActual"]): ?>
 
-                            <strong>
+                            <span class="pagina-actual">
                                 <?php echo $i; ?>
-                            </strong>
+                            </span>
 
                         <?php else: ?>
 
-                            <a
-                                href="libros.php?pagina=<?php
-                                echo $i;
-                                ?>&busqueda=<?php
-                                echo urlencode(
-                                    $datos["busqueda"]
-                                );
-                                ?>"
-                            >
+                            <a href="libros.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode(
+                                $datos["busqueda"]
+                            ); ?>">
                                 <?php echo $i; ?>
                             </a>
 
@@ -700,11 +562,11 @@ $esc = static function ($valor): string {
 
                     <?php endfor; ?>
 
-                </div>
+                </nav>
 
             <?php endif; ?>
 
-        </div>
+        </section>
 
     </main>
 

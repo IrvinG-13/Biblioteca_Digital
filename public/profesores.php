@@ -21,100 +21,274 @@ $error = $_GET["error"] ?? "";
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Profesores - Biblioteca Digital</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Profesores | ReadPoint</title>
+
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/profesores.css?v=2">
 </head>
+
 <body>
+
 <div class="app-layout">
-    <?php include __DIR__ . '/menu.php'; ?>
+
+    <?php require_once __DIR__ . "/menu.php"; ?>
+
     <main class="main-content">
-        <div class="content-card">
-            <div class="page-header">
-                <h2>Gestión de Profesores</h2>
-                <a class="btn btn-primary" href="profesor_form.php">+ Nuevo Profesor</a>
+
+        <section class="encabezado-profesores">
+
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
+
+                <h1>Gestión de profesores</h1>
+
+                <p>
+                    Consulta y administra los profesores registrados.
+                </p>
             </div>
 
-            <?php if ($exito === "1"): ?>
-                <div class="alert alert-success">Operación realizada con éxito.</div>
-            <?php endif; ?>
+            <a
+                class="boton-nuevo-profesor"
+                href="profesor_form.php"
+            >
+                Nuevo profesor
+            </a>
 
-            <form class="actions-bar" action="profesores.php" method="GET">
-                <input class="search-input" type="text" name="busqueda"
-                       placeholder="Buscar por cédula, nombre o apellido..."
-                       value="<?php echo htmlspecialchars($datos["busqueda"]); ?>">
-                <button class="btn btn-secondary" type="submit">Buscar</button>
-                <a class="btn btn-secondary" href="profesores.php">Limpiar</a>
+        </section>
+
+        <?php if ($exito === "1"): ?>
+            <div class="alert alert-success">
+                Operación realizada con éxito.
+            </div>
+        <?php endif; ?>
+
+        <section class="panel-profesores">
+
+            <form
+                class="barra-busqueda-profesores"
+                action="profesores.php"
+                method="GET"
+            >
+                <input
+                    class="campo-busqueda-profesores"
+                    type="text"
+                    name="busqueda"
+                    placeholder="Buscar por cédula, nombre o apellido..."
+                    value="<?php echo htmlspecialchars(
+                        $datos["busqueda"],
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ); ?>"
+                >
+
+                <button
+                    class="boton-buscar"
+                    type="submit"
+                >
+                    Buscar
+                </button>
+
+                <a
+                    class="boton-limpiar"
+                    href="profesores.php"
+                >
+                    Limpiar
+                </a>
             </form>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Cédula</th>
-                        <th>Nombre completo</th>
-                        <th>Materia</th>
-                        <th>Cuenta vinculada</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($datos["profesores"])): ?>
+            <div class="contenedor-tabla-profesores">
+
+                <table class="tabla-profesores">
+
+                    <thead>
                         <tr>
-                            <td colspan="5">No se encontraron profesores.</td>
+                            <th>Cédula</th>
+                            <th>Nombre completo</th>
+                            <th>Materia</th>
+                            <th>Cuenta vinculada</th>
+                            <th>Acciones</th>
                         </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <?php if (empty($datos["profesores"])): ?>
+
+                        <tr>
+                            <td
+                                class="estado-vacio-tabla"
+                                colspan="5"
+                            >
+                                No se encontraron profesores.
+                            </td>
+                        </tr>
+
                     <?php else: ?>
+
                         <?php foreach ($datos["profesores"] as $p): ?>
+
                             <tr>
-                                <td><?php echo htmlspecialchars($p["cedula"]); ?></td>
+
+                                <td>
+                                    <strong>
+                                        <?php echo htmlspecialchars(
+                                            $p["cedula"],
+                                            ENT_QUOTES,
+                                            "UTF-8"
+                                        ); ?>
+                                    </strong>
+                                </td>
+
                                 <td>
                                     <?php
-                                        echo htmlspecialchars(
-                                            $p["primer_nombre"] . " " .
-                                            ($p["segundo_nombre"] ? $p["segundo_nombre"] . " " : "") .
-                                            $p["primer_apellido"] . " " .
-                                            ($p["segundo_apellido"] ?? "")
-                                        );
+                                    echo htmlspecialchars(
+                                        $p["primer_nombre"] . " " .
+                                        ($p["segundo_nombre"]
+                                            ? $p["segundo_nombre"] . " "
+                                            : "") .
+                                        $p["primer_apellido"] . " " .
+                                        ($p["segundo_apellido"] ?? ""),
+                                        ENT_QUOTES,
+                                        "UTF-8"
+                                    );
                                     ?>
                                 </td>
-                                <td><?php echo htmlspecialchars($p["materia_nombre"]); ?></td>
+
+                                <td>
+                                    <span class="etiqueta-materia">
+                                        <?php echo htmlspecialchars(
+                                            $p["materia_nombre"],
+                                            ENT_QUOTES,
+                                            "UTF-8"
+                                        ); ?>
+                                    </span>
+                                </td>
+
                                 <td>
                                     <?php if ($p["usuario_id"]): ?>
-                                        <span class="badge badge-green">Sí</span>
+
+                                        <span class="estado-cuenta cuenta-vinculada">
+                                            Sí
+                                        </span>
+
                                     <?php else: ?>
-                                        <span class="badge badge-yellow">No</span>
+
+                                        <span class="estado-cuenta cuenta-no-vinculada">
+                                            No
+                                        </span>
+
                                     <?php endif; ?>
                                 </td>
-                                <td>
-                                    <a class="btn btn-link" href="profesor_form.php?id=<?php echo $p["id"]; ?>">
-                                        Editar
-                                    </a>
-                                    <form action="profesor_eliminar.php" method="POST" style="display:inline;"
-                                          onsubmit="return confirm('¿Seguro que deseas eliminar este profesor?');">
-                                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
-                                        <input type="hidden" name="id" value="<?php echo $p["id"]; ?>">
-                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
 
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $datos["totalPaginas"]; $i++): ?>
+                                <td>
+
+                                    <div class="acciones-profesor">
+
+                                        <a
+                                            class="accion-editar"
+                                            href="profesor_form.php?id=<?php echo urlencode(
+                                                $p["id"]
+                                            ); ?>"
+                                        >
+                                            Editar
+                                        </a>
+
+                                        <form
+                                            action="profesor_eliminar.php"
+                                            method="POST"
+                                            onsubmit="return confirm(
+                                                '¿Seguro que deseas eliminar este profesor?'
+                                            );"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="csrf_token"
+                                                value="<?php echo htmlspecialchars(
+                                                    $token,
+                                                    ENT_QUOTES,
+                                                    "UTF-8"
+                                                ); ?>"
+                                            >
+
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?php echo htmlspecialchars(
+                                                    $p["id"],
+                                                    ENT_QUOTES,
+                                                    "UTF-8"
+                                                ); ?>"
+                                            >
+
+                                            <button
+                                                class="accion-eliminar"
+                                                type="submit"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <nav class="paginacion-profesores">
+
+                <?php for (
+                    $i = 1;
+                    $i <= $datos["totalPaginas"];
+                    $i++
+                ): ?>
+
                     <?php if ($i === $datos["paginaActual"]): ?>
-                        <strong><?php echo $i; ?></strong>
+
+                        <span class="pagina-actual">
+                            <?php echo $i; ?>
+                        </span>
+
                     <?php else: ?>
-                        <a href="profesores.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode($datos["busqueda"]); ?>">
+
+                        <a href="profesores.php?pagina=<?php echo $i; ?>&busqueda=<?php echo urlencode(
+                            $datos["busqueda"]
+                        ); ?>">
                             <?php echo $i; ?>
                         </a>
+
                     <?php endif; ?>
+
                 <?php endfor; ?>
-            </div>
-        </div>
+
+            </nav>
+
+        </section>
+
     </main>
+
 </div>
+
 </body>
 </html>

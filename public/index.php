@@ -9,15 +9,20 @@ declare(strict_types=1);
 */
 
 $rutaLogo = 'assets/img/LogoReadPoint1.png';
-$logoDisponible = is_file(__DIR__ . '/' . $rutaLogo);
+
+$logoDisponible = is_file(
+    __DIR__ . '/' . $rutaLogo
+);
 
 $anioActual = date('Y');
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -27,14 +32,19 @@ $anioActual = date('Y');
 
     <meta
         name="description"
-        content="ReadPoint es una biblioteca digital para descubrir libros, consultar su disponibilidad y gestionar reservas."
+        content="ReadPoint es una biblioteca digital para descubrir libros, consultar recursos académicos y gestionar el acceso al conocimiento."
     >
 
     <title>ReadPoint | Tu biblioteca digital</title>
+
     <script>
-        document.documentElement.classList.add('animaciones-disponibles');
+        document.documentElement.classList.add(
+            'animaciones-disponibles'
+        );
     </script>
+
     <!-- Fuente de los títulos principales -->
+
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
@@ -52,15 +62,18 @@ $anioActual = date('Y');
     >
 
     <!-- Estilos de la página pública -->
+
     <link
         rel="stylesheet"
-        href="assets/css/public-home.css"
+        href="assets/css/public-home.css?v=2"
     >
+
 </head>
 
 <body class="pagina-publica">
 
     <!-- Enlace para navegación mediante teclado -->
+
     <a
         class="enlace-saltar-contenido"
         href="#contenido-principal"
@@ -71,6 +84,7 @@ $anioActual = date('Y');
     <!-- =====================================================
          ENCABEZADO
     ====================================================== -->
+
     <header class="encabezado-publico">
 
         <div class="contenedor-publico contenido-encabezado">
@@ -85,11 +99,11 @@ $anioActual = date('Y');
 
                     <img
                         class="logo-encabezado"
-                        src="<?= htmlspecialchars(
+                        src="<?php echo htmlspecialchars(
                             $rutaLogo,
                             ENT_QUOTES,
                             'UTF-8'
-                        ) ?>"
+                        ); ?>"
                         alt="Logo de ReadPoint"
                     >
 
@@ -123,6 +137,14 @@ $anioActual = date('Y');
                     Servicios
                 </a>
 
+                <a href="#importancia">
+                    Importancia
+                </a>
+
+                <a href="#tecnologias">
+                    Tecnologías
+                </a>
+
                 <a href="#contacto">
                     Contacto
                 </a>
@@ -143,11 +165,13 @@ $anioActual = date('Y');
     <!-- =====================================================
          CONTENIDO PRINCIPAL
     ====================================================== -->
+
     <main id="contenido-principal">
 
         <!-- =================================================
              PRESENTACIÓN DE READPOINT
         ================================================== -->
+
         <section
             class="seccion-inicio"
             id="inicio"
@@ -157,15 +181,15 @@ $anioActual = date('Y');
 
                 <div class="texto-inicio">
 
-
                     <h1 class="titulo-inicio">
                         Tu próxima lectura comienza en ReadPoint.
                     </h1>
 
                     <p class="descripcion-inicio">
-                        Descubre libros, consulta su disponibilidad y
-                        gestiona tus reservas desde una biblioteca diseñada
-                        para acercarte al conocimiento.
+                        Descubre libros, consulta su disponibilidad
+                        y gestiona tus reservas desde una biblioteca
+                        digital diseñada para acercarte al
+                        conocimiento.
                     </p>
 
                     <div class="botones-inicio">
@@ -187,13 +211,14 @@ $anioActual = date('Y');
                     </div>
 
                     <p class="mensaje-acceso">
-                        El acceso está disponible exclusivamente para
-                        miembros autorizados de ReadPoint.
+                        El acceso está disponible exclusivamente
+                        para miembros autorizados de ReadPoint.
                     </p>
 
                 </div>
 
                 <!-- Panel de servicios destacados -->
+
                 <aside
                     class="panel-servicios-destacados"
                     aria-label="Servicios destacados de ReadPoint"
@@ -208,7 +233,8 @@ $anioActual = date('Y');
                             </span>
 
                             <strong class="titulo-panel">
-                                Todo para encontrar tu próxima lectura
+                                Todo para encontrar tu próxima
+                                lectura
                             </strong>
 
                         </div>
@@ -251,8 +277,9 @@ $anioActual = date('Y');
                                 </h2>
 
                                 <p class="descripcion-servicio-destacado">
-                                    Comprueba qué libros están disponibles
-                                    antes de realizar una reserva.
+                                    Comprueba qué libros están
+                                    disponibles antes de realizar
+                                    una reserva o compra.
                                 </p>
 
                             </div>
@@ -268,12 +295,13 @@ $anioActual = date('Y');
                             <div>
 
                                 <h2 class="titulo-servicio-destacado">
-                                    Reservas en línea
+                                    Lectura digital
                                 </h2>
 
                                 <p class="descripcion-servicio-destacado">
-                                    Gestiona tus reservas directamente
-                                    desde tu cuenta.
+                                    Accede a tus libros disponibles
+                                    desde el lector integrado de
+                                    ReadPoint.
                                 </p>
 
                             </div>
@@ -286,6 +314,7 @@ $anioActual = date('Y');
                         class="enlace-panel-servicios"
                         href="login.php"
                     >
+
                         <span>
                             Acceder a mi cuenta
                         </span>
@@ -293,6 +322,7 @@ $anioActual = date('Y');
                         <span aria-hidden="true">
                             →
                         </span>
+
                     </a>
 
                 </aside>
@@ -304,6 +334,7 @@ $anioActual = date('Y');
         <!-- =================================================
              SERVICIOS
         ================================================== -->
+
         <section
             class="seccion-publica seccion-servicios"
             id="servicios"
@@ -318,13 +349,14 @@ $anioActual = date('Y');
                     </p>
 
                     <h2 class="titulo-seccion">
-                        Una forma más sencilla de acceder a los libros
+                        Una forma más sencilla de acceder a los
+                        libros
                     </h2>
 
                     <p class="descripcion-seccion">
-                        ReadPoint reúne los principales servicios de la
-                        biblioteca en un entorno digital claro, organizado
-                        y accesible.
+                        ReadPoint reúne los principales servicios
+                        de la biblioteca en un entorno digital
+                        claro, organizado y accesible.
                     </p>
 
                 </div>
@@ -345,8 +377,9 @@ $anioActual = date('Y');
                         </h3>
 
                         <p class="descripcion-tarjeta-servicio">
-                            Consulta la colección disponible y encuentra
-                            libros por título, autor, tema o categoría.
+                            Consulta la colección disponible y
+                            encuentra libros por título, autor,
+                            tema o categoría.
                         </p>
 
                     </article>
@@ -361,12 +394,12 @@ $anioActual = date('Y');
                         </span>
 
                         <h3 class="titulo-tarjeta-servicio">
-                            Reservas de libros
+                            Reservas y acceso
                         </h3>
 
                         <p class="descripcion-tarjeta-servicio">
-                            Selecciona los ejemplares disponibles y gestiona
-                            tus reservas desde tu cuenta.
+                            Selecciona ejemplares disponibles y
+                            gestiona tus libros desde tu cuenta.
                         </p>
 
                     </article>
@@ -385,8 +418,9 @@ $anioActual = date('Y');
                         </h3>
 
                         <p class="descripcion-tarjeta-servicio">
-                            Utiliza diferentes criterios de búsqueda para
-                            localizar rápidamente el recurso que necesitas.
+                            Utiliza diferentes criterios de
+                            búsqueda para localizar rápidamente
+                            el recurso que necesitas.
                         </p>
 
                     </article>
@@ -405,8 +439,9 @@ $anioActual = date('Y');
                         </h3>
 
                         <p class="descripcion-tarjeta-servicio">
-                            Comunica tu interés por libros que todavía no
-                            forman parte de nuestra colección.
+                            Comunica tu interés por libros que
+                            todavía no forman parte de nuestra
+                            colección.
                         </p>
 
                     </article>
@@ -417,13 +452,295 @@ $anioActual = date('Y');
 
         </section>
 
+        <!-- =================================================
+             IMPORTANCIA DE LAS BIBLIOTECAS DIGITALES
+        ================================================== -->
 
+        <section
+            class="seccion-publica seccion-importancia"
+            id="importancia"
+        >
 
+            <div class="contenedor-publico contenido-importancia">
 
+                <div class="encabezado-seccion">
+
+                    <p class="etiqueta-seccion">
+                        Acceso al conocimiento
+                    </p>
+
+                    <h2 class="titulo-seccion">
+                        Importancia de las bibliotecas digitales
+                    </h2>
+
+                    <p class="descripcion-seccion">
+                        Las bibliotecas digitales facilitan el
+                        acceso a libros, materiales educativos y
+                        recursos académicos desde cualquier lugar
+                        y en cualquier momento.
+                    </p>
+
+                </div>
+
+                <div class="panel-importancia">
+
+                    <div class="texto-importancia">
+
+                        <p>
+                            Las bibliotecas digitales permiten que
+                            estudiantes, profesores e investigadores
+                            consulten información sin depender de
+                            una ubicación física. Mediante un
+                            dispositivo con acceso a internet, los
+                            usuarios pueden encontrar materiales
+                            educativos, libros y recursos académicos
+                            de forma rápida y organizada.
+                        </p>
+
+                        <p>
+                            Estas plataformas reducen las barreras
+                            de acceso al conocimiento, apoyan los
+                            procesos de aprendizaje y facilitan la
+                            investigación. También contribuyen a
+                            conservar materiales, centralizar
+                            información y mantener los recursos
+                            disponibles para una comunidad más
+                            amplia.
+                        </p>
+
+                    </div>
+
+                    <div class="lista-beneficios-importancia">
+
+                        <article class="beneficio-importancia">
+
+                            <span aria-hidden="true">
+                                01
+                            </span>
+
+                            <div>
+
+                                <h3>
+                                    Acceso remoto
+                                </h3>
+
+                                <p>
+                                    Permite consultar libros y
+                                    recursos académicos desde
+                                    cualquier ubicación.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                        <article class="beneficio-importancia">
+
+                            <span aria-hidden="true">
+                                02
+                            </span>
+
+                            <div>
+
+                                <h3>
+                                    Disponibilidad continua
+                                </h3>
+
+                                <p>
+                                    Los materiales pueden consultarse
+                                    en distintos horarios según los
+                                    permisos del sistema.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                        <article class="beneficio-importancia">
+
+                            <span aria-hidden="true">
+                                03
+                            </span>
+
+                            <div>
+
+                                <h3>
+                                    Apoyo educativo
+                                </h3>
+
+                                <p>
+                                    Facilita el aprendizaje, la
+                                    investigación y el acceso
+                                    organizado al conocimiento.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             STACK TECNOLÓGICO
+        ================================================== -->
+
+        <section
+            class="seccion-publica seccion-tecnologias"
+            id="tecnologias"
+        >
+
+            <div class="contenedor-publico">
+
+                <div class="encabezado-seccion">
+
+                    <p class="etiqueta-seccion">
+                        Desarrollo del proyecto
+                    </p>
+
+                    <h2 class="titulo-seccion">
+                        Stack tecnológico
+                    </h2>
+
+                    <p class="descripcion-seccion">
+                        ReadPoint fue desarrollado con tecnologías
+                        orientadas a aplicaciones web y una
+                        arquitectura organizada para separar los
+                        datos, la lógica y la interfaz del sistema.
+                    </p>
+
+                </div>
+
+                <div class="lista-tecnologias">
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            01
+                        </span>
+
+                        <h3>PHP</h3>
+
+                        <p>
+                            Gestiona la lógica del servidor, las
+                            sesiones, las validaciones y las
+                            operaciones principales del sistema.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            02
+                        </span>
+
+                        <h3>MySQL</h3>
+
+                        <p>
+                            Almacena y relaciona la información de
+                            usuarios, libros, reservas, solicitudes,
+                            accesos y facturas.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            03
+                        </span>
+
+                        <h3>HTML</h3>
+
+                        <p>
+                            Define la estructura semántica de las
+                            páginas, formularios y componentes
+                            visuales del proyecto.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            04
+                        </span>
+
+                        <h3>CSS</h3>
+
+                        <p>
+                            Controla el diseño visual, la
+                            distribución del contenido y la
+                            adaptación responsiva de la interfaz.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            05
+                        </span>
+
+                        <h3>JavaScript</h3>
+
+                        <p>
+                            Añade interactividad, comportamiento
+                            dinámico y animaciones dentro de la
+                            página pública.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia">
+
+                        <span class="numero-tecnologia">
+                            06
+                        </span>
+
+                        <h3>WAMP</h3>
+
+                        <p>
+                            Proporciona el entorno local de
+                            desarrollo mediante Windows, Apache,
+                            MySQL y PHP.
+                        </p>
+
+                    </article>
+
+                    <article class="tarjeta-tecnologia tecnologia-mvc">
+
+                        <span class="numero-tecnologia">
+                            07
+                        </span>
+
+                        <h3>Arquitectura MVC</h3>
+
+                        <p>
+                            Organiza la aplicación en modelos,
+                            vistas y controladores. Esta separación
+                            mejora el orden, el mantenimiento y la
+                            escalabilidad del sistema.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
 
         <!-- =================================================
              CONTACTO
         ================================================== -->
+
         <section
             class="seccion-publica seccion-contacto"
             id="contacto"
@@ -443,14 +760,14 @@ $anioActual = date('Y');
 
                     <p class="descripcion-contacto">
                         Comunícate con nuestro equipo para recibir
-                        asistencia con el acceso, las reservas o los
-                        servicios disponibles en ReadPoint.
+                        asistencia con el acceso, las reservas o
+                        los servicios disponibles en ReadPoint.
                     </p>
 
                     <p class="descripcion-contacto">
-                        Nuestro personal puede orientarte sobre el uso del
-                        catálogo, la disponibilidad de ejemplares y el
-                        acceso a tu cuenta.
+                        Nuestro personal puede orientarte sobre el
+                        uso del catálogo, la disponibilidad de
+                        ejemplares y el acceso a tu cuenta.
                     </p>
 
                 </div>
@@ -468,8 +785,8 @@ $anioActual = date('Y');
                         </strong>
 
                         <span class="descripcion-dato-contacto">
-                            Consultas sobre libros, reservas y disponibilidad
-                            de ejemplares.
+                            Consultas sobre libros, reservas y
+                            disponibilidad de ejemplares.
                         </span>
 
                     </div>
@@ -481,44 +798,11 @@ $anioActual = date('Y');
                         </strong>
 
                         <span class="descripcion-dato-contacto">
-                            Asistencia para ingresar a tu cuenta o resolver
-                            inconvenientes de acceso.
+                            Asistencia para ingresar a tu cuenta
+                            o resolver inconvenientes de acceso.
                         </span>
 
                     </div>
-
-                    <!--
-                    Agrega aquí el correo real cuando esté definido:
-
-                    <div class="dato-contacto">
-
-                        <strong class="nombre-dato-contacto">
-                            Correo electrónico
-                        </strong>
-
-                        <a
-                            class="enlace-contacto"
-                            href="mailto:correo@readpoint.com"
-                        >
-                            correo@readpoint.com
-                        </a>
-
-                    </div>
-                    -->
-
-                    <!--
-                    También puedes agregar teléfono, horario y ubicación:
-
-                    <div class="dato-contacto">
-                        <strong class="nombre-dato-contacto">
-                            Horario de atención
-                        </strong>
-
-                        <span class="descripcion-dato-contacto">
-                            Lunes a viernes, de 8:00 a. m. a 5:00 p. m.
-                        </span>
-                    </div>
-                    -->
 
                     <a
                         class="boton-contacto"
@@ -538,6 +822,7 @@ $anioActual = date('Y');
     <!-- =====================================================
          PIE DE PÁGINA
     ====================================================== -->
+
     <footer class="pie-pagina">
 
         <div class="contenedor-publico contenido-pie-pagina">
@@ -549,30 +834,35 @@ $anioActual = date('Y');
                 </strong>
 
                 <p class="descripcion-pie-pagina">
-                    Lecturas, conocimiento y recursos al alcance de nuestra
-                    comunidad.
+                    Lecturas, conocimiento y recursos al alcance
+                    de nuestra comunidad.
                 </p>
 
             </div>
 
-
-
             <p class="derechos-pie-pagina">
-                &copy; <?= htmlspecialchars(
+
+                &copy;
+
+                <?php echo htmlspecialchars(
                     $anioActual,
                     ENT_QUOTES,
                     'UTF-8'
-                ) ?>
+                ); ?>
+
                 ReadPoint. Todos los derechos reservados.
+
             </p>
 
         </div>
 
     </footer>
+
     <script
-    src="assets/js/animaciones-index.js"
-    defer
+        src="assets/js/animaciones-index.js"
+        defer
     ></script>
+
 </body>
 
 </html>

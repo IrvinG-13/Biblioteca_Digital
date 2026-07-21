@@ -119,7 +119,6 @@ $mensajesError = [
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -128,92 +127,112 @@ $mensajesError = [
     >
 
     <title>
-        <?php echo $esEdicion ? "Editar" : "Nuevo"; ?> Libro
+        <?php echo $esEdicion
+            ? "Editar libro | ReadPoint"
+            : "Nuevo libro | ReadPoint"; ?>
     </title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css"
-    >
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/libro-form.css?v=1">
 </head>
 
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
 
-        <div class="content-card">
+        <section class="encabezado-formulario-libro">
 
-            <form
-                class="form-card"
-                action="libro_procesar.php"
-                method="POST"
-                enctype="multipart/form-data"
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
+
+                <h1>
+                    <?php echo $esEdicion
+                        ? "Editar libro"
+                        : "Nuevo libro"; ?>
+                </h1>
+
+                <p>
+                    Registra la información bibliográfica, disponibilidad,
+                    archivos y modalidad de acceso del libro.
+                </p>
+            </div>
+
+            <a
+                class="boton-volver-libros"
+                href="libros.php"
+            >
+                Volver a libros
+            </a>
+
+        </section>
+
+        <?php if (isset($mensajesError[$error])): ?>
+
+            <div class="alert alert-error">
+                <?php echo htmlspecialchars(
+                    $mensajesError[$error],
+                    ENT_QUOTES,
+                    "UTF-8"
+                ); ?>
+            </div>
+
+        <?php endif; ?>
+
+        <form
+            class="formulario-libro"
+            action="libro_procesar.php"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?php echo htmlspecialchars(
+                    $token,
+                    ENT_QUOTES,
+                    "UTF-8"
+                ); ?>"
             >
 
-                <div class="page-header">
+            <?php if ($esEdicion): ?>
+
+                <input
+                    type="hidden"
+                    name="id"
+                    value="<?php echo (int)$libroActual["id"]; ?>"
+                >
+
+            <?php endif; ?>
+
+            <section class="panel-formulario-libro">
+
+                <div class="encabezado-seccion-libro">
+
+                    <span class="numero-seccion-libro">
+                        01
+                    </span>
 
                     <div>
-
-                        <h2>
-                            <?php echo $esEdicion
-                                ? "Editar Libro"
-                                : "Nuevo Libro";
-                            ?>
-                        </h2>
+                        <h2>Información bibliográfica</h2>
 
                         <p>
-                            Registra la información bibliográfica,
-                            disponibilidad y modalidad de acceso.
+                            Datos principales para identificar el libro.
                         </p>
-
                     </div>
 
                 </div>
 
-                <?php if (isset($mensajesError[$error])): ?>
+                <div class="fila-formulario-libro">
 
-                    <div class="alert alert-error">
-
-                        <?php echo htmlspecialchars(
-                            $mensajesError[$error],
-                            ENT_QUOTES,
-                            "UTF-8"
-                        ); ?>
-
-                    </div>
-
-                <?php endif; ?>
-
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="<?php echo htmlspecialchars(
-                        $token,
-                        ENT_QUOTES,
-                        "UTF-8"
-                    ); ?>"
-                >
-
-                <?php if ($esEdicion): ?>
-
-                    <input
-                        type="hidden"
-                        name="id"
-                        value="<?php echo (int)$libroActual["id"]; ?>"
-                    >
-
-                <?php endif; ?>
-
-                <!-- Título y autor -->
-
-                <div class="form-row">
-
-                    <div class="form-group">
+                    <div class="grupo-campo-libro">
 
                         <label for="titulo">
                             Título
@@ -226,20 +245,19 @@ $mensajesError = [
                             required
                             minlength="3"
                             maxlength="200"
-                            placeholder="Ej. Contabilidad Financiera"
+                            placeholder="Ej. Contabilidad financiera"
                             value="<?php echo $esEdicion
                                 ? htmlspecialchars(
                                     $libroActual["titulo"],
                                     ENT_QUOTES,
                                     "UTF-8"
                                 )
-                                : "";
-                            ?>"
+                                : ""; ?>"
                         >
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="grupo-campo-libro">
 
                         <label for="autor">
                             Autor
@@ -259,17 +277,14 @@ $mensajesError = [
                                     ENT_QUOTES,
                                     "UTF-8"
                                 )
-                                : "";
-                            ?>"
+                                : ""; ?>"
                         >
 
                     </div>
 
                 </div>
 
-                <!-- Descripción -->
-
-                <div class="form-group">
+                <div class="grupo-campo-libro">
 
                     <label for="descripcion">
                         Descripción
@@ -287,16 +302,17 @@ $mensajesError = [
                             ENT_QUOTES,
                             "UTF-8"
                         )
-                        : "";
-                    ?></textarea>
+                        : ""; ?></textarea>
+
+                    <small>
+                        Puedes incluir un resumen, temas principales o información relevante.
+                    </small>
 
                 </div>
 
-                <!-- Categoría y costo -->
+                <div class="fila-formulario-libro">
 
-                <div class="form-row">
-
-                    <div class="form-group">
+                    <div class="grupo-campo-libro">
 
                         <label for="categoria_id">
                             Categoría
@@ -316,24 +332,19 @@ $mensajesError = [
 
                                 <option
                                     value="<?php echo (int)$categoria["id"]; ?>"
-
-                                    <?php
-                                    if (
+                                    <?php echo (
                                         $esEdicion &&
                                         (int)$libroActual["categoria_id"] ===
                                         (int)$categoria["id"]
-                                    ) {
-                                        echo "selected";
-                                    }
-                                    ?>
+                                    )
+                                        ? "selected"
+                                        : ""; ?>
                                 >
-
                                     <?php echo htmlspecialchars(
                                         $categoria["nombre"],
                                         ENT_QUOTES,
                                         "UTF-8"
                                     ); ?>
-
                                 </option>
 
                             <?php endforeach; ?>
@@ -342,7 +353,7 @@ $mensajesError = [
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="grupo-campo-libro">
 
                         <label for="costo">
                             Costo de adquisición
@@ -367,22 +378,38 @@ $mensajesError = [
                                     ENT_QUOTES,
                                     "UTF-8"
                                 )
-                                : "0.00";
-                            ?>"
+                                : "0.00"; ?>"
                         >
 
                         <small>
-                            Es el costo que pagó la biblioteca para
-                            adquirir el libro, no el precio cobrado al usuario.
+                            Costo pagado por la biblioteca para adquirir el libro.
                         </small>
 
                     </div>
 
                 </div>
 
-                <!-- Origen -->
+            </section>
 
-                <div class="form-group">
+            <section class="panel-formulario-libro">
+
+                <div class="encabezado-seccion-libro">
+
+                    <span class="numero-seccion-libro">
+                        02
+                    </span>
+
+                    <div>
+                        <h2>Origen y disponibilidad</h2>
+
+                        <p>
+                            Define si el libro pertenece a ReadPoint o a una institución externa.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="grupo-campo-libro">
 
                     <label for="origen">
                         Origen del libro
@@ -398,8 +425,7 @@ $mensajesError = [
                             value="propio"
                             <?php echo $origenActual === "propio"
                                 ? "selected"
-                                : "";
-                            ?>
+                                : ""; ?>
                         >
                             Propio — pertenece a esta biblioteca
                         </option>
@@ -408,8 +434,7 @@ $mensajesError = [
                             value="externo"
                             <?php echo $origenActual === "externo"
                                 ? "selected"
-                                : "";
-                            ?>
+                                : ""; ?>
                         >
                             Externo — pertenece a otra biblioteca
                         </option>
@@ -418,11 +443,12 @@ $mensajesError = [
 
                 </div>
 
-                <!-- Datos del libro propio -->
+                <div
+                    id="seccion-libro-propio"
+                    class="seccion-condicional-libro"
+                >
 
-                <div id="seccion-libro-propio">
-
-                    <div class="form-group">
+                    <div class="grupo-campo-libro">
 
                         <label for="unidades_totales">
                             Unidades totales
@@ -436,8 +462,7 @@ $mensajesError = [
                             required
                             value="<?php echo $esEdicion
                                 ? (int)$libroActual["unidades_totales"]
-                                : 0;
-                            ?>"
+                                : 0; ?>"
                         >
 
                         <small>
@@ -446,11 +471,12 @@ $mensajesError = [
 
                     </div>
 
-                    <!-- Configuración del acceso -->
+                    <div
+                        id="seccion-acceso"
+                        class="subpanel-acceso-libro"
+                    >
 
-                    <div id="seccion-acceso">
-
-                        <div class="form-group">
+                        <div class="grupo-campo-libro">
 
                             <label for="tipo_acceso">
                                 Tipo de acceso al libro digital
@@ -466,8 +492,7 @@ $mensajesError = [
                                     value="gratuito"
                                     <?php echo $tipoAccesoActual === "gratuito"
                                         ? "selected"
-                                        : "";
-                                    ?>
+                                        : ""; ?>
                                 >
                                     Gratuito — acceso permanente
                                 </option>
@@ -476,8 +501,7 @@ $mensajesError = [
                                     value="pago"
                                     <?php echo $tipoAccesoActual === "pago"
                                         ? "selected"
-                                        : "";
-                                    ?>
+                                        : ""; ?>
                                 >
                                     Pagado — acceso por tiempo definido
                                 </option>
@@ -485,17 +509,19 @@ $mensajesError = [
                             </select>
 
                             <small>
-                                Los libros gratuitos podrán leerse permanentemente.
-                                Los pagados tendrán un precio fijo y una fecha de vencimiento.
+                                Los libros pagados tendrán precio y duración de acceso.
                             </small>
 
                         </div>
 
-                        <div id="campos-acceso-pago">
+                        <div
+                            id="campos-acceso-pago"
+                            class="campos-acceso-pago"
+                        >
 
-                            <div class="form-row">
+                            <div class="fila-formulario-libro">
 
-                                <div class="form-group">
+                                <div class="grupo-campo-libro">
 
                                     <label for="precio_acceso">
                                         Precio de acceso
@@ -516,13 +542,12 @@ $mensajesError = [
                                     >
 
                                     <small>
-                                        Es el precio fijo que pagará el usuario.
-                                        No se cobra por cada día.
+                                        El usuario realizará un solo pago.
                                     </small>
 
                                 </div>
 
-                                <div class="form-group">
+                                <div class="grupo-campo-libro">
 
                                     <label for="dias_acceso">
                                         Duración del acceso
@@ -543,8 +568,7 @@ $mensajesError = [
                                     >
 
                                     <small>
-                                        Se recomienda utilizar 365 días
-                                        para libros académicos.
+                                        Cantidad de días durante los que podrá leer el libro.
                                     </small>
 
                                 </div>
@@ -552,10 +576,8 @@ $mensajesError = [
                             </div>
 
                             <div class="alert alert-success">
-
-                                El usuario pagará una sola vez y podrá
-                                leer el libro durante el período indicado.
-
+                                El usuario pagará una sola vez y podrá leer
+                                el libro durante el período configurado.
                             </div>
 
                         </div>
@@ -564,13 +586,14 @@ $mensajesError = [
 
                 </div>
 
-                <!-- Datos del libro externo -->
+                <div
+                    id="seccion-libro-externo"
+                    class="seccion-condicional-libro"
+                >
 
-                <div id="seccion-libro-externo">
+                    <div class="fila-formulario-libro">
 
-                    <div class="form-row">
-
-                        <div class="form-group">
+                        <div class="grupo-campo-libro">
 
                             <label for="institucion_origen">
                                 Institución de origen
@@ -589,13 +612,12 @@ $mensajesError = [
                                         ENT_QUOTES,
                                         "UTF-8"
                                     )
-                                    : "";
-                                ?>"
+                                    : ""; ?>"
                             >
 
                         </div>
 
-                        <div class="form-group">
+                        <div class="grupo-campo-libro">
 
                             <label for="url_externo">
                                 Enlace de la biblioteca
@@ -613,8 +635,7 @@ $mensajesError = [
                                         ENT_QUOTES,
                                         "UTF-8"
                                     )
-                                    : "";
-                                ?>"
+                                    : ""; ?>"
                             >
 
                         </div>
@@ -622,144 +643,155 @@ $mensajesError = [
                     </div>
 
                     <div class="alert alert-success">
-
-                        Los libros externos no se reservan ni se cobran
-                        desde este sistema. El usuario será enviado
-                        a la biblioteca de origen.
-
+                        Los libros externos no se reservan ni se cobran desde ReadPoint.
+                        El usuario será enviado al sitio de la institución de origen.
                     </div>
 
                 </div>
 
-                <!-- Portada -->
+            </section>
 
-                <div class="form-group">
+            <section class="panel-formulario-libro">
 
-                    <label for="imagen">
-                        Imagen de portada
-                    </label>
+                <div class="encabezado-seccion-libro">
 
-                    <input
-                        id="imagen"
-                        type="file"
-                        name="imagen"
-                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-                    >
+                    <span class="numero-seccion-libro">
+                        03
+                    </span>
 
-                    <small>
-                        JPG, JPEG o PNG. Tamaño máximo: 2 MB.
-                        El thumbnail se generará automáticamente.
-                    </small>
-
-                </div>
-
-                <?php if ($thumbnailActual !== ""): ?>
-
-                    <div class="current-image">
+                    <div>
+                        <h2>Archivos del libro</h2>
 
                         <p>
-                            Portada actual:
+                            Agrega la portada y el documento PDF.
                         </p>
-
-                        <img
-                            src="../uploads/thumbnails/<?php
-                            echo rawurlencode($thumbnailActual);
-                            ?>"
-                            alt="Portada actual del libro"
-                        >
-
-                        <small>
-                            Selecciona otra imagen únicamente
-                            si deseas reemplazarla.
-                        </small>
-
                     </div>
-
-                <?php endif; ?>
-
-                <!-- PDF -->
-
-                <div class="form-group">
-
-                    <label for="archivo_pdf">
-                        Archivo PDF del libro
-                    </label>
-
-                    <input
-                        id="archivo_pdf"
-                        type="file"
-                        name="archivo_pdf"
-                        accept=".pdf,application/pdf"
-                    >
-
-                    <small>
-                        Solamente archivos PDF.
-                        Tamaño máximo: 100 MB.
-                    </small>
 
                 </div>
 
-                <?php if ($pdfActual !== ""): ?>
+                <div class="fila-archivos-libro">
 
-                    <div class="current-file">
+                    <div class="grupo-archivo-libro">
 
-                        <p>
-                            PDF actual:
-                        </p>
+                        <div class="grupo-campo-libro">
 
-                        <a
-                            class="btn btn-secondary"
-                            href="../uploads/pdfs/<?php
-                            echo rawurlencode($pdfActual);
-                            ?>"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Ver PDF actual
-                        </a>
+                            <label for="imagen">
+                                Imagen de portada
+                            </label>
 
-                        <small>
-                            Selecciona otro PDF únicamente
-                            si deseas reemplazarlo.
-                        </small>
+                            <input
+                                id="imagen"
+                                type="file"
+                                name="imagen"
+                                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                            >
+
+                            <small>
+                                JPG, JPEG o PNG. Tamaño máximo: 2 MB.
+                            </small>
+
+                        </div>
+
+                        <?php if ($thumbnailActual !== ""): ?>
+
+                            <div class="archivo-actual-libro portada-actual-libro">
+
+                                <p>Portada actual</p>
+
+                                <img
+                                    src="../uploads/thumbnails/<?php
+                                    echo rawurlencode($thumbnailActual);
+                                    ?>"
+                                    alt="Portada actual del libro"
+                                >
+
+                                <small>
+                                    Selecciona otra imagen para reemplazarla.
+                                </small>
+
+                            </div>
+
+                        <?php endif; ?>
 
                     </div>
 
-                <?php endif; ?>
+                    <div class="grupo-archivo-libro">
 
-                <!-- Botones -->
+                        <div class="grupo-campo-libro">
 
-                <div class="form-actions">
+                            <label for="archivo_pdf">
+                                Archivo PDF del libro
+                            </label>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="libros.php"
-                    >
-                        Cancelar
-                    </a>
+                            <input
+                                id="archivo_pdf"
+                                type="file"
+                                name="archivo_pdf"
+                                accept=".pdf,application/pdf"
+                            >
 
-                    <button
-                        class="btn btn-primary"
-                        type="submit"
-                    >
-                        <?php echo $esEdicion
-                            ? "Guardar cambios"
-                            : "Crear libro";
-                        ?>
-                    </button>
+                            <small>
+                                Solamente PDF. Tamaño máximo: 100 MB.
+                            </small>
+
+                        </div>
+
+                        <?php if ($pdfActual !== ""): ?>
+
+                            <div class="archivo-actual-libro pdf-actual-libro">
+
+                                <p>PDF actual</p>
+
+                                <a
+                                    class="boton-ver-pdf-libro"
+                                    href="ver_pdf.php?archivo=<?php
+                                    echo rawurlencode($pdfActual);
+                                    ?>"
+                                >
+                                    Ver PDF actual
+                                </a>
+
+                                <small>
+                                    Selecciona otro PDF para reemplazarlo.
+                                </small>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    </div>
 
                 </div>
 
-            </form>
+            </section>
 
-        </div>
+            <div class="acciones-formulario-libro">
+
+                <a
+                    class="boton-cancelar-libro"
+                    href="libros.php"
+                >
+                    Cancelar
+                </a>
+
+                <button
+                    class="boton-guardar-libro"
+                    type="submit"
+                >
+                    <?php echo $esEdicion
+                        ? "Guardar cambios"
+                        : "Crear libro"; ?>
+                </button>
+
+            </div>
+
+        </form>
 
     </main>
 
 </div>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const origen =
@@ -805,9 +837,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ? diasAcceso.value
             : "365";
 
-    /**
-     * Muestra u oculta los campos de pago.
-     */
     function actualizarTipoAcceso() {
 
         const esPago =
@@ -863,9 +892,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    /**
-     * Cambia entre libro propio y libro externo.
-     */
     function actualizarOrigen() {
 
         const esExterno =
@@ -942,7 +968,6 @@ document.addEventListener("DOMContentLoaded", function () {
     actualizarOrigen();
 
 });
-
 </script>
 
 </body>

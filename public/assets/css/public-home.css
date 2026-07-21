@@ -1432,3 +1432,225 @@ button:focus-visible {
     }
 
 }
+/* =========================================================
+   IMPORTANCIA DE LAS BIBLIOTECAS DIGITALES
+========================================================= */
+
+.seccion-importancia {
+    background:
+        linear-gradient(
+            180deg,
+            #fdf9f7 0%,
+            #f5ebe6 100%
+        );
+}
+
+.contenido-importancia {
+    display: grid;
+    gap: 34px;
+}
+
+.panel-importancia {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(320px, 0.95fr);
+
+    gap: 32px;
+
+    padding: 38px;
+
+    background: #ffffff;
+
+    border: 1px solid #eadbd4;
+    border-radius: 24px;
+
+    box-shadow:
+        0 16px 38px rgba(45, 36, 32, 0.08);
+}
+
+.texto-importancia p {
+    margin: 0 0 18px;
+
+    color: #746761;
+
+    font-size: 0.96rem;
+    line-height: 1.78;
+}
+
+.texto-importancia p:last-child {
+    margin-bottom: 0;
+}
+
+.lista-beneficios-importancia {
+    display: grid;
+    gap: 14px;
+}
+
+.beneficio-importancia {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+
+    gap: 15px;
+
+    padding: 18px;
+
+    background: #fdf9f7;
+
+    border: 1px solid #eadbd4;
+    border-radius: 15px;
+}
+
+.beneficio-importancia > span {
+    display: grid;
+    place-items: center;
+
+    width: 44px;
+    height: 44px;
+
+    background: #8c2d19;
+    color: #ffffff;
+
+    border-radius: 12px;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.beneficio-importancia h3 {
+    margin: 0;
+
+    color: #2d2420;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size: 1rem;
+}
+
+.beneficio-importancia p {
+    margin: 6px 0 0;
+
+    color: #746761;
+
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   STACK TECNOLÓGICO
+========================================================= */
+
+.seccion-tecnologias {
+    background: #ffffff;
+}
+
+.lista-tecnologias {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 36px;
+}
+
+.tarjeta-tecnologia {
+    min-width: 0;
+    padding: 26px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fdf9f7,
+            #ffffff
+        );
+
+    border: 1px solid #eadbd4;
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 25px rgba(45, 36, 32, 0.05);
+}
+
+.numero-tecnologia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 38px;
+    height: 30px;
+    padding: 0 10px;
+
+    background: #f5dfd9;
+    color: #8c2d19;
+
+    border-radius: 999px;
+
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.tarjeta-tecnologia h3 {
+    margin: 18px 0 9px;
+
+    color: #2d2420;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size: 1.2rem;
+}
+
+.tarjeta-tecnologia p {
+    margin: 0;
+
+    color: #746761;
+
+    font-size: 0.83rem;
+    line-height: 1.62;
+}
+
+.tecnologia-mvc {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+    .panel-importancia {
+        grid-template-columns: 1fr;
+    }
+
+    .lista-tecnologias {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .tecnologia-mvc {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 620px) {
+    .panel-importancia {
+        padding: 25px 20px;
+    }
+
+    .lista-tecnologias {
+        grid-template-columns: 1fr;
+    }
+
+    .tecnologia-mvc {
+        grid-column: auto;
+    }
+
+    .beneficio-importancia {
+        grid-template-columns: 1fr;
+    }
+}

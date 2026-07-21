@@ -1,0 +1,215 @@
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    background: #f5ebe6;
+}
+
+.encabezado-usuarios {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.etiqueta-pagina {
+    color: #8c2d19;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.encabezado-usuarios h1 {
+    margin: 6px 0 8px;
+    color: #2d2420;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 2rem;
+}
+
+.encabezado-usuarios p {
+    margin: 0;
+    color: #746761;
+}
+
+.boton-nuevo-usuario {
+    padding: 12px 18px;
+    background: #8c2d19;
+    color: #ffffff;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.panel-usuarios {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #eadbd4;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(45, 36, 32, 0.06);
+}
+
+.barra-busqueda-usuarios {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.campo-busqueda-usuarios {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 13px;
+    border: 1px solid #d9c8c0;
+    border-radius: 9px;
+    font: inherit;
+}
+
+.boton-buscar,
+.boton-limpiar {
+    padding: 11px 16px;
+    border-radius: 9px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-buscar {
+    border: 0;
+    background: #2d2420;
+    color: #ffffff;
+}
+
+.boton-limpiar {
+    border: 1px solid #d9c8c0;
+    background: #ffffff;
+    color: #2d2420;
+}
+
+.contenedor-tabla-usuarios {
+    overflow-x: auto;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee3de;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tabla-usuarios th {
+    color: #746761;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.etiqueta-rol,
+.estado-usuario {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.etiqueta-rol {
+    background: #f0e6e1;
+    color: #5d4c45;
+}
+
+.estado-activo {
+    background: #e4f4e8;
+    color: #23613a;
+}
+
+.estado-bloqueado {
+    background: #f8e3df;
+    color: #8c2d19;
+}
+
+.acciones-usuario {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.acciones-usuario form {
+    margin: 0;
+}
+
+.accion-editar,
+.accion-estado,
+.accion-eliminar {
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.accion-editar {
+    color: #2d2420;
+}
+
+.accion-estado {
+    color: #8c2d19;
+}
+
+.accion-eliminar {
+    color: #b21f1f;
+}
+
+.estado-vacio-tabla {
+    padding: 36px !important;
+    color: #81736d;
+    text-align: center !important;
+}
+
+.paginacion-usuarios {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.paginacion-usuarios a,
+.pagina-actual {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.paginacion-usuarios a {
+    border: 1px solid #dfd0c9;
+    color: #2d2420;
+}
+
+.pagina-actual {
+    background: #8c2d19;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .encabezado-usuarios,
+    .barra-busqueda-usuarios {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}

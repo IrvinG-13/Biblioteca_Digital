@@ -40,85 +40,257 @@ $esEdicion = $usuarioActual !== null;
 
 <head>
     <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>
-        <?php echo $esEdicion ? "Editar Usuario" : "Nuevo Usuario"; ?>
+        <?php echo $esEdicion
+            ? "Editar usuario | ReadPoint"
+            : "Nuevo usuario | ReadPoint"; ?>
     </title>
+
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/usuario-form.css?v=1">
 </head>
+
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
-        <div class="content-card">
 
-            <form class="form-card" action="usuario_procesar.php" method="POST">
+        <section class="encabezado-formulario-usuario">
 
-                <div class="page-header">
-                    <h2><?php echo $esEdicion ? "Editar Usuario" : "Nuevo Usuario"; ?></h2>
-                </div>
+            <div>
+                <span class="etiqueta-pagina">
+                    Administración
+                </span>
 
-                <?php if ($error === "usuario"): ?>
-                    <div class="alert alert-error">El nombre de usuario debe tener entre 3 y 50 caracteres.</div>
-                <?php elseif ($error === "password"): ?>
-                    <div class="alert alert-error">La contraseña debe tener entre 8 y 12 caracteres.</div>
-                <?php elseif ($error === "rol"): ?>
-                    <div class="alert alert-error">Rol inválido.</div>
-                <?php elseif ($error === "duplicado"): ?>
-                    <div class="alert alert-error">Ese nombre de usuario ya existe.</div>
-                <?php endif; ?>
+                <h1>
+                    <?php echo $esEdicion
+                        ? "Editar usuario"
+                        : "Nuevo usuario"; ?>
+                </h1>
 
-                <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
+                <p>
+                    <?php echo $esEdicion
+                        ? "Modifica los datos de acceso y el rol del usuario."
+                        : "Crea una nueva cuenta para acceder a ReadPoint."; ?>
+                </p>
+            </div>
+
+            <a
+                class="boton-volver-usuarios"
+                href="usuarios.php"
+            >
+                Volver a usuarios
+            </a>
+
+        </section>
+
+        <?php if ($error === "usuario"): ?>
+
+            <div class="alert alert-error">
+                El nombre de usuario debe tener entre 3 y 50 caracteres.
+            </div>
+
+        <?php elseif ($error === "password"): ?>
+
+            <div class="alert alert-error">
+                La contraseña debe tener entre 8 y 12 caracteres.
+            </div>
+
+        <?php elseif ($error === "rol"): ?>
+
+            <div class="alert alert-error">
+                Rol inválido.
+            </div>
+
+        <?php elseif ($error === "duplicado"): ?>
+
+            <div class="alert alert-error">
+                Ese nombre de usuario ya existe.
+            </div>
+
+        <?php endif; ?>
+
+        <section class="panel-formulario-usuario">
+
+            <form
+                class="formulario-usuario"
+                action="usuario_procesar.php"
+                method="POST"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="<?php echo htmlspecialchars(
+                        $token,
+                        ENT_QUOTES,
+                        "UTF-8"
+                    ); ?>"
+                >
 
                 <?php if ($esEdicion): ?>
-                    <input type="hidden" name="id" value="<?php echo $usuarioActual["id"]; ?>">
+
+                    <input
+                        type="hidden"
+                        name="id"
+                        value="<?php echo htmlspecialchars(
+                            $usuarioActual["id"],
+                            ENT_QUOTES,
+                            "UTF-8"
+                        ); ?>"
+                    >
+
                 <?php endif; ?>
 
-                <div class="form-group">
-                    <label>Usuario</label>
-                    <input type="text" name="usuario" required
-                           placeholder="Ej. juan.perez"
-                           value="<?php echo $esEdicion ? htmlspecialchars($usuarioActual["usuario"]) : ""; ?>">
-                </div>
+                <div class="grupo-campo-usuario">
 
-                <div class="form-group">
-                    <label>
-                        Contraseña
-                        <?php echo $esEdicion ? "(dejar en blanco para no cambiarla)" : ""; ?>
+                    <label for="usuario">
+                        Usuario
                     </label>
-                    <input type="password" name="password"
-                           placeholder="Debe tener entre 8 y 12 caracteres"
-                           <?php echo $esEdicion ? "" : "required"; ?>>
+
+                    <input
+                        id="usuario"
+                        type="text"
+                        name="usuario"
+                        required
+                        minlength="3"
+                        maxlength="50"
+                        placeholder="Ej. juan.perez"
+                        value="<?php echo $esEdicion
+                            ? htmlspecialchars(
+                                $usuarioActual["usuario"],
+                                ENT_QUOTES,
+                                "UTF-8"
+                            )
+                            : ""; ?>"
+                    >
+
+                    <small>
+                        Debe tener entre 3 y 50 caracteres.
+                    </small>
+
                 </div>
 
-                <div class="form-group">
-                    <label>Rol</label>
-                    <select name="rol" required>
-                        <option value="">Seleccione un rol</option>
-                        <option value="admin" <?php echo ($esEdicion && $usuarioActual["rol"] === "admin") ? "selected" : ""; ?>>
+                <div class="grupo-campo-usuario">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        minlength="8"
+                        maxlength="12"
+                        placeholder="Debe tener entre 8 y 12 caracteres"
+                        <?php echo $esEdicion
+                            ? ""
+                            : "required"; ?>
+                    >
+
+                    <small>
+                        <?php echo $esEdicion
+                            ? "Déjala en blanco para conservar la contraseña actual."
+                            : "La contraseña debe tener entre 8 y 12 caracteres."; ?>
+                    </small>
+
+                </div>
+
+                <div class="grupo-campo-usuario">
+
+                    <label for="rol">
+                        Rol
+                    </label>
+
+                    <select
+                        id="rol"
+                        name="rol"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccione un rol
+                        </option>
+
+                        <option
+                            value="admin"
+                            <?php echo (
+                                $esEdicion &&
+                                $usuarioActual["rol"] === "admin"
+                            )
+                                ? "selected"
+                                : ""; ?>
+                        >
                             Administrador
                         </option>
-                        <option value="estudiante" <?php echo ($esEdicion && $usuarioActual["rol"] === "estudiante") ? "selected" : ""; ?>>
+
+                        <option
+                            value="estudiante"
+                            <?php echo (
+                                $esEdicion &&
+                                $usuarioActual["rol"] === "estudiante"
+                            )
+                                ? "selected"
+                                : ""; ?>
+                        >
                             Estudiante
                         </option>
-                        <option value="profesor" <?php echo ($esEdicion && $usuarioActual["rol"] === "profesor") ? "selected" : ""; ?>>
+
+                        <option
+                            value="profesor"
+                            <?php echo (
+                                $esEdicion &&
+                                $usuarioActual["rol"] === "profesor"
+                            )
+                                ? "selected"
+                                : ""; ?>
+                        >
                             Profesor
                         </option>
+
                     </select>
+
+                    <small>
+                        Define qué funciones podrá utilizar esta cuenta.
+                    </small>
+
                 </div>
 
-                <div class="form-actions">
-                    <a class="btn btn-secondary" href="usuarios.php">Cancelar</a>
-                    <button class="btn btn-primary" type="submit">
-                        <?php echo $esEdicion ? "Guardar cambios" : "Crear usuario"; ?>
+                <div class="acciones-formulario-usuario">
+
+                    <a
+                        class="boton-cancelar-usuario"
+                        href="usuarios.php"
+                    >
+                        Cancelar
+                    </a>
+
+                    <button
+                        class="boton-guardar-usuario"
+                        type="submit"
+                    >
+                        <?php echo $esEdicion
+                            ? "Guardar cambios"
+                            : "Crear usuario"; ?>
                     </button>
+
                 </div>
 
             </form>
 
-        </div>
+        </section>
+
     </main>
 
 </div>

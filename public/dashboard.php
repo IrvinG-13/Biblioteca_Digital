@@ -72,7 +72,6 @@ $nombreUsuario = htmlspecialchars(
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -80,175 +79,175 @@ $nombreUsuario = htmlspecialchars(
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Panel Administrativo</title>
+    <title>Inicio administrativo | ReadPoint</title>
 
-    <link
-        rel="stylesheet"
-        href="assets/css/style.css"
-    >
-
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=3">
+    <link rel="stylesheet" href="assets/css/dashboard.css?v=1">
 </head>
 
 <body>
 
 <div class="app-layout">
 
-    <?php include __DIR__ . '/menu.php'; ?>
+    <?php require_once __DIR__ . "/menu.php"; ?>
 
     <main class="main-content">
 
-        <div class="content-card">
+        <?php if (($_GET["password_actualizada"] ?? "") === "1"): ?>
+            <div class="alert alert-success">
+                Tu contraseña fue actualizada correctamente.
+            </div>
+        <?php endif; ?>
 
-            <?php if (($_GET["password_actualizada"] ?? "") === "1"): ?>
-                <div class="alert alert-success">
-                    Tu contraseña fue actualizada correctamente.
-                </div>
-            <?php endif; ?>
+        <section class="encabezado-dashboard">
 
-            <section class="dashboard-hero">
-                <h1>Biblioteca Digital</h1>
+            <div>
+                <span class="etiqueta-dashboard">
+                    Panel administrativo
+                </span>
+
+                <h1>
+                    Bienvenido, <?php echo $nombreUsuario; ?>
+                </h1>
+
                 <p>
-                    Sistema de administración de libros y reservas.
+                    Consulta el estado general de ReadPoint y accede
+                    rápidamente a las funciones principales.
                 </p>
-                <p>
-                    Bienvenido,
-                    <strong>
-                        <?php echo $nombreUsuario; ?>
-                    </strong>
-                </p>
-            </section>
+            </div>
 
-            <section class="stats-grid">
+            <a
+                class="boton-principal-dashboard"
+                href="libro_form.php"
+            >
+                Agregar libro
+            </a>
 
-                <div class="stat-card">
+        </section>
 
-                    <div class="stat-title">
-                        Usuarios registrados
+        <section class="resumen-dashboard">
+
+            <a class="tarjeta-resumen" href="usuarios.php">
+                <span class="titulo-resumen">
+                    Usuarios
+                </span>
+
+                <strong class="numero-resumen">
+                    <?php echo $usuarios; ?>
+                </strong>
+
+                <span class="detalle-resumen">
+                    Usuarios registrados
+                </span>
+            </a>
+
+            <a class="tarjeta-resumen" href="estudiantes.php">
+                <span class="titulo-resumen">
+                    Estudiantes
+                </span>
+
+                <strong class="numero-resumen">
+                    <?php echo $estudiantes; ?>
+                </strong>
+
+                <span class="detalle-resumen">
+                    Estudiantes registrados
+                </span>
+            </a>
+
+            <a class="tarjeta-resumen" href="categorias.php">
+                <span class="titulo-resumen">
+                    Categorías
+                </span>
+
+                <strong class="numero-resumen">
+                    <?php echo $categorias; ?>
+                </strong>
+
+                <span class="detalle-resumen">
+                    Categorías disponibles
+                </span>
+            </a>
+
+            <a class="tarjeta-resumen" href="libros.php">
+                <span class="titulo-resumen">
+                    Libros
+                </span>
+
+                <strong class="numero-resumen">
+                    <?php echo $libros; ?>
+                </strong>
+
+                <span class="detalle-resumen">
+                    Libros registrados
+                </span>
+            </a>
+
+        </section>
+
+        <div class="columnas-dashboard">
+
+            <section class="panel-dashboard">
+
+                <div class="encabezado-panel">
+                    <div>
+                        <h2>Acciones rápidas</h2>
+
+                        <p>
+                            Funciones utilizadas con mayor frecuencia.
+                        </p>
                     </div>
-
-                    <div class="stat-number">
-                        <?php echo $usuarios; ?>
-                    </div>
-
                 </div>
 
-                <div class="stat-card">
+                <div class="acciones-dashboard">
 
-                    <div class="stat-title">
-                        Estudiantes registrados
-                    </div>
-
-                    <div class="stat-number">
-                        <?php echo $estudiantes; ?>
-                    </div>
-
-                </div>
-
-                <div class="stat-card">
-
-                    <div class="stat-title">
-                        Categorías de libros
-                    </div>
-
-                    <div class="stat-number">
-                        <?php echo $categorias; ?>
-                    </div>
-
-                </div>
-
-                <div class="stat-card">
-
-                    <div class="stat-title">
-                        Libros registrados
-                    </div>
-
-                    <div class="stat-number">
-                        <?php echo $libros; ?>
-                    </div>
-
-                </div>
-
-            </section>
-
-            <section class="quick-actions">
-
-                <h3>Acciones rápidas</h3>
-
-                <div class="quick-actions-grid">
-
-                    <a
-                        class="btn btn-secondary"
-                        href="usuarios.php"
-                    >
-                        Usuarios
+                    <a href="usuarios.php">
+                        Gestionar usuarios
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="estudiantes.php"
-                    >
-                        Estudiantes
+                    <a href="estudiantes.php">
+                        Gestionar estudiantes
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="carreras.php"
-                    >
-                        Carreras
+                    <a href="libro_form.php">
+                        Registrar libro
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="categorias.php"
-                    >
-                        Categorías
+                    <a href="categoria_form.php">
+                        Crear categoría
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="libros.php"
-                    >
-                        Libros
+                    <a href="reporte_reservas.php">
+                        Consultar reservas
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="libro_form.php"
-                    >
-                        + Agregar libro
-                    </a>
-
-                    <a
-                        class="btn btn-secondary"
-                        href="categoria_form.php"
-                    >
-                        + Nueva categoría
-                    </a>
-
-                    <a
-                        class="btn btn-secondary"
-                        href="libro_exportar.php"
-                    >
+                    <a href="libro_exportar.php">
                         Exportar libros
                     </a>
 
-                    <a
-                        class="btn btn-secondary"
-                        href="reporte_reservas.php"
-                    >
-                        Reporte de reservas
-                    </a>
-
                 </div>
 
             </section>
 
-            <section class="recent-activity">
+            <section class="panel-dashboard">
 
-                <h3>Últimas actividades</h3>
+                <div class="encabezado-panel">
+                    <div>
+                        <h2>Actividad reciente</h2>
 
-                <div class="activity-empty">
-                    No hay actividad reciente registrada.
+                        <p>
+                            Movimientos recientes del sistema.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="estado-vacio-dashboard">
+                    <strong>Sin actividad reciente</strong>
+
+                    <span>
+                        Todavía no hay movimientos registrados para mostrar.
+                    </span>
                 </div>
 
             </section>
@@ -260,5 +259,4 @@ $nombreUsuario = htmlspecialchars(
 </div>
 
 </body>
-
 </html>
