@@ -1,0 +1,1074 @@
+/* =========================================================
+   READPOINT - INICIO DE SESION
+   =========================================================
+   Paleta:
+   Crema:  #F5EBE6
+   Marron: #2D2420
+   Rojo:   #8C2D19
+========================================================= */
+
+
+/* =========================================================
+   1. VARIABLES GENERALES
+========================================================= */
+
+:root {
+    /* Colores */
+    --color-fondo-pagina: #f5ebe6;
+    --color-fondo-formulario: #fffdfb;
+    --color-fondo-blanco: #ffffff;
+    --color-fondo-oscuro: #2d2420;
+
+    --color-principal: #8c2d19;
+    --color-principal-oscuro: #6e2113;
+    --color-principal-claro: #f0d8d0;
+
+    --color-texto-principal: #2d2420;
+    --color-texto-secundario: #6b5d57;
+    --color-texto-claro: #ffffff;
+
+    --color-borde: #ddcec6;
+    --color-borde-campo: #d5c6be;
+
+    --color-error: #a1261d;
+    --color-fondo-error: #fce9e6;
+    --color-borde-error: #e9b5ae;
+
+    /* Fuentes */
+    --fuente-principal:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    --fuente-titulos:
+        "Space Grotesk",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    /* Medidas */
+    --ancho-maximo-login: 1160px;
+
+    --radio-pequeno: 8px;
+    --radio-mediano: 14px;
+    --radio-grande: 26px;
+    --radio-redondo: 999px;
+
+    /* Sombras */
+    --sombra-contenedor:
+        0 24px 70px rgba(45, 36, 32, 0.16);
+
+    --sombra-campo:
+        0 0 0 4px rgba(140, 45, 25, 0.1);
+
+    --sombra-boton:
+        0 10px 24px rgba(140, 45, 25, 0.22);
+
+    /* Transiciones */
+    --transicion-rapida: 180ms ease;
+    --transicion-entrada: 600ms ease;
+}
+
+
+/* =========================================================
+   2. REINICIO GENERAL
+========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(140, 45, 25, 0.08),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(45, 36, 32, 0.08),
+            transparent 28%
+        ),
+        var(--color-fondo-pagina);
+
+    color: var(--color-texto-principal);
+
+    font-family: var(--fuente-principal);
+    font-size: 16px;
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1,
+h2,
+p {
+    margin-top: 0;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   3. PAGINA COMPLETA
+========================================================= */
+
+.pagina-login {
+    overflow-x: hidden;
+}
+
+.contenido-principal-login {
+    display: grid;
+    place-items: center;
+
+    min-height: 100vh;
+    padding: 34px;
+}
+
+
+/* =========================================================
+   4. CONTENEDOR PRINCIPAL
+========================================================= */
+
+.contenedor-login {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 0.92fr)
+        minmax(430px, 1.08fr);
+
+    width: min(
+        100%,
+        var(--ancho-maximo-login)
+    );
+
+    min-height: 680px;
+
+    background: var(--color-fondo-formulario);
+
+    border:
+        1px solid rgba(45, 36, 32, 0.1);
+
+    border-radius: var(--radio-grande);
+
+    box-shadow: var(--sombra-contenedor);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   5. LADO IZQUIERDO - FORMULARIO
+========================================================= */
+
+.lado-formulario-login {
+    display: flex;
+    align-items: center;
+
+    padding: 56px 64px;
+
+    background: var(--color-fondo-formulario);
+}
+
+.contenido-formulario-login {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+
+    animation:
+        aparecerFormulario
+        var(--transicion-entrada)
+        both;
+}
+
+
+/* =========================================================
+   6. MARCA Y LOGO
+========================================================= */
+
+.marca-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    margin-bottom: 45px;
+}
+
+.logo-login {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+
+}
+
+.logo-login-alternativo {
+    display: grid;
+    place-items: center;
+
+    width: 46px;
+    height: 46px;
+
+    background: var(--color-fondo-oscuro);
+    color: var(--color-texto-claro);
+
+    border-radius: 13px;
+
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.nombre-readpoint-login {
+    font-family: var(--fuente-titulos);
+    font-size: 1.28rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   7. ENCABEZADO DEL FORMULARIO
+========================================================= */
+
+.encabezado-formulario-login {
+    margin-bottom: 28px;
+}
+
+.etiqueta-login {
+    margin-bottom: 10px;
+
+    color: var(--color-principal);
+
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.titulo-login {
+    margin-bottom: 12px;
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2.15rem, 3.4vw, 3rem);
+    font-weight: 700;
+
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+
+    text-wrap: balance;
+}
+
+.descripcion-login {
+    max-width: 45ch;
+    margin-bottom: 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   8. MENSAJES DE ERROR
+========================================================= */
+
+.mensaje-error-login {
+    display: grid;
+    gap: 3px;
+
+    margin-bottom: 22px;
+    padding: 14px 16px;
+
+    background: var(--color-fondo-error);
+    color: var(--color-error);
+
+    border:
+        1px solid var(--color-borde-error);
+
+    border-left:
+        4px solid var(--color-error);
+
+    border-radius: var(--radio-pequeno);
+
+    animation:
+        mostrarError 420ms ease both;
+}
+
+.mensaje-error-login strong {
+    font-size: 0.87rem;
+}
+
+.mensaje-error-login span {
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   9. FORMULARIO
+========================================================= */
+
+.formulario-login {
+    display: grid;
+    gap: 19px;
+}
+
+.grupo-campo-login {
+    display: grid;
+    gap: 7px;
+}
+
+.etiqueta-campo-login {
+    color: var(--color-texto-principal);
+
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.campo-login {
+    width: 100%;
+    min-height: 50px;
+
+    padding: 12px 15px;
+
+    background: var(--color-fondo-blanco);
+    color: var(--color-texto-principal);
+
+    border:
+        1px solid var(--color-borde-campo);
+
+    border-radius: 11px;
+
+    font-size: 0.92rem;
+
+    outline: none;
+
+    transition:
+        border-color var(--transicion-rapida),
+        box-shadow var(--transicion-rapida),
+        background-color var(--transicion-rapida);
+}
+
+.campo-login::placeholder {
+    color: #9c8d86;
+}
+
+.campo-login:hover {
+    border-color: #bda9a0;
+}
+
+.campo-login:focus {
+    background: var(--color-fondo-blanco);
+
+    border-color: var(--color-principal);
+
+    box-shadow: var(--sombra-campo);
+}
+
+.campo-login:autofill,
+.campo-login:-webkit-autofill {
+    -webkit-text-fill-color:
+        var(--color-texto-principal);
+
+    box-shadow:
+        0 0 0 1000px
+        var(--color-fondo-blanco)
+        inset;
+
+    transition:
+        background-color 9999s ease-out;
+}
+
+
+/* =========================================================
+   BOTON DE INICIO DE SESION
+========================================================= */
+
+.boton-iniciar-sesion {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    min-height: 52px;
+    margin-top: 5px;
+    padding: 12px 22px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--color-principal) 0%,
+            var(--color-principal-oscuro) 100%
+        );
+
+    color: var(--color-texto-claro);
+
+    border: 0;
+    border-radius: 200px;
+
+    font-size: 0.94rem;
+    font-weight: 750;
+    line-height: 1.2;
+
+    box-shadow:
+        0 10px 24px rgba(140, 45, 25, 0.24);
+
+    isolation: isolate;
+
+    transition:
+        transform var(--transicion-rapida),
+        box-shadow var(--transicion-rapida),
+        filter var(--transicion-rapida);
+}
+
+
+/* Brillo que cruza el botón */
+
+.boton-iniciar-sesion::before {
+    position: absolute;
+    top: -50%;
+    left: -45%;
+    z-index: -1;
+
+    width: 34%;
+    height: 200%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.22),
+            transparent
+        );
+
+    content: "";
+
+    transform: rotate(18deg);
+
+    transition:
+        left 500ms ease;
+}
+
+
+/* Texto */
+
+.texto-boton-login {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Flecha */
+
+.icono-boton-login {
+    position: relative;
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.1rem;
+    line-height: 1;
+
+    transition:
+        transform var(--transicion-rapida);
+}
+
+
+/* Al pasar el cursor */
+
+.boton-iniciar-sesion:hover {
+    filter: brightness(1.06);
+
+    box-shadow:
+        0 15px 32px rgba(105, 81, 76, 0.808);
+
+    transform: translateY(-2px);
+}
+
+.boton-iniciar-sesion:hover::before {
+    left: 115%;
+}
+
+.boton-iniciar-sesion:hover .icono-boton-login {
+    transform: translateX(4px);
+}
+
+
+/* Al presionar */
+
+.boton-iniciar-sesion:active {
+    box-shadow:
+        0 6px 15px rgba(140, 45, 25, 0.22);
+
+    transform: translateY(0) scale(0.99);
+}
+
+
+/* Navegación con teclado */
+
+.boton-iniciar-sesion:focus-visible {
+    outline:
+        3px solid rgba(140, 45, 25, 0.3);
+
+    outline-offset: 4px;
+}
+
+
+/* Botón desactivado */
+
+.boton-iniciar-sesion:disabled {
+    cursor: wait;
+
+    filter: grayscale(0.15);
+    opacity: 0.72;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+.boton-iniciar-sesion:disabled::before {
+    display: none;
+}
+
+/* =========================================================
+   11. AVISO Y ENLACE DE REGRESO
+========================================================= */
+
+.aviso-acceso-login {
+    margin: 21px 0 17px;
+    padding-left: 13px;
+
+    color: var(--color-texto-secundario);
+
+    border-left:
+        3px solid var(--color-principal);
+
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+.enlace-volver-inicio {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
+    font-weight: 650;
+
+    transition:
+        color var(--transicion-rapida),
+        gap var(--transicion-rapida);
+}
+
+.enlace-volver-inicio:hover {
+    gap: 10px;
+
+    color: var(--color-principal);
+}
+
+.enlace-volver-inicio:focus-visible {
+    outline:
+        3px solid rgba(140, 45, 25, 0.28);
+
+    outline-offset: 4px;
+}
+
+
+/* =========================================================
+   12. LADO DERECHO - PANEL VISUAL
+========================================================= */
+
+.lado-visual-login {
+    position: relative;
+
+    min-width: 0;
+    min-height: 680px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #4a2921,
+            #2d2420 58%,
+            #1d1714
+        );
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    animation:
+        aparecerPanelVisual
+        700ms ease
+        100ms
+        both;
+}
+
+.lado-visual-login::before {
+    position: absolute;
+    top: -120px;
+    right: -100px;
+    z-index: 1;
+
+    width: 340px;
+    height: 340px;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 50%;
+
+    content: "";
+}
+
+.lado-visual-login::after {
+    position: absolute;
+    bottom: -140px;
+    left: -110px;
+    z-index: 1;
+
+    width: 360px;
+    height: 360px;
+
+    background:
+        rgba(140, 45, 25, 0.18);
+
+    border-radius: 50%;
+
+    content: "";
+}
+
+.imagen-panel-login {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    animation:
+        acercamientoImagen
+        14s ease-in-out
+        infinite alternate;
+}
+
+.capa-oscura-panel-login {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(29, 23, 20, 0.2) 0%,
+            rgba(29, 23, 20, 0.42) 45%,
+            rgba(29, 23, 20, 0.92) 100%
+        );
+}
+
+
+/* =========================================================
+   13. CONTENIDO DEL PANEL VISUAL
+========================================================= */
+
+.contenido-panel-login {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 100%;
+    padding: 46px;
+}
+
+.distintivo-panel-login {
+    align-self: flex-start;
+
+    padding: 8px 13px;
+
+    background:
+        rgba(255, 255, 255, 0.13);
+
+    color: var(--color-texto-claro);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.22);
+
+    border-radius: var(--radio-redondo);
+
+    font-size: 0.7rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.texto-panel-login {
+    max-width: 530px;
+    margin-top: auto;
+    margin-bottom: 32px;
+}
+
+.titulo-panel-login {
+    margin-bottom: 15px;
+
+    color: var(--color-texto-claro);
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 3.8vw, 3.6rem);
+    font-weight: 700;
+
+    letter-spacing: -0.045em;
+    line-height: 1.04;
+
+    text-wrap: balance;
+}
+
+.descripcion-panel-login {
+    max-width: 50ch;
+    margin-bottom: 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   14. BENEFICIOS DEL PANEL VISUAL
+========================================================= */
+
+.beneficios-panel-login {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.beneficios-panel-login span {
+    padding: 8px 12px;
+
+    background:
+        rgba(255, 255, 255, 0.11);
+
+    color:
+        rgba(255, 255, 255, 0.88);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: var(--radio-redondo);
+
+    font-size: 0.72rem;
+    font-weight: 650;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* =========================================================
+   15. ANIMACIONES
+========================================================= */
+
+@keyframes aparecerFormulario {
+    from {
+        opacity: 0;
+        transform: translateX(-22px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes aparecerPanelVisual {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes acercamientoImagen {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.045);
+    }
+}
+
+@keyframes mostrarError {
+    0% {
+        opacity: 0;
+        transform: translateX(-7px);
+    }
+
+    45% {
+        transform: translateX(4px);
+    }
+
+    70% {
+        transform: translateX(-2px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   16. PANTALLAS MEDIANAS
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .contenido-principal-login {
+        padding: 24px;
+    }
+
+    .contenedor-login {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(370px, 0.95fr);
+
+        min-height: 640px;
+    }
+
+    .lado-formulario-login {
+        padding: 44px 42px;
+    }
+
+    .lado-visual-login {
+        min-height: 640px;
+    }
+
+    .contenido-panel-login {
+        padding: 38px;
+    }
+
+    .titulo-panel-login {
+        font-size:
+            clamp(2rem, 4vw, 3rem);
+    }
+}
+
+
+/* =========================================================
+   17. TABLETAS
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .contenido-principal-login {
+        display: block;
+
+        padding: 20px;
+    }
+
+    .contenedor-login {
+        grid-template-columns: 1fr;
+
+        max-width: 680px;
+        min-height: auto;
+        margin-inline: auto;
+    }
+
+    .lado-formulario-login {
+        padding: 44px;
+    }
+
+    .contenido-formulario-login {
+        max-width: 500px;
+    }
+
+    .marca-login {
+        margin-bottom: 34px;
+    }
+
+    .lado-visual-login {
+        min-height: 390px;
+    }
+
+    .contenido-panel-login {
+        min-height: 390px;
+        padding: 34px;
+    }
+
+    .texto-panel-login {
+        max-width: 520px;
+        margin-bottom: 24px;
+    }
+
+    .titulo-panel-login {
+        font-size:
+            clamp(2rem, 7vw, 3rem);
+    }
+}
+
+
+/* =========================================================
+   18. TELEFONOS
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .contenido-principal-login {
+        padding: 0;
+    }
+
+    .contenedor-login {
+        width: 100%;
+
+        border: 0;
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+    .lado-formulario-login {
+        min-height: 100vh;
+        padding: 30px 22px 36px;
+    }
+
+    .marca-login {
+        margin-bottom: 34px;
+    }
+
+    .logo-login,
+    .logo-login-alternativo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .nombre-readpoint-login {
+        font-size: 1.15rem;
+    }
+
+    .titulo-login {
+        font-size:
+            clamp(2.05rem, 10vw, 2.65rem);
+    }
+
+    .descripcion-login {
+        font-size: 0.9rem;
+    }
+
+    .campo-login {
+        min-height: 48px;
+    }
+
+    .boton-iniciar-sesion {
+        min-height: 48px;
+        border-radius: 10px;
+    }
+
+    .lado-visual-login {
+        min-height: 340px;
+    }
+
+    .contenido-panel-login {
+        min-height: 340px;
+        padding: 27px 22px;
+    }
+
+    .titulo-panel-login {
+        font-size:
+            clamp(1.85rem, 9vw, 2.5rem);
+    }
+
+    .descripcion-panel-login {
+        font-size: 0.87rem;
+    }
+
+    .beneficios-panel-login {
+        gap: 6px;
+    }
+
+    .beneficios-panel-login span {
+        padding: 7px 10px;
+
+        font-size: 0.68rem;
+    }
+}
+
+
+/* =========================================================
+   19. MOVIMIENTO REDUCIDO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .imagen-panel-login {
+        transform: none;
+    }
+}

@@ -1,0 +1,138 @@
+Listado de rutas de carpetas para el volumen Windows
+El número de serie del volumen es ACDA-D8FD
+C:.
+¦   estructura.txt
+¦   
++---app
+¦   +---Controllers
+¦   ¦       AuthController.php
+¦   ¦       CarreraController.php
+¦   ¦       CategoriaController.php
+¦   ¦       EstadisticaController.php
+¦   ¦       EstudianteController.php
+¦   ¦       FacturaAdminController.php
+¦   ¦       FacturaController.php
+¦   ¦       LibroController.php
+¦   ¦       MateriaController.php
+¦   ¦       PerfilController.php
+¦   ¦       ProfesorController.php
+¦   ¦       ReservaController.php
+¦   ¦       SolicitudController.php
+¦   ¦       UsuarioController.php
+¦   ¦       
+¦   +---Core
+¦   ¦       Csrf.php
+¦   ¦       Database.php
+¦   ¦       ExcelLibro.php
+¦   ¦       ExcelReserva.php
+¦   ¦       FirmaDigital.php
+¦   ¦       ImagenLibro.php
+¦   ¦       NoCache.php
+¦   ¦       PasswordHasher.php
+¦   ¦       PdfLibro.php
+¦   ¦       Sanitizer.php
+¦   ¦       SesionGuard.php
+¦   ¦       Validator.php
+¦   ¦       
+¦   +---Interfaces
+¦   ¦       CryptoInterface.php
+¦   ¦       ErrorHandlerInterface.php
+¦   ¦       
+¦   +---Models
+¦           AuthModel.php
+¦           CarreraModel.php
+¦           CategoriaModel.php
+¦           EstadisticaModel.php
+¦           EstudianteModel.php
+¦           FacturaAdminModel.php
+¦           FacturaModel.php
+¦           LibroModel.php
+¦           MateriaModel.php
+¦           ProfesorModel.php
+¦           ReservaModel.php
+¦           SolicitudModel.php
+¦           UsuarioModel.php
+¦           
++---Database
+¦       biblioteca_digital.sql
+¦       Facturacion.sql
+¦       
++---public
+¦   ¦   abrir_libro.php
+¦   ¦   carreras.php
+¦   ¦   carrera_eliminar.php
+¦   ¦   carrera_form.php
+¦   ¦   carrera_procesar.php
+¦   ¦   catalogo.php
+¦   ¦   categorias.php
+¦   ¦   categoria_eliminar.php
+¦   ¦   categoria_form.php
+¦   ¦   categoria_procesar.php
+¦   ¦   comprar_libro.php
+¦   ¦   dashboard.php
+¦   ¦   estadisticas.php
+¦   ¦   estudiantes.php
+¦   ¦   estudiante_eliminar.php
+¦   ¦   estudiante_form.php
+¦   ¦   estudiante_procesar.php
+¦   ¦   facturas.php
+¦   ¦   factura_admin_detalle.php
+¦   ¦   factura_detalle.php
+¦   ¦   factura_procesar.php
+¦   ¦   leer_libro.php
+¦   ¦   libros.php
+¦   ¦   libro_detalle.php
+¦   ¦   libro_eliminar.php
+¦   ¦   libro_exportar.php
+¦   ¦   libro_form.php
+¦   ¦   libro_procesar.php
+¦   ¦   login.php
+¦   ¦   logout.php
+¦   ¦   materias.php
+¦   ¦   materia_eliminar.php
+¦   ¦   materia_form.php
+¦   ¦   materia_procesar.php
+¦   ¦   menu.php
+¦   ¦   menu_estudiante.php
+¦   ¦   mis_facturas.php
+¦   ¦   mis_reservas.php
+¦   ¦   mis_solicitudes.php
+¦   ¦   perfil.php
+¦   ¦   perfil_procesar.php
+¦   ¦   procesar_login.php
+¦   ¦   profesores.php
+¦   ¦   profesor_eliminar.php
+¦   ¦   profesor_form.php
+¦   ¦   profesor_procesar.php
+¦   ¦   reporte_reservas.php
+¦   ¦   reserva_exportar.php
+¦   ¦   solicitar_libro.php
+¦   ¦   solicitudes_admin.php
+¦   ¦   solicitud_estado_procesar.php
+¦   ¦   solicitud_procesar.php
+¦   ¦   usuarios.php
+¦   ¦   usuario_eliminar.php
+¦   ¦   usuario_estado.php
+¦   ¦   usuario_form.php
+¦   ¦   usuario_procesar.php
+¦   ¦   
+¦   +---assets
+¦       +---css
+¦               student.css
+¦               style.css
+¦               
++---uploads
+    +---libros
+    ¦       libro_6a5909dbcf04d9.66549658.jpg
+    ¦       libro_6a591d6e79e4b5.77607427.jpg
+    ¦       libro_6a592a04e56c25.64936125.jpg
+    ¦       
+    +---pdfs
+    ¦       pdf_libro_28a227bfb5ea52bccb127f2d5d408543.pdf
+    ¦       pdf_libro_92fe82708749cdfaea53cc716318b841.pdf
+    ¦       
+    +---thumbnails
+            libro_6a5909dbcf04d9.66549658.jpg
+            libro_6a591d6e79e4b5.77607427.jpg
+            libro_6a592a04e56c25.64936125.jpg
+            
